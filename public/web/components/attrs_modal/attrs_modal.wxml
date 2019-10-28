@@ -1,0 +1,13 @@
+<view hidden="{{ !visible }}" class="modal-wrapper">
+   <view bindtap="close" class="modal-cover"></view>
+        <view class="modal-container">
+          <view class="modal-header">
+                <icon bindtap="close" type="cancel" size="25"/>
+            </view>
+          <view class="modal-body">
+             <slot></slot>
+           </view>
+      </view>
+     <!-- end of modal-container -->
+ </view>
+

@@ -1,0 +1,41 @@
+<!--pages/order/order.wxml-->
+<view class="order-wrapper">
+
+     <view class="order-tabs">
+            <view class="order-tab active" > 全部 </view>
+             <view class="order-tab" > 已支付 </view>
+             <view class="order-tab" > 待支付 </view>
+      </view>
+
+    <view wx:if="{{ orders.length <= 0 }}" class="order-empty">
+        空空如也~~~
+    </view>
+
+    <view wx:else class="order-list">
+         <block wx:for="{{ orders }}" wx:key="*this">
+            <view class="order-item">
+                <view class="order-item-info">
+                  <image src="/static/images/mango-2.png"></image>
+                  <text> {{ item.name }} </text>
+                  <text>￥{{ item.price }}</text>
+                </view>
+
+                <view class="order-item-tags">
+                  <block wx:for="{{ item.tags }}" wx:for-item="itm" wx:key="*this">
+                       <view class="order-item-tag"> {{ itm }} </view>
+                   </block>
+                </view>
+
+                <view class="order-pay-btn">
+                    <view  style="display : {{ item.paid ? 'none' : 'inline-block' }}" > 去支付</view>
+                </view>
+
+                <view class="order-status {{ item.paid ? 'paid' : '' }}"> {{ item.paid ? '已支付' : '待支付' }} </view>
+
+            </view>
+        </block>
+        <!-- end of order-item -->
+    </view>
+
+
+</view>

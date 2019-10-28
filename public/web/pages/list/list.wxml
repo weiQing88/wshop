@@ -1,0 +1,25 @@
+<!--index.wxml-->
+<view class="container">
+ <scroll-view 
+      class="product-scroll-list"
+      scroll-y="true" 
+      style="height: 100vh" 
+      bindscrolltolower="lower"
+     >
+
+     <block wx:for="{{products}}" wx:for-index="idx"  wx:key="*this">
+
+        <view class="product-item" bindtap="handleTap">
+           <view class="product-image">
+             <image lazy-load="{{true}}" src="{{ item.url }}" ></image>
+           </view>
+           <view class="product-title"> {{ item.title }} </view>
+            <view class="product-info">
+              <view class="product-price">￥{{ item.price }}</view>
+              <view class="product-sale">销量：{{ item.sale }}</view>
+           </view>
+        </view>
+     </block>
+     <view class="product-loading" style="visibility :{{ isLoading ? 'visible' : 'hidden' }}" > 加载数据... </view>
+  </scroll-view >
+</view>

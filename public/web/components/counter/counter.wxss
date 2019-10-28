@@ -1,0 +1,41 @@
+.counter-cmp-wrapper{
+   display: inline-flex;
+   flex-direction: row;
+   justify-content: space-between;
+   background-color: #fff;
+}
+
+.counter-cmp-red,
+.counter-cmp-incr{
+     width: 45rpx;
+     height: 45rpx;
+     line-height: 40rpx;
+     text-align: center;
+      border-radius: 50%;
+}
+
+.counter-cmp-red{
+    border: 1px solid #ddd;
+}
+
+.counter-cmp-incr{
+   color: #fff;
+   background-color: #e65f03;
+   border: 1px solid #e65f03;
+}
+
+
+.counter-cmp-number{
+   position: relative;
+   top: 2rpx;
+    left: 0;
+     width: 75rpx;
+     height: 45rpx;
+     line-height: 45rpx;
+     font-size: 12px;
+      text-align: center;
+      overflow:hidden;
+      text-overflow:ellipsis;
+       white-space:nowrap;
+
+}

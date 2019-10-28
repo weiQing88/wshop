@@ -1,0 +1,58 @@
+<!--pages/user/user.wxml-->
+<view class="user-ontainer">
+
+      <view class="user-avatar">
+         <image src="/static/images/avt.png"></image>
+         <view class="user-name ell"> ab </view>
+       </view>
+      <!-- end of user-avatar -->
+    
+    <view class="user-order-info">
+
+        <view class="user-order-header">
+          <view>我的订单</view>
+           <view>全部订单 ></view>
+         </view>
+
+       <view class="user-order-items">
+
+          <view class="user-order-item">
+              <image src="/static/images/zhifu.png"></image>
+              待支付
+           </view>
+
+            <view class="user-order-item">
+              <image src="/static/images/zhifu.png"></image>
+             已支付
+           </view>
+             <view class="user-order-item">
+               <image src="/static/images/zhifu.png"></image>
+              已完成
+           </view>
+        </view>
+     
+    </view>
+    <!-- end of user-order-info -->
+      
+
+   <view class="user-others">
+         <view class="user-others-item cat">
+             <image src="/static/images/qingdan.png"></image>
+             <view class="user-others-item-text cat-text">  我的购物车  <view class="cat-total"> 15 </view>   </view>
+         </view>
+
+          <view class="user-others-item">
+             <image src="/static/images/qingdan.png"></image>
+             <view class="user-others-item-text" >  我的积分  </view>
+         </view>
+
+          <view class="user-others-item">
+             <image src="/static/images/qingdan.png"></image>
+             <view class="user-others-item-text" >  关于我们   </view>
+         </view>
+
+    </view>
+    <!-- end of user-item-list -->
+
+
+ </view>

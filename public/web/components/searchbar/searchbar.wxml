@@ -1,0 +1,9 @@
+<!-- 组件 custom-component.wxml -->
+ <view class="search-component-wrapper">
+  <view class="search-component-layout">
+      <search-component  bindsearchevent="handleSearch"  ></search-component>
+        <view bindtap="showOrder" class="order-icon">订单 
+          <image src="/static/images/search-bar-order-icon.png"></image>
+        </view>
+    </view>
+ </view>

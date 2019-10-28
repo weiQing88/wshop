@@ -1,0 +1,7 @@
+<view class="affix_pay_wrapper" style="display:{{ value.total ? 'flex' : 'none' }}" >
+    <view class="affix_pay_message">
+       <view class="affix_pay_price"> ￥{{ value.total }} </view>
+       <view class="affix_pay_text"> 配送信息xxxxx </view>
+    </view>
+    <view class="affix_pay_btn" bindtap="goTo"> 去结算 </view>
+</view>

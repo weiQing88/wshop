@@ -1,0 +1,56 @@
+<!--pages/cat/cat.wxml-->
+<view class="container">
+
+ <block wx:if="{{ false }}">
+   <view  class="empty">
+        <image src="/static/images/cat.png"></image>
+        <view class="text">购物车饿瘪了~</view>
+        <view class="btn"> 去购物 </view>
+    </view>
+</block>
+
+
+<block wx:else>
+  <view class="cat-main">
+    <!-- start of cat-header -->
+     <view class="cat-header">
+         <view class="cat-icon">
+             <image src="/static/images/cat-icon.png"></image>
+             <view class="tip"> {{ catItems.length }} </view>
+           </view>
+           <view class="cat-clear">
+              <image src="/static/images/dustbin.png"></image>
+              <view>清空购物车</view>
+            </view>
+       </view>
+     <!-- end of cat-header -->
+
+     <!-- start of cat-list -->
+     <view class="cat-list">
+        <!-- start of cat-item -->
+         <block wx:for="{{ catItems }}" wx:key="*this">
+          <view class="cat-item">
+            <view class="cat-item-info">
+                  <view class="cat-item-name ell"> {{ item.name }} </view>
+                   <view class="cat-item-block" >
+                      <view class="cat-item-price" > ￥{{ item.price }} </view>
+                      <counter bindontap="handleCounter" value="{{ item.num }}"></counter>
+                   </view>
+              </view>
+            <view class="cat-item-tags">
+                  <block wx:for="{{ item.tags }}" wx:for-item="itm" wx:key="*this">
+                      <view class="cat-item-tag">{{ itm }}</view>
+                  </block>
+            </view>
+          </view>
+        </block>
+        <!-- end of cat-item -->
+
+      </view>
+ <!-- end of cat-list -->
+
+   </view>
+</block>
+
+  <affix_pay bindpayment="handlePayment" value="{{ order }}" ></affix_pay>
+ </view>

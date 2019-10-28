@@ -1,0 +1,154 @@
+/* pages/detail/detail.wxss */
+.item-detail-image{
+   width: 100%;
+   height: 550rpx;
+   overflow: hidden;
+}
+
+swiper{
+   width: 100%;
+   height: 100%;   
+}
+
+.swiper-item{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.swiper-item image{
+       display: block;
+       max-width: 100%;
+       margin: 0 auto;
+}
+
+
+.item-detail-image image{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.item-price-sale{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   width: 98%;
+   font-size: 14px;
+   padding: 40rpx 0 10rpx;
+}
+
+.item-price{
+    color: red; 
+}
+
+.item-title{
+    width: 98%;
+    text-align: left;
+    padding-bottom: 10rpx;
+}
+
+
+.item-form{
+   width: 98%;
+}
+
+.form-contrl-item{
+    width: 100%;
+}
+
+.form-contrl-item label{
+   display: block;
+   height: 90rpx;
+   line-height: 90rpx;
+   border-top: 1px solid #ddd;
+   border-bottom: 1px solid #ddd;
+}
+
+.attr-list{
+    display: flex;
+    flex-direction: row;
+    padding-top: 10rpx;
+    padding-bottom: 30rpx;
+}
+
+.attr-item{
+   max-width: 90%;
+   font-size: 10px;
+   padding: 10rpx 25rpx;
+   border-radius: 25rpx;
+
+   margin-right: 15rpx;
+   margin-top: 15rpx;
+
+   background-color: #ddd;
+   border: 1px solid #ddd;
+}
+
+.attr-item.active{
+    border-color: salmon;
+    color: salmon;
+}
+
+
+
+.form-btn{
+   width: 100%;
+   border-top: 1px solid #ddd;
+   padding: 30rpx 0;
+}
+
+.form-btn view{
+     width: 50%;
+     height: 80rpx;
+     line-height: 80rpx;
+     margin:0 auto;
+     font-size: 14px;
+     background-color: #e65f03;
+     text-align: center;
+     color: #fff;
+}
+
+
+
+
+.form-quantity-box{
+   display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 98%;
+    padding: 25rpx 1%;
+    background-color: #fff;
+    border-top: 1px solid #ddd; 
+}
+
+.form-quantity-contrl{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.item-decs-title{
+    width: 99%;
+    text-align: left;
+     background-color: #ddd;
+     padding-top: 50rpx;
+     padding-bottom: 10rpx;
+     padding-left: 1%;
+}
+
+
+
+.item-decs{
+    width: 97%;
+    min-height: 400rpx;
+    line-height: 50rpx;
+    text-indent: 1em;
+    padding: 3% 0 3%;
+    
+}
+
+
+
+

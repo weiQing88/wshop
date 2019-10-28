@@ -1,0 +1,75 @@
+<!--pages/detail/detail.wxml-->
+<view class="container">
+
+     <view class="item-detail-image">
+         <swiper
+              indicator-dots="{{ true }}"
+            >
+           <block wx:for="{{ detail.images }}" wx:key="*this">
+               <swiper-item>
+                <view class="swiper-item">
+                   <image src="{{ item.url }}"></image>
+                 </view>
+              </swiper-item>
+         </block>
+      </swiper>
+     </view>
+     
+
+
+     <view class="item-price-sale">
+        <view class="item-sale">销量：{{ detail.sale }}</view>
+        <view class="item-price">￥ {{ detail.price }}</view>
+      </view>
+    <view class="item-title ell"> {{ detail.name }} </view>
+   <form class="item-form">
+
+    <!-- 这里是根据数据循环得出 start -->
+       <block wx:for="{{ detail.attrs }}" wx:for-index="idx" wx:key="*this">
+        <view class="form-contrl-item">
+          <label> {{ item.label }} </label>
+            <view class="attr-list">
+                 <block wx:for="{{ item.tags }}" wx:for-index="index" wx:for-item="itm" wx:key="*this">
+                     <view bindtap="handleTap" 
+                          data-index="{{ index }}"
+                          data-pindex="{{ idx }}" 
+                          data-itm="{{ itm }}" 
+                          class="attr-item ell {{ itm.selected ? 'active' : '' }}"> {{ itm.name }}  </view>
+                    </block>
+            </view>
+           </view>
+         </block>
+   <!-- 这里是根据数据循环得出 end -->
+
+
+     <view class="form-quantity-box">
+        <label> 数量 </label>
+
+         <view class="form-quantity-contrl" style="visibility: visible;">
+            <counter bindontap="handleCounter" value="{{ 1 }}"></counter>
+         </view>
+
+     </view>
+        
+      <view class="form-btn" style="display : 'block'">  
+         <view  bindtap="add_to_cart"> 加入购物车  </view>
+       </view>
+        
+    </form>
+
+
+   <view class="item-decs-title">
+        商品描述：
+   </view>
+ 
+   <view class="item-decs">
+     红糟酸的特点和食用方法：
+     红糟酸具有爽口开胃、浓香、殷虹、酸辣等特点。用它来腌制各种菜蔬瓜豆，色、香、味俱佳，特别是子姜、荞头、辣椒，腌制后色泽鲜红，
+     滑嫩脆口，而且酸中带辣，辣中溢香，酸辣适度，可以直接食用。用红糟酸焖鱼或炒猪肚、大肠，红糟酸牛杂火锅，那浓香味更是催人食欲，确是难得的美味佳肴。
+   </view>
+
+   <view style="height: 80rpx; visibility: hidden;">占位</view>
+
+    <affix_pay bindpayment="handlePayment" value="{{ order }}" ></affix_pay>
+    
+</view>

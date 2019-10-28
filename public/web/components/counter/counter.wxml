@@ -1,0 +1,5 @@
+<view class="counter-cmp-wrapper">
+    <view class="counter-cmp-red" bindtap="handleRed"> - </view>
+    <view class="counter-cmp-number"> {{ value }} </view>
+    <view class="counter-cmp-incr" bindtap="handleIncr"> + </view>
+</view>

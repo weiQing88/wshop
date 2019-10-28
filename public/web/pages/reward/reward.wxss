@@ -1,0 +1,39 @@
+/* pages/reward/reward.wxss */
+.reward-wrapper{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.reward-header{
+    width: 90%;
+    background-color:#eda91f;
+    color: #fff;
+    font-size: 40rpx;
+    padding: 80rpx 5%;
+}
+
+.reward-header text{
+     font-size: 30rpx;
+}
+
+
+.reward-taps{
+  display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.reward-tap{
+  width: 50%;
+  height: 95rpx;
+  line-height: 95rpx;
+  text-align: center;
+   border-bottom: 1px solid #eee;
+  font-size: 30rpx;
+}
+
+.reward-tap.active{
+   color:  #e65f03;
+   border-bottom-color:  #e65f03;
+}

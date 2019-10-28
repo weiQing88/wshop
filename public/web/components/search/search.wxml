@@ -1,0 +1,13 @@
+<!-- 组件 -->
+ <view class="search-component-wrapper">
+      <input 
+          bindinput="handleInput"
+          bindconfirm="handleSearch" 
+          class="search-input" 
+          confirm-type="search" 
+          type="text" 
+          placeholder="请输入" 
+          value="{{ searchinput }}"
+           />
+      <icon type="search" size="13" ></icon>
+ </view>

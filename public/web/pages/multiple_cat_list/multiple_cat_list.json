@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "列表",
+    "navigationBarBackgroundColor": "#eda91f",
+    "navigationBarTextStyle": "white",
+  "usingComponents" : {
+       "search-bar": "/components/searchbar/searchbar",
+        "counter": "/components/counter/counter",
+        "affix_pay": "/components/affix_pay/affix_pay",
+        "my_modal": "/components/attrs_modal/attrs_modal"
+  }
+
+}
+

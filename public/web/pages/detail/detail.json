@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#e65f03",
+  "usingComponents": {
+     "counter" : "/components/counter/counter",
+    "affix_pay": "/components/affix_pay/affix_pay"
+  },
+  "navigationBarTitleText": "商品详情"
+}

@@ -1,0 +1,57 @@
+<!--pages/pay/pay.wxml-->
+<view class="payment-container">
+   <view class="payment-header">
+       <image src="/static/images/qingdan.png"></image>
+       清单
+    </view>
+   
+   <!-- start of pay-payment-list -->
+   <view class="payment-list">
+
+       <block wx:for="{{ orders }}" wx:key="*this" >
+          <view class="payment-item">
+            <view class="payment-info">
+              <view class="name ell">{{ item.name }}</view>
+              <view class="total">{{ item.total }}</view>
+              <view class="price"> ￥ {{ item.price }} </view>
+            </view>
+              <view class="attrs">
+                 <block wx:for="{{ item.attrs }}" wx:for-item="itm" wx:key="*this">
+                    <view class="attrs-item">{{ itm }}</view>
+                  </block>
+              </view>
+          </view>
+        </block>
+
+       <view class="payment-list-sum">
+          <label>合计</label>
+          <view class="sum">￥ 800</view>
+        </view>
+   </view>
+ <!-- end of pay-payment-list -->
+
+
+ <view class="payment-payment-header">
+
+     <view class="label">
+       <image src="/static/images/zhifu.png"></image>
+       支付方式</view>
+
+         <view>微信支付</view>
+
+    </view>
+
+ <view class="payment-payment-list">
+     <view class="payment-payment-item"><icon type="success" size="20" ></icon> 微信支付 </view>
+ </view>
+ 
+ 
+ <view style="height:100rpx; visibility: hidden">占位</view>
+ 
+
+  <view class="order_submmit_btn">
+      <view class="price"> ￥ 8</view>
+      <view class="button" > 提交订单 </view>
+   </view>
+
+</view>

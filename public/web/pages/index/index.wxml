@@ -1,0 +1,34 @@
+<!--index.wxml-->
+<view class="container">
+
+   <view class="banner-wrapper">
+      <swiper
+          indicator-dots="{{ true }}"
+          autoplay="{{ true }}"
+         >
+          <block wx:for="{{banners}}" wx:for-index="idx"  wx:key="*this">
+            <swiper-item>
+              <view class="swiper-item" >
+               <image src="{{ item.url }}"></image>
+               </view>
+            </swiper-item>
+          </block>
+        </swiper>
+   </view>
+   
+<view class="nav-list">
+   <block wx:for="{{ navigation }}" wx:for-index="idx"  wx:key="*this" >
+      <view class="nav-item"> 
+           <navigator url="{{ item.link }}" class="nav-link" >
+                 <view class="nav-item-image">
+                    <image src="{{ item.url }}" lazy-load="{{ true }}" ></image>
+                  </view>
+                 <view class="nav-item-title">{{ item.title }}</view>
+             </navigator >
+       </view>
+     </block>
+</view>
+
+ <!-- <button type="default" bindtap="openAuhto" > authorize </button> -->
+
+</view>

@@ -1,0 +1,40 @@
+.affix_pay_wrapper{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #fff;
+
+}
+
+.affix_pay_message{
+     width: 69%;
+     padding-left: 1%;
+     font-size: 16px;
+}
+
+.affix_pay_price{
+  color: red;
+}
+
+.affix_pay_text{
+   width: 100%;
+  font-size: 10px;
+  color: #0000004d;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+
+.affix_pay_btn{
+   width: 30%;
+   height: 100rpx;
+   line-height: 100rpx;
+   background-color: #e65f03;
+   color: #fff;
+   text-align: center;
+}

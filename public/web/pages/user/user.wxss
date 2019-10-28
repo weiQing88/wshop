@@ -1,0 +1,124 @@
+/* pages/user/user.wxss */
+.user-ontainer{
+    width: 100%;
+    height: 100vh;
+    background-color: #ddd;
+    font-size: 14px;
+    color: #666;
+}
+
+.user-avatar{
+   display: flex;
+   flex-direction: row;
+   width: 96%;
+   padding: 0 2%;
+   height: 150rpx;
+   background-color: #fff;
+   margin-bottom: 20rpx;
+}
+
+.user-avatar image{
+   position: relative;
+   top: 25rpx;
+   display: inline-block;
+   width: 100rpx;
+   height: 100rpx;
+   margin-right: 20rpx;
+}
+
+.user-name{
+   max-width: 500rpx;
+   height: 150rpx;
+   line-height: 150rpx;
+
+}
+
+
+.user-order-info{
+    width: 96%;
+    padding: 0 2%;
+    background-color: #fff;
+   margin-bottom: 20rpx;
+}
+
+
+.user-order-header{
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     width: 100%;
+     height: 90rpx;
+     line-height: 90rpx;
+    border-bottom: 1px solid #ddd;
+
+}
+
+.user-order-header view:nth-child(1){}
+.user-order-header view:nth-child(2){
+    font-size: 25rpx;
+    color: #ddd;
+}
+
+
+.user-order-items{
+    display: flex;
+    flex-direction: row;
+ 
+}
+
+.user-order-item{
+    width:33%;
+    text-align: center;
+    font-size: 25rpx;
+    padding: 20rpx 0;
+}
+
+.user-order-item image{
+    display: block;
+     width: 60rpx;
+     height: 60rpx;
+     margin: 0 auto;
+}
+
+.user-others{
+    width: 96%;
+    padding: 0 2%;
+    background-color: #fff;
+}
+.user-others-item{
+    display: flex;
+    flex-direction: row;
+    padding: 25rpx 0;
+    border-bottom: 1px solid #ddd;
+}
+.user-others-item image{
+     width: 50rpx;
+     height: 50rpx;
+     margin-right: 10rpx;
+}
+
+.cat-text{
+    display: flex;
+    flex-direction: row;
+}
+
+.cat-total{
+    position: relative;
+    top: 6rpx;
+     width: 40rpx;
+     height: 40rpx;
+     line-height: 40rpx;
+     background-color: red;
+     color: #fff;
+     border-radius: 50%;
+     margin-left: 10rpx;
+     text-align: center;
+     overflow: hidden;
+}
+
+
+.user-others-item-text{
+    height: 50rpx;
+    line-height: 50rpx;
+    font-size: 28rpx;
+}

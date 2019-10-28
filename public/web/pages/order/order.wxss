@@ -1,0 +1,132 @@
+/* pages/order/order.wxss */
+
+.order-wrapper{
+    width: 100%;
+    min-height: 100vh;
+    background-color: #ddd;
+}
+
+.order-tabs{
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+}
+
+.order-tab{
+   width: 33%;
+   font-size: 30rpx;
+   text-align: center;
+   height: 110rpx;
+   line-height: 110rpx;
+}
+
+.order-tab.active{
+   color: #eda91f;
+}
+
+
+.order-empty{
+    text-align: center;
+    font-size: 30rpx;
+    color: #aaa;
+}
+
+
+
+.order-list{
+    width: 100%;
+    background-color: #fff;
+    padding: 20rpx 0 1rpx;
+}
+
+
+.order-item{
+   position: relative;
+   width: 96%;
+   padding: 25rpx 2%;
+   border-bottom: 1px solid #eee;
+   margin-bottom: 25rpx;
+
+}
+
+.order-item:last-child{
+    border: none;
+}
+
+.order-item-info{
+    display: flex;
+    flex-direction: row;
+    font-size: 30rpx;
+}
+
+.order-item-info image{
+    width: 150rpx;
+    height: 150rpx;
+}
+
+
+
+.order-item-info text:nth-child(2){
+     position: relative;
+     top: 30rpx;
+      width: 400rpx;
+      height:80rpx;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+       margin-left: 20rpx;
+       margin-right: 10rpx;
+
+}
+
+.order-item-info text:nth-child(3){
+   line-height: 100rpx;
+   color: red;
+}
+
+
+.order-item-tags{
+width: 100%;
+}
+
+.order-item-tag{
+  display: inline-block;
+  font-size: 25rpx;
+  margin-right: 15rpx;
+  color: #bbb;
+}
+
+.order-pay-btn{
+  width: 100%;
+  text-align: right;
+  height: 56rpx;
+}
+
+.order-pay-btn view{
+    display: inline-block;
+    width: 150rpx;
+    height: 55rpx;
+    line-height: 55rpx;
+    border: 1px solid #eda91f;
+    border-radius: 15rpx;
+    font-size: 30rpx;
+    text-align: center;
+}
+
+
+.order-status{
+    position: absolute;
+    top: 0rpx;
+    right: 15rpx;
+    color: red;
+    font-size: 25rpx;
+}
+
+.order-status.paid{
+     color: #ddd;
+     border: 1px solid #ddd;
+    
+}

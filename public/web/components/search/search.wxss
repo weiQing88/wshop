@@ -1,0 +1,33 @@
+
+.search-component-wrapper{
+   display: inline-block;
+   width: 550rpx;
+   height: 60rpx;
+   overflow: hidden;
+   background-color:#fff;
+   border-radius: 30rpx;
+}
+
+.search-component-wrapper::before{
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.search-component-wrapper .search-input{
+   width: 420rpx;
+   height: 60rpx;
+   font-size: 30rpx;
+   margin-left: 40rpx;
+   float: left;
+}
+
+.search-component-wrapper icon{
+    position: relative;
+    top: 15rpx;
+    right: 20rpx;
+    float: right;
+}

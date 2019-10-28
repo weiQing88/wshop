@@ -1,0 +1,118 @@
+<!--index.wxml-->
+<view class="multiple_cat_gray">
+  <search-bar bindsearchevent="handleSearch" class="search-bar"></search-bar>
+
+   <view class="multiple_cat_body">
+
+        <view class="multiple_cat_aside">
+            <block wx:for="{{ category }}" wx:for-index="idx" wx:key="*this">
+                  <view class="aside-item ell"> {{ item.title }} </view>
+             </block>
+         </view>
+
+         <view class="multiple_cat_list">
+             <block wx:for="{{ list }}" wx:for-index="idx" wx:key="*this">
+                     <view class="multiple_cat_item"> 
+
+                         <view class="item-image" >
+                              <image src="{{ item.url }}"></image>
+                           </view>
+
+                           <view class="item-info">
+                                <view class="item-info-title ell" >{{ item.title }}</view>
+                                <view class="item-info-sale" >{{ item.sale }}</view>
+                                 <view class="item-info-price" >
+                                     <view>￥ {{ item.price }} </view>
+                                     <view bindtap="showModal"> 选规格 </view>
+                                  </view>
+                            </view>
+                      </view>
+             </block>
+          </view>
+
+    </view>
+
+    <view class="multiple_cat_pay">
+
+        <view bindtap="showOrderList" class="cat-icon multiple_cat_icon" hidden="{{ oVisible }}" >
+             <image src="/static/images/cat-icon.png"></image>
+             <view class="tip"> 11 </view>
+           </view>
+      
+          <view class="multiple_cat_price_inof">
+               <view>￥1</view>
+               <view>提示信息</view>
+           </view>
+
+       <view class="multiple_cat_button">
+         去结算
+       </view>
+
+       <!--start of multiple_order_list-->
+        <view class="multiple_order_list" hidden="{{ !oVisible }}">
+          <view class="cat-list-header cat-header">
+            <view bindtap="closeOrderList" class="cat-icon">
+              <image src="/static/images/cat-icon.png"></image>
+              <view class="tip"> 22 </view>
+            </view>
+            <view class="cat-clear">
+              <image src="/static/images/dustbin.png"></image>
+              <view>清空购物车</view>
+            </view>
+          </view>
+          <!-- end of cat-list-header -->
+           <view  class="cat-list-item">
+              <block wx:for="{{ catItems }}" wx:key="{{ tiem.id }}">
+                 <view class="cat-item">
+                  <view class="cat-item-info">
+                        <view class="cat-item-name ell"> {{ item.name }} </view>
+                        <view class="cat-item-block" >
+                            <view class="cat-item-price" > ￥{{ item.price }} </view>
+                            <counter bindontap="handleCounter" value="{{ item.num }}"></counter>
+                        </view>
+                    </view>
+                    <view class="cat-item-tags">
+                        <block wx:for="{{ item.tags }}" wx:for-item="itm" wx:key="*this">
+                            <view class="cat-item-tag">{{ itm }}</view>
+                        </block>
+                  </view>
+                </view>
+              </block>
+                <!-- end of cat-item -->
+            </view>
+            <!-- end of cat-list-item -->
+        </view>
+          <!--end of multiple_order_list-->
+
+
+     </view>
+   <!-- end of multiple_cat_pay -->
+
+
+   <my_modal visible="{{ visible }}"  bindclose="handleclose" >
+        <view class="modal-select-list">
+          <block>
+              <view class="modal-select-item">  
+                      <label> 分量 </label>
+                      <view class="modal-select-tags">
+                      <view class="modal-select-tag">大杯</view>
+                      <view class="modal-select-tag">大杯</view>
+                      <view class="modal-select-tag">大杯</view>
+                    </view>
+              </view>
+            
+          </block>
+        </view>
+
+     <view class="modal-select-button"> 
+            <view class="modal-counter-price">￥123</view>
+            <view class="modal-select-counter">
+                <view class="modal-counter-red">-</view>
+                <view class="modal-counter-num">1</view>
+                <view class="modal-counter-incre">+</view>
+            </view>
+      </view>
+   </my_modal>
+     
+
+</view>

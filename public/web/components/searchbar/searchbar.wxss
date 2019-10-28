@@ -1,0 +1,31 @@
+.search-component-wrapper{
+    width: 100%;
+    background-color: #eda91f; 
+    padding: 18rpx 0;
+}
+
+.search-component-layout{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 91%;
+    height: 60rpx;
+    margin: 0 auto;
+}
+
+
+.search-component-wrapper .order-icon{
+    height: 60rpx;
+    line-height:  60rpx;
+    font-size: 30rpx;
+    color: #fff;
+    overflow: hidden;
+}
+
+.search-component-wrapper .order-icon image{
+     position: relative;
+     top:10rpx;
+     display: inline-block;
+     width: 40rpx;
+     height: 40rpx;
+}

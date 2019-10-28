@@ -1,0 +1,14 @@
+<!--pages/reward/reward.wxml-->
+<view class="reward-wrapper">
+    <view class="reward-header">
+       <text>现有积分:</text>
+        789
+     </view>
+    
+      <view class="reward-taps">
+         <view class="reward-tap active">收入</view>
+         <view class="reward-tap">支出</view>
+      </view>
+
+
+ </view>

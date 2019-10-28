@@ -1,0 +1,48 @@
+.modal-wrapper{
+     position: fixed;
+     top:0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+   
+}
+
+.modal-cover{
+    width: 100%;
+    height: 100%;
+  background-color: #00000066;
+}
+
+
+.modal-container{
+    position: absolute;
+    top: 10%;
+    left: 2%;
+    width: 96%;
+    min-height: 400rpx;
+    background-color: #fff;
+    border-radius: 10rpx;
+}
+
+.modal-header{
+     width: 96%;
+     height: 95rpx;
+     border-bottom: 1px solid #ddd;
+     text-align: right;
+     margin: 0 auto;
+}
+
+.modal-header icon{
+     position: relative;
+     top: 20rpx;
+    
+}
+
+
+.modal-body{
+    position: relative;
+    width: 100%;
+    min-height: 305rpx;
+ 
+
+}
