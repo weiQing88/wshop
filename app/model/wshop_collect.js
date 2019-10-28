@@ -1,38 +1,39 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_collect = sequelize.define('wshop_collect', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_collect = app.model.define('wshop_collect', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     user_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		goods_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		add_time: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		is_attention: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false,
 			defaultValue: '0'
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
     }
     

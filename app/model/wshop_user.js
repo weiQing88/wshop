@@ -1,70 +1,71 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_user = sequelize.define('wshop_user', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_user = app.model.define('wshop_user', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type:INTEGER
     },
     username: {
-			type: DataTypes.STRING(60),
+			type:STRING(60),
 			allowNull: false
 		},
 		password: {
-			type: DataTypes.STRING(32),
+			type:STRING(32),
 			allowNull: false
 		},
 		gender: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false
 		},
 		birthday: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: false
 		},
 		register_time: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		},
 		last_login_time: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		},
 		last_login_ip: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false
 		},
 		user_level_id: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false
 		},
 		nickname: {
-			type: DataTypes.STRING(60),
+			type:STRING(60),
 			allowNull: false
 		},
 		mobile: {
-			type: DataTypes.STRING(20),
+			type:STRING(20),
 			allowNull: false
 		},
 		register_ip: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false
 		},
 		avatar: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false
 		},
 		weixin_openid: {
-			type: DataTypes.STRING(50),
+			type:STRING(50),
 			allowNull: true
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		}
   }, {

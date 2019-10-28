@@ -1,48 +1,49 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_keywords = sequelize.define('wshop_keywords', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_keywords = app.model.define('wshop_keywords', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     is_hot: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		is_default: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		is_show: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '1'
 		},
 		sort_order: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '100'
 		},
 		id: {
-			type: DataTypes.INTEGER(11),
+			type: INTEGER(11),
 			allowNull: false,
 			primaryKey: true
 		},
 		type: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		}
   }, {

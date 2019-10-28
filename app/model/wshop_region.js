@@ -1,34 +1,35 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_region = sequelize.define('wshop_region',  {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_region = app.model.define('wshop_region',  {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     parent_id: {
-			type: DataTypes.INTEGER(5),
+			type: INTEGER(5),
 			allowNull: true
 		},
 		region_name: {
-			type: DataTypes.STRING(120),
+			type: STRING(120),
 			allowNull: true
 		},
 		region_type: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: true
 		},
 		agency_id: {
-			type: DataTypes.INTEGER(5),
+			type: INTEGER(5),
 			allowNull: true
     },
     createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
     }
     

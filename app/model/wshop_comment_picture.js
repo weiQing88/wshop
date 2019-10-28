@@ -1,33 +1,34 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_comment_picture = sequelize.define('wshop_comment_picture', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_comment_picture = app.model.define('wshop_comment_picture', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type:INTEGER
     },
     comment_id: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type:INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		pic_url: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: false,
 			defaultValue: '\'\''
 		},
 		sort_order: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type:INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '5'
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		}
   }, {

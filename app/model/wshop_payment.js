@@ -1,54 +1,55 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_payment = sequelize.define('wshop_payment', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_payment = app.model.define('wshop_payment', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     pay_code: {
-			type: DataTypes.STRING(20),
+			type: STRING(20),
 			allowNull: false
 		},
 		pay_name: {
-			type: DataTypes.STRING(120),
+			type: STRING(120),
 			allowNull: false
 		},
 		pay_fee: {
-			type: DataTypes.STRING(10),
+			type: STRING(10),
 			allowNull: false
 		},
 		pay_desc: {
-			type: DataTypes.TEXT,
+			type: TEXT,
 			allowNull: false
 		},
 		pay_order: {
-			type: DataTypes.INTEGER(3),
+			type: INTEGER(3),
 			allowNull: true
 		},
 		pay_config: {
-			type: DataTypes.TEXT,
+			type: TEXT,
 			allowNull: true
 		},
 		enabled: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false
 		},
 		is_cod: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false
 		},
 		is_online: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false
     },
     createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		}
 

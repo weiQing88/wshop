@@ -1,164 +1,165 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_order = sequelize.define('wshop_order',  {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, ENUM, TEXT, BIGINT } = app.Sequelize;
+  const wshop_order = app.model.define('wshop_order',  {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     order_sn: {
-			type: DataTypes.STRING(20),
+			type: STRING(20),
 			allowNull: false,
 			defaultValue: '',
 			unique: true
 		},
 		user_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		order_status: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		shipping_status: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		pay_status: {
-			type: DataTypes.INTEGER(1).UNSIGNED,
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		consignee: {
-			type: DataTypes.STRING(60),
+			type: STRING(60),
 			allowNull: false,
 			defaultValue: ''
 		},
 		country: {
-			type: DataTypes.INTEGER(5).UNSIGNED,
+			type: INTEGER(5).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		province: {
-			type: DataTypes.INTEGER(5).UNSIGNED,
+			type: INTEGER(5).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		city: {
-			type: DataTypes.INTEGER(5).UNSIGNED,
+			type: INTEGER(5).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		district: {
-			type: DataTypes.INTEGER(5).UNSIGNED,
+			type: INTEGER(5).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		address: {
-			type: DataTypes.STRING(255),
+			type: STRING(255),
 			allowNull: false,
 			defaultValue: ''
 		},
 		mobile: {
-			type: DataTypes.STRING(60),
+			type: STRING(60),
 			allowNull: false,
 			defaultValue: ''
 		},
 		postscript: {
-			type: DataTypes.STRING(255),
+			type: STRING(255),
 			allowNull: false,
 			defaultValue: ''
 		},
 		shipping_fee: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		pay_name: {
-			type: DataTypes.STRING(120),
+			type: STRING(120),
 			allowNull: false,
 			defaultValue: ''
 		},
 		pay_id: {
-			type: DataTypes.INTEGER(3),
+			type: INTEGER(3),
 			allowNull: false,
 			defaultValue: '0'
 		},
 		actual_price: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		integral: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: INTEGER(10).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		integral_money: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		order_price: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		goods_price: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		add_time: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		confirm_time: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		pay_time: {
-			type: DataTypes.INTEGER(11).UNSIGNED,
+			type: INTEGER(11).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		freight_price: {
-			type: DataTypes.INTEGER(10).UNSIGNED,
+			type: INTEGER(10).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		coupon_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		parent_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		coupon_price: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		callback_status: {
-			type: DataTypes.ENUM('true','false'),
+			type: ENUM('true','false'),
 			allowNull: true,
 			defaultValue: 'true'
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		}
   }, {

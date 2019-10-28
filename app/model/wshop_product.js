@@ -1,43 +1,44 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_product = sequelize.define('wshop_product', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_product = app.model.define('wshop_product', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     goods_id: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		goods_specification_ids: {
-			type: DataTypes.STRING(50),
+			type: STRING(50),
 			allowNull: false,
 			defaultValue: ''
 		},
 		goods_sn: {
-			type: DataTypes.STRING(60),
+			type: STRING(60),
 			allowNull: false,
 			defaultValue: ''
 		},
 		goods_number: {
-			type: DataTypes.INTEGER(8).UNSIGNED,
+			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		retail_price: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		}
 

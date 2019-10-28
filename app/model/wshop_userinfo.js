@@ -1,86 +1,87 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_userinfo = sequelize.define('wshop_userinfo', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_userinfo = app.model.define('wshop_userinfo', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type:INTEGER
     },
     avatar: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		balance: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		brand_member_new: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		current_address_id: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		current_invoice_id: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		delivery_card_expire_days: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		email: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		gift_amount: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		city: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		registe_time: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		user_id: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		is_active: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		is_email_valid: {
-			type: DataTypes.INTEGER(1),
+			type:INTEGER(1),
 			allowNull: true
 		},
 		is_mobile_valid: {
-			type: DataTypes.INTEGER(1),
+			type:INTEGER(1),
 			allowNull: true
 		},
 		mobile: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		point: {
-			type: DataTypes.INTEGER(11),
+			type:INTEGER(11),
 			allowNull: true
 		},
 		username: {
-			type: DataTypes.STRING(255),
+			type:STRING(255),
 			allowNull: true
 		},
 		createdAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type:DATE,
 			allowNull: false
 		}
   }, {

@@ -1,67 +1,69 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_address = sequelize.define('wshop_address', {
+module.exports = app => {
+  const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_address = app.model.define('wshop_address', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     name: {
-      type: DataTypes.STRING(50),
+      type: STRING(50),
       allowNull: false,
       defaultValue: ''
     },
     user_id: {
-      type: DataTypes.INTEGER(8).UNSIGNED,
+      type: INTEGER(8).UNSIGNED,
       allowNull: false,
       defaultValue: '0'
     },
     country: {
-      type: DataTypes.INTEGER(5),
+      type: INTEGER(5),
       allowNull: false,
       defaultValue: '0'
     },
     province: {
-      type: DataTypes.INTEGER(5),
+      type: INTEGER(5),
       allowNull: false,
       defaultValue: '0'
     },
     city: {
-      type: DataTypes.INTEGER(5),
+      type: INTEGER(5),
       allowNull: false,
       defaultValue: '0'
     },
     district: {
-      type: DataTypes.INTEGER(5),
+      type: INTEGER(5),
       allowNull: false,
       defaultValue: '0'
     },
     address: {
-      type: DataTypes.STRING(120),
+      type: STRING(120),
       allowNull: false,
       defaultValue: ''
     },
     mobile: {
-      type: DataTypes.STRING(60),
+      type: STRING(60),
       allowNull: false,
       defaultValue: ''
     },
     createdAt: {
-      type: DataTypes.DATE,
+      type: DATE,
       allowNull: false
     },
     updatedAt: {
-      type: DataTypes.DATE,
+      type: DATE,
       allowNull: false
     },
     sign_building: {
-      type: DataTypes.STRING(120),
+      type: STRING(120),
       allowNull: true
     }
   }, {
     tableName: 'wshop_address'
   });
+
   wshop_address.associate = function(models) {
     // associations can be defined here
 

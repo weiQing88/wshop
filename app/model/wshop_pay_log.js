@@ -1,34 +1,35 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
-  const wshop_pay_log = sequelize.define('wshop_pay_log', {
+module.exports = app => {
+	const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const wshop_pay_log = app.model.define('wshop_pay_log', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER
+      type: INTEGER
     },
     order_id: {
-			type: DataTypes.INTEGER(8),
+			type: INTEGER(8),
 			allowNull: false
 		},
 		order_amount: {
-			type: DataTypes.DECIMAL,
+			type: DECIMAL,
 			allowNull: false
 		},
 		order_type: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false
 		},
 		is_paid: {
-			type: DataTypes.INTEGER(1),
+			type: INTEGER(1),
 			allowNull: false
     },
     createdAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		},
 		updatedAt: {
-			type: DataTypes.DATE,
+			type: DATE,
 			allowNull: false
 		}
   }, {
