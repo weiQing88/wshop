@@ -9,12 +9,13 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"autoAudits": false
+		"autoAudits": false,
+		"coverView": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.8.3",
 	"appid": "wx6c18ecbc1afa42f5",
-	"projectname": "wstore",
+	"projectname": "wshop",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
