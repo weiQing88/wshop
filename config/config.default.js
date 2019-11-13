@@ -10,6 +10,7 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
+
   const config = exports = {};
 
   // use for cookie sign key, should change to your own and keep security
@@ -21,7 +22,16 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    security : {
+      domainWhiteList : ['127.0.0.1:8000'],
+      csrf : {
+        enable: false,
+      }
+    }
   };
+
+ 
+
 
 
   config.sequelize = {
@@ -38,4 +48,6 @@ module.exports = appInfo => {
     ...config,
     ...userConfig,
   };
+
+
 };
