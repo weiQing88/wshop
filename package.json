@@ -7,6 +7,8 @@
     "declarations": true
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto-js": "^3.1.9-1",
     "egg": "^2.15.1",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.2.0",

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('wshop_admin', {
+    return queryInterface.createTable('wshop_adminx', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,11 +13,18 @@ module.exports = {
         allowNull: false,
         defaultValue: '\'\''
       },
+
+      mobile : {
+        type: Sequelize.STRING(60),
+        allowNull: false,
+      },
+
       password: {
         type: Sequelize.STRING(255),
         allowNull: false,
         defaultValue: '\'\''
       },
+
       password_salt: {
         type: Sequelize.STRING(255),
         allowNull: true,
@@ -25,22 +32,22 @@ module.exports = {
       },
       last_login_ip: {
         type: Sequelize.STRING(60),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '\'\''
       },
       last_login_time: {
         type: Sequelize.INTEGER(11),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '0'
       },
       add_time: {
         type: Sequelize.INTEGER(11),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '0'
       },
       update_time: {
         type: Sequelize.INTEGER(11),
-        allowNull: false,
+        allowNull: true,
         defaultValue: '0'
       },
       avatar: {
@@ -48,10 +55,13 @@ module.exports = {
         allowNull: false,
         defaultValue: '\'\''
       },
-      admin_role_id: {
-        type: Sequelize.INTEGER(11),
+      email : {
+        type: Sequelize.STRING(60),
         allowNull: false,
-        defaultValue: '0'
+      },
+      admin_role: {
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
