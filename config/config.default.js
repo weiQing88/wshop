@@ -22,6 +22,10 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
+      statuscode: {
+          failure : 406,
+          success : 200
+      },
       myAppName: 'wshop',
       security : {
       domainWhiteList : ['127.0.0.1:8000'],

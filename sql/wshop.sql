@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 14/11/2019 17:42:23
+ Date: 15/11/2019 18:03:27
 */
 
 SET NAMES utf8mb4;
@@ -73,23 +73,31 @@ CREATE TABLE `wshop_address`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `wshop_admin`;
 CREATE TABLE `wshop_admin`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '\'\'',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '\'\'',
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'\'',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'\'',
   `password_salt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'\'',
   `last_login_ip` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'\'',
   `last_login_time` int(11) NULL DEFAULT 0,
-  `add_time` int(11) NULL DEFAULT 0,
+  `add_time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0',
   `update_time` int(11) NULL DEFAULT 0,
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '\'\'',
-  `admin_role` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `createdAt` datetime(0) NOT NULL,
-  `updatedAt` datetime(0) NOT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'\'',
+  `admin_role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `createdAt` datetime(0) NULL DEFAULT NULL,
+  `updatedAt` datetime(0) NULL DEFAULT NULL,
   `email` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `mobile` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `mobile` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of wshop_admin
+-- ----------------------------
+INSERT INTO `wshop_admin` VALUES (10, 'wx1988', '$2a$12$DCPOLEYzoHUZ6Yczd7gJHOcwB0VUR/60S02tSOPuFmiMrUk7YrjA6', '\'\'', '127.0.0.1', 0, '2019-11-15 15:53:54', 0, '\'\'', '[\"user\"]', NULL, NULL, '413307928@qq.com', '13641479847', '1191015155354661');
+INSERT INTO `wshop_admin` VALUES (11, 'wx1988', '$2a$12$hAfwkYfWBxtSs1wAt7Cme.DVFk1HCfyKPG3XWBneypDGsDKKR4O2C', '\'\'', '127.0.0.1', 0, '2019-11-15 16:17:5', 0, '\'\'', '[\"user\"]', NULL, NULL, '413307928@qq.com', '13641479854', '119101516175373');
+INSERT INTO `wshop_admin` VALUES (12, 'pengjianwei@wow-trend.com', '$2a$12$027Uh9GB78UV9KT/xlaiReBM2alr0RTA.0pUbkBLWsvxYY0iCk/1i', '\'\'', '127.0.0.1', 0, '2019-11-15 16:22:12', 0, '\'\'', '[\"user\"]', NULL, NULL, '413307928@qq.com', '13645478954', '1191015162212636');
+INSERT INTO `wshop_admin` VALUES (13, 'wx1988123123', '$2a$12$ejEx7qzzyQJCrdQrjegepuy8YNlFePAe.tzmJXMdtMD5iED7ACZQW', '\'\'', '127.0.0.1', 0, '2019-11-15 16:24:43', 0, '\'\'', '[\"user\"]', NULL, NULL, '413307928@qq.com', '13641479587', '1191015162443729');
 
 -- ----------------------------
 -- Table structure for wshop_admin_user

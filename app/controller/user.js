@@ -5,13 +5,8 @@ const Controller = require('egg').Controller;
 class UserController extends Controller {
      async login (){
         const { ctx, service, config, logger, app  } = this;
-
           const paramRule = {
                captcha : {
-                   type : 'string',
-                   required: true,
-               },
-               name : {
                    type : 'string',
                    required: true,
                },
@@ -22,32 +17,19 @@ class UserController extends Controller {
                remember : {
                      type: 'string',
                      required : false,
+               },
+               mobile : {
+                    required : true,
+                    type : 'string'
                }
               
           };
 
           ctx.validate( paramRule );
-
-          // 把用户数据保存到 cookies 和 session中【 redis 】
-
-
-           console.log( 'ctx.request.body ',  ctx.util.secret( ctx.request.body.password, true )  );
-
-
-          //  ctx.request.body 获取 post 参数
-
-         //  let res = await service.user.login( ctx.request.body  );
-
-          // 设置响应类型
+         // 设置响应类型
           //  ctx.type = 'text/plain; charset=utf-8'; or ctx.set('Content-Type', 'text/html')
-
-           ctx.body = {
-               state_code : 200,
-               message : 'success',
-            //    data : ctx.request.body,
-            //    session: ctx.session.login_code,
-            //    captchaExpire : ctx.cookies.get('captchaExpire'),
-           };
+          //  ctx.request.body 获取 post 参数
+           ctx.body = await service.user.login( ctx.request.body  );
            ctx.status = 200;
       }
 
@@ -85,6 +67,9 @@ class UserController extends Controller {
                 ctx.session.register_mcode  = res.RemainPoint;
           }
 
+        //  console.log('mcaptcha controller res', res)
+ 
+
          ctx.body = {
                state_code : 200,
                message : 'ok',
@@ -114,16 +99,11 @@ class UserController extends Controller {
                     },
                     email : {
                         type : 'email'
-                    }
+                    },
+                  // avatar : { }
                 });
 
-            let res = await service.user.register( ctx.request.body  );
-
-            ctx.body = {
-                  state_code : 200,
-                  message : '注册成功',
-                  data : res
-            };
+           ctx.body = await service.user.register( ctx.request.body  );
            ctx.status = 200;
 
     }
