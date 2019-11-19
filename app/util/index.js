@@ -83,7 +83,7 @@ function checkType(target, hook = undefined) {
 module.exports = {
     secretkey : 'wshop_201911141230034_5459',
     //加/解密
-    secret( string, operation = false ){
+    secret( string, operation = 'encrypt' ){
             var res = ''; 
             if( operation ){
                 res = CryptoJS.AES.decrypt( string , this.secretkey ).toString(CryptoJS.enc.Utf8);
@@ -127,7 +127,7 @@ module.exports = {
       },
 
 
-        // 类型验证; 空值、 undefined、 null都会返回 false。 【object、 string、 number、 boolean、 空值、 undefined、 null】
+  // 类型验证; 空值、 undefined、 null都会返回 false。 【object、 string、 number、 boolean、 空值、 undefined、 null】
   isValid(target) {
     return checkType(target);
   },

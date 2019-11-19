@@ -31,7 +31,7 @@ class UserController extends Controller {
           // 把用户数据保存到 cookies 和 session中【 redis 】
 
 
-           console.log( 'ctx.request.body ',  ctx.util.secret( ctx.request.body.password, true )  );
+           console.log( 'ctx.request.body ',  ctx.util.secret( ctx.request.body.password, 'decrypt' )  );
 
 
           //  ctx.request.body 获取 post 参数
@@ -69,7 +69,7 @@ class UserController extends Controller {
            }
            ctx.status = 200;
           // ctx.type = 'text/xml';
-          // 
+          
             
       }
 
