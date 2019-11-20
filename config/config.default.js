@@ -22,6 +22,21 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
+      // session : {
+      //   renew: true,
+      // },
+      multipart : {
+         fileSize: '50mb',
+         mode: 'stream',
+         fileExtensions: ['.xls', '.txt'], 
+      },
+      jwt : {
+        secret : 'wshop_201911141230034_5459'
+      },
+      statuscode: {
+          failure : 406,
+          success : 200
+      },
       myAppName: 'wshop',
       security : {
       domainWhiteList : ['127.0.0.1:8000'],

@@ -20,14 +20,14 @@ module.exports = app => {
 		allowNull: false,
 	},
      	username: {
-			type: STRING(10),
+			type: STRING(255),
 			allowNull: false,
-			defaultValue: '\'\''
+
 		},
 		password: {
 			type: STRING(255),
 			allowNull: false,
-			defaultValue: '\'\''
+	
 		},
 		password_salt: {
 			type: STRING(255),
@@ -36,27 +36,23 @@ module.exports = app => {
 		last_login_ip: {
 			type: STRING(60),
 			allowNull: true,
-			defaultValue: '\'\''
+
 		},
 		last_login_time: {
 			type: INTEGER(11),
 			allowNull: true,
-			defaultValue: '0'
 		},
 		add_time: {
-			type: INTEGER(11),
+			type: STRING(255),
 			allowNull: true,
-			defaultValue: '0'
 		},
 		update_time: {
 			type: INTEGER(11),
 			allowNull: true,
-			defaultValue: '0'
 		},
 		avatar: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
 		admin_role: {
 			type: TEXT,
@@ -65,16 +61,9 @@ module.exports = app => {
 		email : {
 			type: STRING(60),
 			allowNull: false,
-		},
-		createdAt: {
-			type: DATE,
-			allowNull: false
-		},
-		updatedAt: {
-			type: DATE,
-			allowNull: false
 		}
   }, {
+	timestamps: false,
     tableName: 'wshop_admin'
   });
 

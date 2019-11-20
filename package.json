@@ -7,14 +7,18 @@
     "declarations": true
   },
   "dependencies": {
+    "await-stream-ready": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "crypto-js": "^3.1.9-1",
+    "dayjs": "^1.8.17",
     "egg": "^2.15.1",
+    "egg-jwt": "^3.1.6",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.2.0",
     "egg-validate": "^2.0.2",
     "ms": "^2.1.2",
     "mysql2": "^2.0.0",
+    "stream-wormhole": "^1.1.0",
     "svg-captcha": "^1.4.0"
   },
   "devDependencies": {

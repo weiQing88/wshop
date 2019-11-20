@@ -94,6 +94,7 @@ module.exports = {
             }
             return res
         },
+        
       // 用时间创建唯一id
      uidGenerator(){ 
             // var uid = Math.floor(new Date().valueOf() * Math.random()
@@ -180,5 +181,6 @@ module.exports = {
           }
       }
 
+  
 
 }
