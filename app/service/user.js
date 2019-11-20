@@ -3,9 +3,12 @@ const ms = require('ms');
 const fs = require('fs');
 const path = require('path');
 class UserService extends Service{
-       async logout( param ){
+       async logout(){
           let { ctx, app, config, logger, service } = this;
+             let param = ctx.request.body;
+
               console.log( 'ctx.session.user', ctx.session.user )
+
              if( param.mobile == ctx.session.user.mobile && param.user_id == ctx.session.user.user_id ){
                  //清除 session 
                  ctx.session.user = null;
@@ -21,7 +24,8 @@ class UserService extends Service{
              }
        }
 
-       async login( param ){
+
+       async login(){
               let { ctx, app, config, logger, service } = this;
               let result = {};
               /**
@@ -30,24 +34,43 @@ class UserService extends Service{
                *  3、jwt生成加密token
                *  4、session保存用户信息；【 保存本地 session 或保存到redis 】
                */
-          let {  mobile, password, remember } = param;
+          let {  mobile, password, remember, captcha } = ctx.request.body;
             if( ctx.cookies.get('captchaExpire') ){ 
-                 if( param.captcha == ctx.session.login_code ){
+                 if( captcha == ctx.session.login_code ){
                             let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
                             if( ctx.util.isValid( res ) ){
                                    let bool = ctx.util.tocheck(  ctx.util.secret( password, 'decrypt' ),  res.dataValues.password );
                                    if( bool ){
                                           let { username, mobile, avatar, admin_role, user_id } = res.dataValues;
                                           // 生成token
-                                          result.token = app.jwt.sign({  username,mobile  }, app.config.jwt.secret );
-                                          result.userinfo = {username, mobile, avatar, admin_role : JSON.parse( admin_role ), user_id };
-                                          result.status_code = config.statuscode.success;
-                                          result.message = '登录成功';
-                                          // 保持已登录用户信息到 session
-                                          console.log('login ',  { username, mobile, user_id } )
-                                          ctx.session.user = { username, mobile, user_id };
+                                          let token = app.jwt.sign({ 
+                                                        username,mobile, 
+                                                        exp: remember == '1' ? ms('30d') : ms('1d'),
+                                                     },
+                                                    app.config.jwt.secret );
+                                                 result.token = token
+                                                 result.userinfo = {username, mobile, avatar, admin_role : JSON.parse( admin_role ), user_id };
+                                                 result.status_code = config.statuscode.success;
+                                                 result.message = '登录成功';
+                                           //保存到客户端浏览器的cookie中
+                                           ctx.cookies.set('wshopLoginToken', token,{
+                                                 maxAge:  remember == '1' ? ms('30d') : ms('1d'),
+                                                 path: '/',
+                                                 domain: 'localhost',
+                                                 httpOnly: false,
+                                                 signed: false,
+                                             });
+                                             ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
+                                                 maxAge:  remember == '1' ? ms('30d') : ms('1d'),
+                                                 path: '/',
+                                                 domain: 'localhost',
+                                                 httpOnly: false,
+                                                 signed: false,
+                                             });
+                                          // 保存已登录用户信息到 session
+                                           ctx.session.user = { username, mobile, user_id };
                                           // 如果用户勾选了 `记住我`，设置 30 天的过期时间
-                                          if( remember == '1' ) ctx.session.maxAge = ms('30d');
+                                           ctx.session.maxAge = remember == '1' ? ms('30d') : ms('1d');
 
                                    }else{
                                           result.status_code = config.statuscode.failure;
@@ -81,9 +104,7 @@ class UserService extends Service{
        async register(){
          var { ctx, app, config, logger, service } = this,
               result = {},
-              param = {},
-              ctype = 'normal',
-              stream;
+              param = {};
 
                 /**
                  *  1、验证是否有重复手机号  ==> ok
@@ -95,25 +116,55 @@ class UserService extends Service{
                  * 
               */
 
-
-
-            
-
-
-
-
               console.log('---------------------start------------------------' );
-            
               console.log('--------------------end-------------------------' );
-       
-             if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+
+             if( ctx.util.isValid( ctx.request.body ) ){ // 无头像上传
                     param = ctx.request.body;
              }else{
-                    stream = await ctx.getFileStream();
-                    param = stream.fields;
-                    ctype = 'form-data';
-                 console.log('stream service',  stream )
+                     // 上传头像
+                var rst = await service.common.uploadFile('avatar');
+                     if( rst.state ){
+                        param = rst.fields;
+                        param.avatar = rst.url;
+                     }else{
+                          return {
+                            status_code : config.statuscode.failure,
+                            message : '头像上传失败'
+                          }  
+                     }
              }
+
+               // 校验参数
+               try{
+                      ctx.validate({
+                                          mobile : {
+                                          required : true,
+                                          type : 'string'
+                                          },
+                                          username : {
+                                          required : true,
+                                          type : 'string'
+                                          },
+                                          password : {
+                                          required : true,
+                                          type : 'string'
+                                          },
+                                          captcha : {
+                                          required : true,
+                                          type : 'string'
+                                          },
+                                          email : {
+                                          type : 'email'
+                                          }
+                                   }, param );
+                    }catch( error ){
+                            logger.warn( error ); 
+                      return {
+                              state_code : config.statuscode.failure,
+                              message : '参数错误'
+                        }      
+            }
 
 
             // 如果短信验证码没过期
@@ -125,12 +176,6 @@ class UserService extends Service{
                             param.admin_role = JSON.stringify( ['user'] );
                             param.password = ctx.util.tohash(ctx.util.secret( param.password, 'decrypt' ));  
 
-                         if( ctype == 'form-data' ){ // 上传文件
-
-                              console.log( 'service.common', service.common )
-                                 
-                         }
-                         
                         let user =  await ctx.sql('WshopAdmin','findOne', {
                                                  where : { mobile : param.mobile,username : param.username }
                                           });   

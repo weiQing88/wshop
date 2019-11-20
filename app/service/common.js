@@ -46,19 +46,19 @@ class CommonService extends Service{
     // 上传多个文件参考地址 https://github.com/eggjs/examples/blob/master/multipart-file-mode/app/controller/multiple.js
    async uploadFile( category = '' ){
       let { ctx, app, config, logger, service } = this;
-        const stream = await ctx.getFileStream();
+          const stream = await ctx.getFileStream();
          // 上传目录
-        const basePath = path.resolve( __dirname, '..', '/public/uploads');
-        const filename = `${Date.now()}${ Number.parseInt( Math.random() * 1000 )}
-                ${ path.extname( stream.filename ).toLocaleLowerCase() }`;
-        const dirname = dayjs(Date.now()).format('YYYY/MM/DD');
+        const basePath = 'app/public/uploads';
+         // *******!!!名字不可换行!!!****
+        const filename = `${Date.now()}${ Number.parseInt( Math.random() * 1000 )}${ path.extname( stream.filename ).toLocaleLowerCase() }`;
+        const dirname = dayjs(Date.now()).format('YYYY-MM-DD');
         // 创建文件夹
         const mkdirsSync = dirname => {
               if( fs.existsSync( dirname ) ) return;
                 fs.mkdirSync( dirname )
         }
         mkdirsSync( path.join( basePath, category, dirname ));
-       const target = path.join( basePath, category, dirname, filename );
+        const target = path.join( basePath, category, dirname, filename );
         // 可写流
        const writestream = fs.createWriteStream( target );
         try{
@@ -66,7 +66,8 @@ class CommonService extends Service{
         }catch( err ){
            // ******* !!消费掉文件流，关闭管道。!!!******
            await sendToWormhole( stream );
-           logger
+           // 打印失败日志
+           logger.warn( err );
            return {
                state : false,
                message : '上传失败'
@@ -79,7 +80,7 @@ class CommonService extends Service{
            state : true,
            message : '上传成功',
            fields : stream.fields,
-           url : path.join('/public/uploads', category, dirname, filename),
+           url : path.join( 'app/public/uploads', category, dirname, filename),
        }
    }
 
@@ -88,3 +89,5 @@ class CommonService extends Service{
 
 
 module.exports = CommonService;
+
+

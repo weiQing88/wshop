@@ -9,84 +9,76 @@ module.exports = app => {
       type: INTEGER
     },
 
-    name: {
+    category_name: {
 			type: STRING(90),
 			allowNull: false,
-			defaultValue: '\'\''
 		},
 		keywords: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
 		front_desc: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
-		parent_id: {
-			type: INTEGER(5).UNSIGNED,
+		category_id: {
+			type: STRING(255),
 			allowNull: false,
-			defaultValue: '0'
 		},
-		sort_order: {
+		category_sort: {
 			type: INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '50'
+			allowNull: true,
+		
 		},
 		show_index: {
 			type: INTEGER(1),
 			allowNull: true,
-			defaultValue: '0'
 		},
 		is_show: {
 			type: INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '1'
+			allowNull: true,
 		},
 		banner_url: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
-		icon_url: {
+		category_icon: {
 			type: STRING(255),
-			allowNull: false
+			allowNull: true,
 		},
 		img_url: {
 			type: STRING(255),
-			allowNull: false
+			allowNull: true,
 		},
 		wap_banner_url: {
 			type: STRING(255),
-			allowNull: false
+			allowNull: true,
 		},
 		level: {
 			type: STRING(255),
-			allowNull: false
+			allowNull: true,
 		},
-		type: {
+		category_type: {
 			type: INTEGER(11),
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		front_name: {
 			type: STRING(255),
-			allowNull: true
+			allowNull: true,
 		},
 		createdAt: {
 			type: DATE,
-			allowNull: false
+			allowNull: true,
 		},
 		updatedAt: {
 			type: DATE,
-			allowNull: false
+			allowNull: true
 		},
 		grade: {
 			type: INTEGER(4),
 			allowNull: true
 		},
-		filter_attr: {
+		category_attrs: {
 			type: INTEGER(6),
 			allowNull: true
 		}
@@ -94,8 +86,12 @@ module.exports = app => {
   }, {
     tableName: 'wshop_category'
   });
-  wshop_category.associate = function(models) {
-    // associations can be defined here
+
+
+   // 参照 ： https://www.jianshu.com/p/078087c69b77
+  wshop_category.associate = function() {
+	 // associations can be defined here
+	 app.model.WshopCategory.hasOne( app.model.WshopCategoryAttrs, { foreignKey : 'category_id' });
   };
   return wshop_category;
 };

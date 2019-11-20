@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
         defaultValue: '\'\''
       },
-      parent_id: {
+      category_id: {
         type: Sequelize.INTEGER(5).UNSIGNED,
         allowNull: false,
         defaultValue: '0'

@@ -3,41 +3,61 @@ const ms = require('ms');
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
-
     async logout(){
         const { ctx, service, config, logger, app  } = this;
-        ctx.body = await service.user.logout( ctx.request.body  );
-        ctx.status = 200;
+        try{
+          ctx.validate({
+               username : { type : 'string', required : true },
+               mobile :{ type : 'string',required : true },
+               avatar :{ type : 'string' },
+               admin_role : { type : 'array' },
+               user_id :{ type : 'string',required : true },
+          }, ctx.request.body );
+
+        }catch( error ){
+          ctx.body = {
+               status_code : config.statuscode.failure,
+                message : '参数错误'
+          }
+           return false;
+        }
+       ctx.body = await service.user.logout();
+         
     }
 
      async login (){
         const { ctx, service, config, logger, app  } = this;
-          const paramRule = {
-               captcha : {
-                   type : 'string',
-                   required: true,
-               },
-               password : {
-                    type : 'string',
-                    required: true,
-               },
-               remember : {
-                     type: 'string',
-                     required : false,
-               },
-               mobile : {
-                    required : true,
-                    type : 'string'
+          try{
+               ctx.validate( {
+                         captcha : {
+                         type : 'string',
+                         required: true,
+                         },
+                         password : {
+                              type : 'string',
+                              required: true,
+                         },
+                         remember : {
+                              type: 'string',
+                              required : false,
+                         },
+                         mobile : {
+                              required : true,
+                              type : 'string'
+                         }
+                    
+                    }, ctx.request.body );
+          }catch( error ){
+               ctx.body = {
+                    status_code : config.statuscode.failure,
+                     message : '参数错误'
                }
-              
-          };
-          ctx.validate( paramRule );
+             return false;
+          }
           // 设置响应类型
           //  ctx.type = 'text/plain; charset=utf-8'; or ctx.set('Content-Type', 'text/html')
           //  ctx.request.body 获取 post 参数
-           ctx.body = await service.user.login( ctx.request.body  );
-           ctx.status = 200;
-
+           ctx.body = await service.user.login();
       }
 
     async captcha(){
@@ -52,11 +72,10 @@ class UserController extends Controller {
                ctx.session.register_code  = cap.text.toLowerCase();
           }
            ctx.body = {
-               state_code : 200,
+               status_code : config.statuscode.success,
                message : 'success',
                data :  cap.svgNode
            }
-           ctx.status = 200;
           // ctx.type = 'text/xml';
           
             
@@ -76,7 +95,8 @@ class UserController extends Controller {
 
         //  console.log('mcaptcha controller res', res)
          ctx.body = {
-               state_code : 200,
+               status_code : config.statuscode.success,
+               test : true,
                message : 'ok',
                data : res,
          }
@@ -84,41 +104,14 @@ class UserController extends Controller {
     }
 
     async register(){
-          const { ctx, service, config, logger, app  } = this;
-
-            // ctx.validate({
-            //             mobile : {
-            //                 required : true,
-            //                 type : 'string'
-            //             },
-            //             username : {
-            //                 required : true,
-            //                 type : 'string'
-            //         },
-            //         password : {
-            //             required : true,
-            //             type : 'string'
-            //         },
-            //         captcha : {
-            //             required : true,
-            //             type : 'string'
-            //         },
-            //         email : {
-            //             type : 'email'
-            //         }
-            //     });
-
-         //  ctx.body = await service.user.register( ctx.request.body  );
-
-          await service.user.register();
-
-           ctx.body = {
-                state_code : 406,
-                message : '暂时无法注册'
-            }
-
-        
-
+        const { ctx, service, config, logger, app  } = this;
+          ctx.body = await service.user.register();
+          
+          // await service.user.register();
+          //  ctx.body = {
+          //       status_code : 200,
+          //       message : '注册成功'
+          //   }
     }
 
 }
