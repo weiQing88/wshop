@@ -11,6 +11,10 @@ module.exports = app => {
             type: INTEGER(8),
             allowNull: true
           },
+          attr_name: {
+            type: STRING(90),
+            allowNull: false,
+          },
           attr_id: {
             type: INTEGER(5),
             allowNull: true

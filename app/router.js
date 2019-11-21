@@ -15,7 +15,13 @@ module.exports = app => {
    router.get('/api/admin/mcaptcha', controller.user.mcaptcha );
 
 
-   router.get('/api/admin/goods/category', controller.goods.category );  // 商品分类
-   router.post('/api/admin/goods/category/create', verifyToken , controller.goods.createCategory );  // 创建商品分类
+   router.get('/api/admin/goods/category', verifyToken, controller.goods.category );  // 商品分类
+   router.post('/api/admin/goods/category/create', verifyToken, controller.goods.editCategory );  // 创建商品分类
+   router.patch('/api/admin/goods/category/edit', verifyToken, controller.goods.editCategory );  // 编辑商品分类
+   router.delete('/api/admin/goods/category/delete', verifyToken, controller.goods.editCategory );  // 删除商品分类
+
+
+   router.get('/api/admin/goods/attrs', verifyToken, controller.goods.attrs );  // 商品属性
+   router.post('/api/admin/goods/attrs/create', verifyToken, controller.goods.editAttrs );  //  创建商品属性
 
 };

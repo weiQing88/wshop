@@ -6,12 +6,22 @@ class UserService extends Service{
        async logout(){
           let { ctx, app, config, logger, service } = this;
              let param = ctx.request.body;
+             let user = ctx.session.user || {};
 
-              console.log( 'ctx.session.user', ctx.session.user )
+              console.log( 'ctx.session.user logout', ctx.session.user );
 
-             if( param.mobile == ctx.session.user.mobile && param.user_id == ctx.session.user.user_id ){
+              return {
+                     status_code : config.statuscode.failure,
+                     message : '退出失败'
+               }
+
+             if( param.mobile == user.mobile && param.user_id == user.user_id ){
+
+              console.log( '-------ctx.session.user--------' )
+
                  //清除 session 
                  ctx.session.user = null;
+
                  return {
                       status_code : config.statuscode.success,
                       message : '成功退出'
@@ -31,8 +41,8 @@ class UserService extends Service{
               /**
                *  1、验证 图片验证码是否过期/一致
                *  2、验证密码、账号/手机号 是否与数据库的一致
-               *  3、jwt生成加密token
-               *  4、session保存用户信息；【 保存本地 session 或保存到redis 】
+               *  3、jwt生成加密token  【 过期时间统一为 1 天 】
+               *  4、session保存用户信息；保存本地 session 或保存到redis 【 过期时间统一为 1 天 】
                */
           let {  mobile, password, remember, captcha } = ctx.request.body;
             if( ctx.cookies.get('captchaExpire') ){ 
@@ -43,12 +53,9 @@ class UserService extends Service{
                                    if( bool ){
                                           let { username, mobile, avatar, admin_role, user_id } = res.dataValues;
                                           // 生成token
-                                          let token = app.jwt.sign({ 
-                                                        username,mobile, 
-                                                        exp: remember == '1' ? ms('30d') : ms('1d'),
-                                                     },
-                                                    app.config.jwt.secret );
-                                                 result.token = token
+                                          let token = app.jwt.sign({ username, mobile, user_id },
+                                                       app.config.jwt.secret, { expiresIn: remember == '1' ? ms('30d') : ms('1d')  });
+                                                 result.token = token;
                                                  result.userinfo = {username, mobile, avatar, admin_role : JSON.parse( admin_role ), user_id };
                                                  result.status_code = config.statuscode.success;
                                                  result.message = '登录成功';

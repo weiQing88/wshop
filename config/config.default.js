@@ -22,9 +22,13 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
-      // session : {
-      //   renew: true,
-      // },
+      session : {
+          key: 'WSHOP_SESS',
+          maxAge: 24 * 3600 * 1000, // 1 天
+          httpOnly: true,
+          encrypt: true,
+        // renew: true,
+      },
       multipart : {
          fileSize: '50mb',
          mode: 'stream',

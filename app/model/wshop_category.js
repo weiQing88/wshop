@@ -79,7 +79,7 @@ module.exports = app => {
 			allowNull: true
 		},
 		category_attrs: {
-			type: INTEGER(6),
+			type: TEXT,
 			allowNull: true
 		}
 
@@ -91,7 +91,10 @@ module.exports = app => {
    // 参照 ： https://www.jianshu.com/p/078087c69b77
   wshop_category.associate = function() {
 	 // associations can be defined here
-	 app.model.WshopCategory.hasOne( app.model.WshopCategoryAttrs, { foreignKey : 'category_id' });
+	 // as 是定义 WshopCategoryAttrs 在返回数据中的别名。
+	 // 只需要在WshopCategory中定义，不需要在WshopCategoryAttrs中定义
+	 // 如 ：WshopCategory.findAll({ include: [ { model : WshopCategoryAttrs, as : 'attrs'  }  ] });
+	 app.model.WshopCategory.hasOne( app.model.WshopCategoryAttrs, { as  : 'attrs', foreignKey : 'category_id' });
   };
   return wshop_category;
 };
