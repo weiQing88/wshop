@@ -53,22 +53,22 @@ class GoodsController extends Controller {
         ctx.body = await service.goods.attrs();
    }
 
+
+
   async editAttrs(){
      let { ctx, service, config, logger, app  } = this;
      let createRule = {};
      let param = ctx.request.body;
      let method = ctx.method.toLocaleLowerCase();
 
-     console.log( 'ctx-body', param );
-
      switch( method ){
-      case 'post' : createRule = { attr_name : 'string', attr_value : 'array' };
-      break;
-      case 'patch' : createRule =  { attr_name : 'string', attr_value : 'array', attr_id : 'string' };
-      break;
-      case 'delete' : createRule = { attr_id : 'string' }, param = ctx.query;
-      break;
-  }
+          case 'post' : createRule = { attr_name : 'string', attr_value : 'array' };
+          break;
+          case 'patch' : createRule =  { attr_name : 'string', attr_value : 'array', attr_id : 'string' };
+          break;
+          case 'delete' : createRule = { attr_id : 'string' }, param = ctx.query;
+          break;
+       }
 
       try{
         ctx.validate(createRule, param )
@@ -81,21 +81,15 @@ class GoodsController extends Controller {
       }
 
 
-    //  switch( method ){
-    //       case 'post' : ctx.body = await service.goods.createAttrs();;
-    //       break;
-    //       case 'patch' :  ctx.body = await service.goods.editAtts();
-    //       break;
-    //       case 'delete' :   ctx.body = await service.goods.deleteAttrs();
-    //       break;
-    //    }
-
-      ctx.body = {
-          status_code : 406,
-          message : 'error'
-      }
+     switch( method ){
+          case 'post' : ctx.body = await service.goods.createAttr();;
+          break;
+          case 'patch' :  ctx.body = await service.goods.editAtt();
+          break;
+          case 'delete' :   ctx.body = await service.goods.deleteAttr();
+          break;
+       }
   }
-
 
 
 

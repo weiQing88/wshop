@@ -84,17 +84,47 @@ module.exports = app => {
 		}
 
   }, {
-    tableName: 'wshop_category'
+	tableName: 'wshop_category',
+	freezeTableName: true,
   });
 
 
-   // 参照 ： https://www.jianshu.com/p/078087c69b77
-  wshop_category.associate = function() {
-	 // associations can be defined here
-	 // as 是定义 WshopCategoryAttrs 在返回数据中的别名。
-	 // 只需要在WshopCategory中定义，不需要在WshopCategoryAttrs中定义
-	 // 如 ：WshopCategory.findAll({ include: [ { model : WshopCategoryAttrs, as : 'attrs'  }  ] });
-	 app.model.WshopCategory.hasOne( app.model.WshopCategoryAttrs, { as  : 'attrs', foreignKey : 'category_id' });
-  };
+
+
+		// 参照 ： https://www.jianshu.com/p/078087c69b77
+		// 以下是一对一关系
+		wshop_category.associate = function() {
+			// associations can be defined here
+			// as 是定义 WshopAttribution 在返回数据中的别名。
+			// 只需要在WshopCategory中定义，不需要在WshopAttribution中定义
+			// 如 ：WshopCategory.findAll({ include: [ { model : WshopAttribution, as : 'attrs'  }  ] });
+			// app.model.WshopCategory.hasOne( app.model.WshopAttribution, { as  : 'attrs', foreignKey : 'category_id' });
+
+			// 以下是多对多关系，使用belongsToMany()
+				app.model.WshopCategory.belongsToMany( app.model.WshopAttribution,{
+					// as : 'attrs',
+					through : {
+						model : app.model.WshopCategoryAttrs,
+					},
+					foreignKey : 'category_id',
+					otherKey : 'attr_id',
+				});
+
+	   };
+
+
+
   return wshop_category;
 };
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,35 +1,38 @@
-/* jshint indent: 2 */
+'use strict';
 module.exports = app => {
-   const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
+  const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = app.Sequelize;
   const wshop_category_attrs = app.model.define('wshop_category_attrs', {
-          id: {
-            type: INTEGER(10).UNSIGNED,
+      id: {
             allowNull: false,
-            primaryKey: true
+            autoIncrement: true,
+            primaryKey: true,
+            type: INTEGER
+            },
+	   	category_id: {
+            type: STRING(255),
+                  allowNull: false,
+                //  primaryKey: true
           },
-          category_id: {
-            type: INTEGER(8),
-            allowNull: true
-          },
-          attr_name: {
-            type: STRING(90),
+         attr_id: {
+		      	type: STRING(255),
             allowNull: false,
-          },
-          attr_id: {
-            type: INTEGER(5),
-            allowNull: true
-          },
-          attr_value: {
-            type: TEXT,
-            allowNull: false
-          }
-        }, {
-          tableName: 'wshop_category_attrs'
-        });
+           // primaryKey: true
+        },
 
-        wshop_category_attrs.associate = function() {
-          // associations can be defined here
-          app.model.WshopCategoryAttrs.belongsTo( app.model.WshopCategory, { foreignKey : 'category_id', targetKey : 'id' });
-      };
-    return wshop_category_attrs;
-}
+        createdAt: {
+			type: DATE,
+			allowNull: true,
+		},
+		updatedAt: {
+			type: DATE,
+			allowNull: true
+    },
+    
+  }, {
+    tableName: 'wshop_category_attrs',
+   // timestamps: false,
+  });
+
+  wshop_category_attrs.associate = function() {};
+  return wshop_category_attrs;
+};

@@ -23,5 +23,8 @@ module.exports = app => {
 
    router.get('/api/admin/goods/attrs', verifyToken, controller.goods.attrs );  // 商品属性
    router.post('/api/admin/goods/attrs/create', verifyToken, controller.goods.editAttrs );  //  创建商品属性
+   router.patch('/api/admin/goods/attrs/edit', verifyToken, controller.goods.editAttrs );  // 编辑商品属性
+   router.delete('/api/admin/goods/attrs/delete', verifyToken, controller.goods.editAttrs );  // 删除商品属性
+
 
 };
