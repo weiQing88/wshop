@@ -2,6 +2,26 @@ const Service = require('egg').Service;
 
 
 class GoodsService extends Service{
+
+     async fetGoods(){
+         let { ctx, app, config, logger, service } = this;
+            return {
+                status_code : config.statuscode.success,
+                 message : 'ok',
+                 data : []
+            }   
+     }
+
+     async createGoods(){
+          let { ctx, app, config, logger, service } = this;
+          return {
+               status_code : 406,
+               message : '暂时为支持创建'
+          }
+     }
+
+
+    
        async createCategory(){
               let { ctx, app, config, logger, service } = this;
               let result = {}

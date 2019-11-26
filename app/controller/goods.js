@@ -8,6 +8,30 @@ class GoodsController extends Controller {
         ctx.body = 'hi, egg';
   }
 
+
+  async goodsList(){
+       const { ctx, service, config, logger, app  } = this;
+       ctx.body =  await service.goods.fetGoods();
+  }
+
+  async editGoods(){
+      const { ctx, service, config, logger, app  } = this;
+          let createRule = {};
+         let method = ctx.method.toLocaleLowerCase();
+
+             console.log( 'ctx.request.body---------', ctx.request.body );
+
+
+         switch( method ){
+             case 'post' :  ctx.body =  await service.goods.createGoods();
+             break;
+         }
+
+
+
+  }
+
+
   async category(){
      const { ctx, service, config, logger, app  } = this;
        ctx.body =  await service.goods.category();

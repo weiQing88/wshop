@@ -9,39 +9,36 @@ module.exports = app => {
       type: INTEGER
     },
     category_id: {
-			type: INTEGER(11).UNSIGNED,
+	     	type: STRING(255),
 			allowNull: false,
-			defaultValue: '0'
+		},
+	 goods_id: {
+	     	type: STRING(255),
+			allowNull: false,
 		},
 		goods_sn: {
 			type: STRING(60),
 			allowNull: true,
-			defaultValue: '\'\''
 		},
 		name: {
 			type: STRING(120),
 			allowNull: false,
-			defaultValue: '\'\''
 		},
 		brand_id: {
 			type: INTEGER(11).UNSIGNED,
 			allowNull: true,
-			defaultValue: '0'
 		},
 		goods_number: {
 			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
-			defaultValue: '0'
 		},
 		keywords: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
 		goods_brief: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: '\'\''
+			allowNull: true,
 		},
 		goods_desc: {
 			type: TEXT,
@@ -53,14 +50,12 @@ module.exports = app => {
 			defaultValue: '1'
 		},
 		add_time: {
-			type: INTEGER(10).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: DATE,
+			allowNull: true,
 		},
 		sort_order: {
 			type: INTEGER(4).UNSIGNED,
 			allowNull: true,
-			defaultValue: '100'
 		},
 		is_delete: {
 			type: INTEGER(1).UNSIGNED,
@@ -79,7 +74,7 @@ module.exports = app => {
 		},
 		extra_price: {
 			type: DECIMAL,
-			allowNull: false,
+			allowNull: true,
 			defaultValue: '0'
 		},
 		is_new: {
@@ -99,11 +94,11 @@ module.exports = app => {
 		},
 		promotion_desc: {
 			type: STRING(255),
-			allowNull: false
+			allowNull: true
 		},
 		promote_price: {
 			type: DECIMAL,
-			allowNull: false
+			allowNull: true
 		},
 		is_hot: {
 			type: INTEGER(1).UNSIGNED,
