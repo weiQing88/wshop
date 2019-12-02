@@ -1,6 +1,6 @@
 /* eslint valid-jsdoc: "off" */
-
 'use strict';
+const path = require('path');
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -10,6 +10,7 @@ module.exports = appInfo => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
+
 
   const config = exports = {};
 
@@ -22,7 +23,16 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
-      session : {
+      static : {
+         prefix : '/public',
+         dir : [ path.join( appInfo.baseDir, 'public' ) ], // 多静态文件入口
+      },
+      bodyParser: {
+        jsonLimit: '6mb',
+        formLimit: '6mb',
+        textLimit : '6mb'
+      },
+      session : { 
           key: 'WSHOP_SESS',
           maxAge: 24 * 3600 * 1000, // 1 天
           httpOnly: true,
@@ -30,7 +40,8 @@ module.exports = appInfo => {
         // renew: true,
       },
       multipart : {
-         fileSize: '50mb',
+         fileSize: '50mb', // 最大字段值大小（字节），默认为100kb
+         fields : '30', // 最大非文件字段数，默认为10
          mode: 'stream',
          fileExtensions: ['.xls', '.txt'], 
       },
@@ -50,7 +61,6 @@ module.exports = appInfo => {
     },
   };
 
- 
 
   config.sequelize = {
       dialect: 'mysql',

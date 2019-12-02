@@ -1,24 +1,288 @@
 const Service = require('egg').Service;
 
 
-class GoodsService extends Service{
+var GoodsRule = {
+     category_id : 'string',
+     goods_name : 'string',
+     goods_number: 'string',
+     goods_sn : { required : false, type : 'string' },
+     brand_id : { required : false, type : 'string' },
+     is_on_sale: 'string',
+     is_recommend: 'string',
+     is_hot:'string',
+     goods_brief:'string',
+     category_name : 'string',
+     goods_img : { required : false, type : 'string' },
+     shop_price :'string',
+     market_price : 'string',
+     keywords : { required : false, type : 'string' },
+     counter_price : { required : false, type : 'string', },
+};
 
+
+
+class GoodsService extends Service{
      async fetGoods(){
-         let { ctx, app, config, logger, service } = this;
-            return {
-                status_code : config.statuscode.success,
-                 message : 'ok',
-                 data : []
-            }   
+           let { ctx, app, config, logger, service } = this;
+           let limit = Number(  ctx.query.limit || '10' ),
+               offset = Number(  ctx.query.page || '1' );
+               offset = ( offset - 1 ) * limit;
+
+           try{
+              let { page, type, limit : lmt, ...others } = ctx.query;
+              let on_sale =  await ctx.model.WshopGoods.count({ where : { ...others, is_on_sale : '1' } });
+              let not_sale = await ctx.model.WshopGoods.count({ where : { ...others, is_on_sale : '0' } });
+              let stock = await ctx.model.WshopGoods.count({  where : { ...others, goods_number : [ 0, 1, 2, 3 ] } });
+              let all = await ctx.model.WshopGoods.count();
+
+              let query = { offset, limit, where : {} };
+                 Object.keys( ctx.query ).forEach( key => {
+                      if( key == 'type'){
+                              switch( ctx.query.type ){
+                                  case 'on_sale' : query.where.is_on_sale = '1';
+                                  break;
+                                  case 'not_sale' : query.where.is_on_sale = '0';
+                                  break;
+                                  case 'stock' : query.where.goods_number = [ 0, 1, 2, 3 ];
+                                  break;
+                              }
+                      }else if( key != 'limit' && key != 'page' ){
+                          ctx.util.isValid( ctx.query[key] ) && ( query.where[ key ] = ctx.query[key] );
+                      }
+                 });
+
+               if(! ctx.util.isValid( query.where )) delete query.where;
+                console.log( 'query--- query', query );
+              let { rows = [], count = 0 } = await ctx.model.WshopGoods.findAndCountAll(query);
+              let convertImgs = ( row, key ) => {
+                               if( ctx.util.isValid( row[key]  ) ){
+                                    let imgs =  row[key] .split(',');
+                                        row[key] = [];
+                                        imgs.forEach(( url, index ) => {
+                                             if( url ){
+                                                       let nameArr = url.split('.')[0];
+                                                       nameArr = nameArr.split( `\\` );
+                                                       let  name = nameArr[ nameArr.length - 1 ];
+                                                       row[key][index] = {
+                                                            uid : ~index,
+                                                            url : `${url}`,
+                                                            status : 'uploaded',
+                                                            name
+                                                   } 
+                                             }
+                                    })          
+                              }  
+                         };
+              rows.forEach( row => { convertImgs(row,'goods_img'), convertImgs(row,'promotion_img') });
+
+               return {
+                    status_code : config.statuscode.success,
+                    message : 'ok',
+                    total : count, 
+                    on_sale,
+                    not_sale,
+                    stock,
+                    data : rows, 
+                    all,
+               }
+           }catch( err ){
+                console.log( 'err----------------------->', err );
+                return {
+                    status_code : config.statuscode.failure,
+                    message : '获取失败'
+               }
+           }
+
+          //   return {
+          //       status_code : config.statuscode.success,
+          //        message : 'ok',
+          //        data : []
+          //   }   
      }
 
      async createGoods(){
-          let { ctx, app, config, logger, service } = this;
-          return {
-               status_code : 406,
-               message : '暂时为支持创建'
+          let { ctx, app, config, logger, service } = this,
+               res = {
+                    status_code : config.statuscode.success,
+                     message : '创建成功'
+               },
+               param = {},
+               createRule = GoodsRule;
+          if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+                 param = ctx.request.body;
+          }else{
+                // 上传图片
+               let rst = await service.common.uploadMultipleFile('goods');
+               //  console.log(  '上传图片 rst---', rst )
+               if( rst.state ){
+                    param = rst.fields;
+                    param.goods_img = rst.urls.join(',');
+               }else{
+                  return {
+                          status_code : config.statuscode.failure,
+                          message : '图片上传失败'
+                    }
+               }
+          }
+
+           try{
+               ctx.validate( createRule, param)
+               }catch( err ){
+                    console.log( err );
+                    return {
+                         status_code : config.statuscode.failure,
+                         message : '参数错误',
+                    }
+               }
+
+            param.goods_id = ctx.util.uidGenerator();
+
+          try{
+               await ctx.model.WshopGoods.create( param );
+          }catch( err ){
+                console.log( err );
+                res.status_code = config.statuscode.failure;
+                res.message= '创建失败';
+          }
+          return res;
+        //  return {  status_code : config.statuscode.failure, message : '暂时为支持创建'}
+  }
+
+  async editGoods(){
+     let { ctx, app, config, logger, service } = this,
+          createRule = GoodsRule,
+          param = {},
+          goods_id = '';
+     if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+          param = ctx.request.body;
+          param.hasOwnProperty('goods_img') ? '' : param.goods_img = '';
+       }else{
+               // 上传图片
+               let rst = await service.common.uploadMultipleFile('goods');
+               if( rst.state ){
+                    createRule.goods_id =  'string';
+                    param = rst.fields;
+                    param.goods_img = rst.urls.length ? rst.urls.join(',') : '';
+                    if( param.hasOwnProperty('uploaded_img') ){
+                         param.goods_img = param.uploaded_img +',' + param.goods_img;
+                         delete  param.uploaded_img;
+                    }
+               }else{
+                  return {
+                          status_code : config.statuscode.failure,
+                          message : '图片上传失败'
+                    }
+               }
+       }
+       try{
+          ctx.validate( createRule, param)
+          }catch( err ){
+               console.log( err );
+               return {
+                    status_code : config.statuscode.failure,
+                    message : '参数错误',
+               }
+          }
+
+       if( param.hasOwnProperty('goods_id') ) goods_id = param.goods_id;
+
+          try{
+              await ctx.model.WshopGoods.update( param, { where : {  goods_id } });
+                return {  status_code : config.statuscode.success, message : '编辑成功'}
+          }catch( err ){
+                console.log( err );
+                return {  status_code : config.statuscode.failure, message : '编辑失败'}
+          }
+         
+   }
+
+
+   async editGoodsStatus(){
+      let { ctx, app, config, logger, service } = this;
+      let createRule = {};
+        Object.keys( ctx.request.body ).forEach( key =>{ createRule[key]='string' });
+      let { id, ...others } = ctx.request.body;
+      try{
+         ctx.validate(createRule)
+      }catch(err){
+          return { status_code : config.statuscode.failure, message : '参数错误'  }
+      }
+
+      try{
+          await ctx.model.WshopGoods.update( others, { where : {  goods_id : id } });
+          return {  status_code : config.statuscode.success, message : '编辑成功'}
+      }catch(err){
+          console.log( err );
+          return {  status_code : config.statuscode.failure, message : '编辑失败'}
+      }
+
+
+   }
+
+
+   async setPromotion(){
+     let { ctx, app, config, logger, service } = this;
+     let param = {};
+
+       // 上传图片
+       let rst = await service.common.uploadMultipleFile('promotion');
+
+       if( rst.state ){
+          param = rst.fields;
+          param.promotion_img = rst.urls.length ? rst.urls.join(',') : '';
+          let { promote_start_date, promote_end_date } = param;
+          if(  Date.parse( promote_start_date  ) > Date.parse( promote_end_date  ) ){
+               param.promote_start_date = promote_end_date;
+               param.promote_end_date = promote_start_date;
+          }
+          if( param.hasOwnProperty('uploaded_img') ){
+               param.promotion_img = param.uploaded_img +',' + param.promotion_img;
+               delete  param.uploaded_img;
+          }
+     }else{
+        return {
+                status_code : config.statuscode.failure,
+                message : '图片上传失败'
           }
      }
+
+     try{
+          ctx.validate({
+               promote_price: 'string',
+               is_promote: 'string',
+               promotion_desc: 'string',
+               promote_start_date: 'string',
+               promote_end_date: 'string' ,
+               goods_id : 'string',
+               promotion_img : { required : false, type : 'string' },
+          }, param)
+     }catch(err){
+          console.log( err );
+          return { status_code : config.statuscode.failure, message : '参数错误'  }
+     }
+
+     try{
+           let { goods_id, ...others } = param
+          await ctx.model.WshopGoods.update( others, { where : {  goods_id } });
+          return {  status_code : config.statuscode.success, message : '编辑成功'}
+     }catch(err){
+          return {  status_code : config.statuscode.failure, message : '编辑失败'}
+     }
+
+   }
+
+
+  async deleteGoods(){
+      let { ctx, app, config, logger, service } = this;
+      try{
+          let res = await ctx.model.WshopGoods.destroy({ where : { goods_id : ctx.query.goods_id } });
+           return {  status_code : config.statuscode.success, message : '删除成功'}
+      }catch(err){
+          // logger
+          return {  status_code : config.statuscode.failure, message : '删除失败'}
+      }
+
+  }
 
 
     
@@ -229,7 +493,6 @@ class GoodsService extends Service{
 }
 
 module.exports = GoodsService;
-
 
 
 

@@ -106,12 +106,6 @@ class UserController extends Controller {
     async register(){
         const { ctx, service, config, logger, app  } = this;
           ctx.body = await service.user.register();
-          
-          // await service.user.register();
-          //  ctx.body = {
-          //       status_code : 200,
-          //       message : '注册成功'
-          //   }
     }
 
 }

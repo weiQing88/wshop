@@ -16,21 +16,36 @@ class GoodsController extends Controller {
 
   async editGoods(){
       const { ctx, service, config, logger, app  } = this;
-          let createRule = {};
          let method = ctx.method.toLocaleLowerCase();
-
-             console.log( 'ctx.request.body---------', ctx.request.body );
-
-
          switch( method ){
              case 'post' :  ctx.body =  await service.goods.createGoods();
              break;
+             case 'patch' : ctx.body =  await service.goods.editGoods();
+             break;
          }
 
-
-
+  }
+  
+  async setPromotion(){
+     const { ctx, service, config, logger, app  } = this;
+       ctx.body = await service.goods.setPromotion();
   }
 
+  async editGoodsStatus(){
+     const { ctx, service, config, logger, app  } = this;
+     ctx.body =  await service.goods.editGoodsStatus();
+  }
+
+  async deleteGoods(){
+      const { ctx, service, config, logger, app  } = this;
+      try{
+         ctx.validate({ goods_id : 'string' }, ctx.query )
+      }catch(err){
+          console.log(err)
+          ctx.body = {  status_code : config.statuscode.failure, message : '参数错误' };
+      }
+      ctx.body =  await service.goods.deleteGoods();
+  }
 
   async category(){
      const { ctx, service, config, logger, app  } = this;

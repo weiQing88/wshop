@@ -12,7 +12,7 @@ module.exports = app => {
 	     	type: STRING(255),
 			allowNull: false,
 		},
-	 goods_id: {
+	    goods_id: {
 	     	type: STRING(255),
 			allowNull: false,
 		},
@@ -20,7 +20,11 @@ module.exports = app => {
 			type: STRING(60),
 			allowNull: true,
 		},
-		name: {
+		goods_name: {
+			type: STRING(120),
+			allowNull: false,
+		},
+		category_name: {
 			type: STRING(120),
 			allowNull: false,
 		},
@@ -49,49 +53,52 @@ module.exports = app => {
 			allowNull: false,
 			defaultValue: '1'
 		},
-		add_time: {
-			type: DATE,
-			allowNull: true,
-		},
+
+
 		sort_order: {
 			type: INTEGER(4).UNSIGNED,
 			allowNull: true,
 		},
+
 		is_delete: {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		attribute_category: {
-			type: INTEGER(11).UNSIGNED,
-			allowNull: true,
-			defaultValue: '0'
-		},
-		counter_price: {
-			type: DECIMAL,
+
+		is_recommend : {
+			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		extra_price: {
-			type: DECIMAL,
-			allowNull: true,
-			defaultValue: '0'
-		},
+
 		is_new: {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		retail_price: {
+		goods_img : {
+			  type: STRING(255),
+			  allowNull : true,
+		},
+		promotion_img : {
+			type: STRING(255),
+			allowNull : true,
+	    },
+		counter_price: {
+			type: DECIMAL,
+			allowNull: true,
+		},
+
+		shop_price: {
 			type: DECIMAL,
 			allowNull: false,
-			defaultValue: '0'
 		},
 		market_price: {
 			type: DECIMAL,
 			allowNull: false,
-			defaultValue: '0'
 		},
+
 		promotion_desc: {
 			type: STRING(255),
 			allowNull: true
@@ -100,6 +107,7 @@ module.exports = app => {
 			type: DECIMAL,
 			allowNull: true
 		},
+
 		is_hot: {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,

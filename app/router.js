@@ -16,6 +16,11 @@ module.exports = app => {
 
 
    router.get('/api/admin/goods', verifyToken, controller.goods.goodsList );  // 商品列表
+   router.post('/api/admin/goods/create', verifyToken, controller.goods.editGoods );  // 创建商品
+   router.patch('/api/admin/goods/edit', verifyToken, controller.goods.editGoods );  // 编辑商品
+   router.patch('/api/admin/goods/status', verifyToken, controller.goods.editGoodsStatus );  // 编辑商品状态
+   router.patch('/api/admin/goods/promotion', verifyToken, controller.goods.setPromotion );  // 编辑商品促销
+   router.delete('/api/admin/goods/delete', verifyToken, controller.goods.deleteGoods );  // 删除商品
 
 
    router.get('/api/admin/goods/category', verifyToken, controller.goods.category );  // 商品分类
