@@ -3,11 +3,6 @@
 const Controller = require('egg').Controller;
 
 class GoodsController extends Controller {
-  async index() {
-        const { ctx } = this;
-        ctx.body = 'hi, egg';
-  }
-
 
   async goodsList(){
        const { ctx, service, config, logger, app  } = this;
@@ -46,6 +41,20 @@ class GoodsController extends Controller {
       }
       ctx.body =  await service.goods.deleteGoods();
   }
+
+
+  async bulkedit(){
+   const { ctx, service, config, logger, app  } = this;
+        try{
+            ctx.validate({ goods : 'array', type : 'string' });
+        }catch( err ){
+             console.log( 'err', err );
+             return  { status_code : config.statuscode.failure, message : '参数错误' }
+        }
+       ctx.body =  await service.goods.bulkedit();
+  }
+
+
 
   async category(){
      const { ctx, service, config, logger, app  } = this;

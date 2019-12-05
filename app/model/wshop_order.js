@@ -15,145 +15,144 @@ module.exports = app => {
 			unique: true
 		},
 		user_id: {
-			type: INTEGER(8).UNSIGNED,
+			type: STRING(60),
 			allowNull: false,
-			defaultValue: '0'
+			unique: true
 		},
+		zipcode : {
+			type: STRING(60),
+			allowNull: true,
+		},
+
+		money_paid : {
+			type: DECIMAL,
+			allowNull: true,
+		},
+
 		order_status: {
 			type: INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		shipping_status: {
 			type: INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		pay_status: {
 			type: INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		consignee: {
 			type: STRING(60),
-			allowNull: false,
-			defaultValue: ''
+			allowNull: true,
 		},
 		country: {
-			type: INTEGER(5).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: STRING(255),
+			allowNull: true,
 		},
 		province: {
-			type: INTEGER(5).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: STRING(255),
+			allowNull: true,
 		},
 		city: {
-			type: INTEGER(5).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: STRING(255),
+			allowNull: true,
 		},
 		district: {
-			type: INTEGER(5).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: STRING(255),
+			 allowNull: true,
 		},
 		address: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: ''
+			allowNull: true,
+			// defaultValue: ''
 		},
 		mobile: {
 			type: STRING(60),
-			allowNull: false,
-			defaultValue: ''
+			allowNull: true,
 		},
 		postscript: {
 			type: STRING(255),
-			allowNull: false,
-			defaultValue: ''
+			allowNull: true,
 		},
 		shipping_fee: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		pay_name: {
 			type: STRING(120),
-			allowNull: false,
-			defaultValue: ''
+			allowNull: true,
 		},
 		pay_id: {
 			type: INTEGER(3),
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		actual_price: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		integral: {
 			type: INTEGER(10).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		integral_money: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		order_price: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		goods_price: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		add_time: {
-			type: INTEGER(11).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: DATE,
+			allowNull: true,
+		},
+		end_time: {
+			type: DATE,
+			allowNull: true,
 		},
 		confirm_time: {
-			type: INTEGER(11).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			type: DATE,
+			allowNull: true,
+
 		},
 		pay_time: {
-			type: INTEGER(11).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			 type: DATE,
+			 allowNull: true,
 		},
 		freight_price: {
 			type: INTEGER(10).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		coupon_id: {
 			type: INTEGER(8).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		parent_id: {
 			type: INTEGER(8).UNSIGNED,
-			allowNull: false,
-			defaultValue: '0'
+			allowNull: true,
 		},
 		coupon_price: {
 			type: DECIMAL,
-			allowNull: false,
-			defaultValue: '0'
-		},
-		callback_status: {
-			type: ENUM('true','false'),
 			allowNull: true,
-			defaultValue: 'true'
+			//defaultValue: '0'
 		},
+		order_channel : {
+			type: STRING(20),
+			allowNull: true,
+		},
+		order_type : {
+			type: STRING(60),
+			allowNull: true,
+		},
+		// callback_status: {
+		//   	 type: ENUM('true','false'),
+		// 	 allowNull: true,
+		//     defaultValue: 'true'
+		// },
 		createdAt: {
 			type: DATE,
 			allowNull: false
@@ -165,8 +164,8 @@ module.exports = app => {
   }, {
     tableName: 'wshop_order'
   });
-  wshop_order.associate = function(models) {
-    // associations can be defined here
+  wshop_order.associate = function() {
+   	app.model.WshopOrder.belongsTo( app.model.WshopUser, { foreignKey : 'user_id', targetKey : 'user_id' })
   };
   return wshop_order;
 };

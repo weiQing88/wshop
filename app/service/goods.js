@@ -25,18 +25,23 @@ class GoodsService extends Service{
      async fetGoods(){
            let { ctx, app, config, logger, service } = this;
            let limit = Number(  ctx.query.limit || '10' ),
-               offset = Number(  ctx.query.page || '1' );
+               offset = Number(  ctx.query.page || '1' ),
+               queryKeys = Object.keys( ctx.query ) || [];
                offset = ( offset - 1 ) * limit;
-
+              
            try{
-              let { page, type, limit : lmt, ...others } = ctx.query;
+              let others = {};
+                 queryKeys.forEach( key => {
+                          if(['page', 'type', 'limit'].indexOf( key ) == -1 ){
+                              ctx.util.isValid( ctx.query[key] ) && ( others[key] = ctx.query[key]  );
+                          }
+                  });
               let on_sale =  await ctx.model.WshopGoods.count({ where : { ...others, is_on_sale : '1' } });
               let not_sale = await ctx.model.WshopGoods.count({ where : { ...others, is_on_sale : '0' } });
               let stock = await ctx.model.WshopGoods.count({  where : { ...others, goods_number : [ 0, 1, 2, 3 ] } });
-              let all = await ctx.model.WshopGoods.count();
-
+              let all = await ctx.model.WshopGoods.count({ where : { ...others }  });
               let query = { offset, limit, where : {} };
-                 Object.keys( ctx.query ).forEach( key => {
+                  queryKeys.forEach( key => {
                       if( key == 'type'){
                               switch( ctx.query.type ){
                                   case 'on_sale' : query.where.is_on_sale = '1';
@@ -51,8 +56,7 @@ class GoodsService extends Service{
                       }
                  });
 
-               if(! ctx.util.isValid( query.where )) delete query.where;
-                console.log( 'query--- query', query );
+              if(! ctx.util.isValid( query.where )) delete query.where;
               let { rows = [], count = 0 } = await ctx.model.WshopGoods.findAndCountAll(query);
               let convertImgs = ( row, key ) => {
                                if( ctx.util.isValid( row[key]  ) ){
@@ -73,8 +77,8 @@ class GoodsService extends Service{
                                     })          
                               }  
                          };
-              rows.forEach( row => { convertImgs(row,'goods_img'), convertImgs(row,'promotion_img') });
 
+              rows.forEach( row => { convertImgs(row,'goods_img'), convertImgs(row,'promotion_img') });
                return {
                     status_code : config.statuscode.success,
                     message : 'ok',
@@ -92,13 +96,27 @@ class GoodsService extends Service{
                     message : '获取失败'
                }
            }
-
-          //   return {
-          //       status_code : config.statuscode.success,
-          //        message : 'ok',
-          //        data : []
-          //   }   
      }
+
+
+     async bulkedit(){
+          let { ctx, app, config, logger, service } = this;
+          let { goods, type = 'update' } = ctx.request.body;
+          try{
+                goods.forEach( async g => {
+                     if( type == 'update' ){
+                         await ctx.model.WshopGoods.update( g ,{ where : { id : g.id } });
+                     }else if( type == 'delete' ){
+                         await ctx.model.WshopGoods.destroy({ where : { id : g } });
+                     }
+                });
+                return { status_code : config.statuscode.success,  message : '更新成功' }
+          }catch( err ){
+                 console.log(  'err', err);
+                 return { status_code : config.statuscode.failure,  message : '更新失败' }
+          }
+     }
+
 
      async createGoods(){
           let { ctx, app, config, logger, service } = this,

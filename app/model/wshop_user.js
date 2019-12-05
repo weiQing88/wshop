@@ -7,7 +7,12 @@ module.exports = app => {
       autoIncrement: true,
       primaryKey: true,
       type:INTEGER
-    },
+	},
+	user_id: {
+		type: STRING(255),
+		allowNull: false,
+		unique: true
+	},
     username: {
 			type:STRING(60),
 			allowNull: false
@@ -69,10 +74,12 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
-    tableName: 'wshop_user'
+	tableName: 'wshop_user'
   });
-  wshop_user.associate = function(models) {
-    // associations can be defined here
+  wshop_user.associate = function() {
+	// associations can be defined here
+	// foreginKey为对应的信息表中studentId字段
+	app.model.WshopUser.hasOne( app.model.WshopOrder, { foreignKey : 'user_id' });
   };
   return wshop_user;
 };

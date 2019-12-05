@@ -179,7 +179,52 @@ module.exports = {
                console.error( e )
                return false;
           }
+      },
+  
+      
+deepCopy( obj ){
+  let newObject = {};
+  if( Array.isArray( obj ) || !this.isValid( obj ) ) return newObject;
+  Object.keys(obj).forEach( key => {
+      if( typeof obj[key] == 'object' && obj[key] !== null ){
+           if( obj[key] instanceof Array ){
+             newObject[key] = [];
+             obj[key].forEach(( _obj, index ) =>{
+                 if( typeof _obj == 'object' && _obj !== null  ){
+                       newObject[key][index] = this.deepCopy( _obj );
+                 }else{
+                      newObject[key][index] = _obj;
+                 }   
+             })
+
+           }else{
+             if( typeof obj[key] == 'object' && obj[key] !== null  ){
+                    newObject[key] = this.deepCopy( obj[key] );
+             }else{
+                  newObject[key] = obj[key];
+             }
+         
+           }
+      }else{
+         newObject[key] = obj[key];
       }
+ })
+ return newObject
+},
+
+deepCopyArray( arr ){
+    var newArry = [];
+    if( Array.isArray( arr ) || !this.isValid( arr ) ){
+      arr.forEach( item => {
+          if( Array.isArray( item ) ){
+              newArry.push( this.deepCopyArray( item ) ); 
+          }else{
+              newArry.push( this.deepCopy( item ) ); 
+          }
+      })
+   }
+  return newArry
+}
 
   
 

@@ -20,8 +20,9 @@ module.exports = app => {
    router.patch('/api/admin/goods/edit', verifyToken, controller.goods.editGoods );  // 编辑商品
    router.patch('/api/admin/goods/status', verifyToken, controller.goods.editGoodsStatus );  // 编辑商品状态
    router.patch('/api/admin/goods/promotion', verifyToken, controller.goods.setPromotion );  // 编辑商品促销
+   router.patch('/api/admin/goods/bulkedit', verifyToken, controller.goods.bulkedit );  // 批量编辑商品
    router.delete('/api/admin/goods/delete', verifyToken, controller.goods.deleteGoods );  // 删除商品
-
+  
 
    router.get('/api/admin/goods/category', verifyToken, controller.goods.category );  // 商品分类
    router.post('/api/admin/goods/category/create', verifyToken, controller.goods.editCategory );  // 创建商品分类
@@ -33,6 +34,11 @@ module.exports = app => {
    router.post('/api/admin/goods/attrs/create', verifyToken, controller.goods.editAttrs );  //  创建商品属性
    router.patch('/api/admin/goods/attrs/edit', verifyToken, controller.goods.editAttrs );  // 编辑商品属性
    router.delete('/api/admin/goods/attrs/delete', verifyToken, controller.goods.editAttrs );  // 删除商品属性
+
+
+
+    router.get('/api/admin/order', verifyToken, controller.order.order  );  // 订单
+    router.post('/api/admin/order/edit/', verifyToken, controller.order.edit );  // 编辑订单
 
 
 };
