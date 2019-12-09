@@ -7,7 +7,12 @@ module.exports = app => {
       autoIncrement: true,
       primaryKey: true,
       type: INTEGER
-    },
+	},
+	order_id : {
+		 type : BIGINT,
+		 allowNull: false,
+		 unique: true
+	},
     order_sn: {
 			type: STRING(20),
 			allowNull: false,
@@ -148,6 +153,21 @@ module.exports = app => {
 			type: STRING(60),
 			allowNull: true,
 		},
+
+		logistic_code : {
+			type: STRING(255),
+			allowNull: true,
+		},
+
+		shipper_code : {
+			type: STRING(255),
+			allowNull: true,
+		},
+
+		note : {
+			type: STRING(255),
+			allowNull: true,
+		},
 		// callback_status: {
 		//   	 type: ENUM('true','false'),
 		// 	 allowNull: true,
@@ -162,10 +182,16 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_order'
   });
   wshop_order.associate = function() {
-   	app.model.WshopOrder.belongsTo( app.model.WshopUser, { foreignKey : 'user_id', targetKey : 'user_id' })
+
+	   app.model.WshopOrder.belongsTo( app.model.WshopUser, { foreignKey : 'user_id', targetKey : 'user_id' });
+
+	   app.model.WshopOrder.hasMany( app.model.WshopProduct , {  foreignKey : 'order_id', targetKey : 'order_id' });
+
+
   };
   return wshop_order;
 };

@@ -85,6 +85,7 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_userinfo'
   });
   wshop_userinfo.associate = function(models) {

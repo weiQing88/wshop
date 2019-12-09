@@ -1,161 +1,138 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
+    const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = Sequelize;
     return queryInterface.createTable('wshop_goods', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-         comment : '-',
+        type: INTEGER
       },
       category_id: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
+           type: STRING(255),
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+      },
+        goods_id: {
+           type: STRING(255),
+        allowNull: false,
       },
       goods_sn: {
-        type: Sequelize.STRING(60),
+        type: STRING(60),
         allowNull: true,
-        defaultValue: '\'\'',
-         comment : '-',
       },
-      name: {
-        type: Sequelize.STRING(120),
+      goods_name: {
+        type: STRING(120),
         allowNull: false,
-        defaultValue: '\'\'',
-         comment : '-',
+      },
+      category_name: {
+        type: STRING(120),
+        allowNull: false,
       },
       brand_id: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
+        type: INTEGER(11).UNSIGNED,
         allowNull: true,
-        defaultValue: '0',
-         comment : '-',
       },
       goods_number: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
+        type: INTEGER(8).UNSIGNED,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
       },
       keywords: {
-        type: Sequelize.STRING(255),
-        allowNull: false,
-        defaultValue: '\'\'',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       goods_brief: {
-        type: Sequelize.STRING(255),
-        allowNull: false,
-        defaultValue: '\'\'',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       goods_desc: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-         comment : '-',
+        type: TEXT,
+        allowNull: true
       },
       is_on_sale: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
+        type: INTEGER(1).UNSIGNED,
         allowNull: false,
-        defaultValue: '1',
-         comment : '-',
+        defaultValue: '1'
       },
-      add_time: {
-        type: Sequelize.INTEGER(10).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
-      },
+  
+  
       sort_order: {
-        type: Sequelize.INTEGER(4).UNSIGNED,
+        type: INTEGER(4).UNSIGNED,
         allowNull: true,
-        defaultValue: '100',
-         comment : '-',
       },
+  
       is_delete: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
+        type: INTEGER(1).UNSIGNED,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        defaultValue: '0'
       },
-      attribute_category: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
-        allowNull: true,
-        defaultValue: '0',
-         comment : '-',
-      },
-      counter_price: {
-        type: Sequelize.DECIMAL,
+  
+      is_recommend : {
+        type: INTEGER(1).UNSIGNED,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        defaultValue: '0'
       },
-      extra_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
-      },
+  
       is_new: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
+        type: INTEGER(1).UNSIGNED,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        defaultValue: '0'
       },
-      retail_price: {
-        type: Sequelize.DECIMAL,
+      goods_img : {
+          type: STRING(255),
+          allowNull : true,
+      },
+      promotion_img : {
+        type: STRING(255),
+        allowNull : true,
+        },
+      counter_price: {
+        type: DECIMAL,
+        allowNull: true,
+      },
+  
+      shop_price: {
+        type: DECIMAL,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
       },
       market_price: {
-        type: Sequelize.DECIMAL,
+        type: DECIMAL,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
       },
+  
       promotion_desc: {
-        type: Sequelize.STRING(255),
-        allowNull: false,
-         comment : '-',
+        type: STRING(255),
+        allowNull: true
       },
       promote_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true
       },
+  
       is_hot: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
+        type: INTEGER(1).UNSIGNED,
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        defaultValue: '0'
       },
       createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        
+        type: DATE,
+        allowNull: false
       },
       updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-       
+        type: DATE,
+        allowNull: false
       },
       is_promote: {
-        type: Sequelize.INTEGER(1),
-        allowNull: true,
-         comment : '-',
+        type: INTEGER(1),
+        allowNull: true
       },
       promote_start_date: {
-        type: Sequelize.DATE,
-        allowNull: true,
-         comment : '-',
+        type: DATE,
+        allowNull: true
       },
       promote_end_date: {
-        type: Sequelize.DATE,
-        allowNull: true,
-         comment : '-',
+        type: DATE,
+        allowNull: true
       }
     });
   },

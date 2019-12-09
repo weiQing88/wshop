@@ -21,6 +21,9 @@ module.exports = appInfo => {
   // add your middleware config here
   config.middleware = [ ];
 
+   // 快递鸟API测试地址：
+  config.kdnApi = 'http://sandboxapi.kdniao.com:8080/kdniaosandbox/gateway/exterfaceInvoke.json';
+
   // add your user config here
   const userConfig = {
       static : {

@@ -79,6 +79,7 @@ module.exports = app => {
 			allowNull: true
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_food'
   });
   wshop_food.associate = function(models) {

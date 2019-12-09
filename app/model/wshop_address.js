@@ -61,6 +61,7 @@ module.exports = app => {
       allowNull: true
     }
   }, {
+    freezeTableName: true,
     tableName: 'wshop_address'
   });
 

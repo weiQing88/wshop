@@ -47,6 +47,7 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_keywords'
   });
   wshop_keywords.associate = function(models) {

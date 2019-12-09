@@ -33,6 +33,7 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_pay_log'
   });
   wshop_pay_log.associate = function(models) {

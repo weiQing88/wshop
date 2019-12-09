@@ -7,46 +7,59 @@ module.exports = app => {
       autoIncrement: true,
       primaryKey: true,
       type: INTEGER
-    },
+	},
+	user_id : {
+		type : BIGINT,
+		allowNull: false,
+	},
+	goods_name : {
+		type: STRING(255),
+		allowNull: false,
+	},
     goods_id: {
-			type: INTEGER(8).UNSIGNED,
+	       type : BIGINT,
 			allowNull: false,
-			defaultValue: '0'
-		},
-		goods_specification_ids: {
-			type: STRING(50),
-			allowNull: false,
-			defaultValue: ''
 		},
 		goods_sn: {
 			type: STRING(60),
 			allowNull: false,
-			defaultValue: ''
+		},
+		shop_price: {
+			type: DECIMAL(10),
+			allowNull: false,
+		},
+		order_id : {
+			type: STRING(255),
+			 allowNull: false,
 		},
 		goods_number: {
 			type: INTEGER(8).UNSIGNED,
 			allowNull: false,
-			defaultValue: '0'
 		},
-		retail_price: {
-			type: DECIMAL,
+		shipping_status : {
+			type: INTEGER(1).UNSIGNED,
+			allowNull: true,
+		},
+		order_uid : {
+			type: STRING(255),
 			allowNull: false,
-			defaultValue: '0'
 		},
 		createdAt: {
 			type: DATE,
-			allowNull: false
+			allowNull: true
 		},
 		updatedAt: {
 			type: DATE,
-			allowNull: false
+			allowNull: true
 		}
 
   }, {
+	freezeTableName: true,
     tableName: 'wshop_product'
   });
   wshop_product.associate = function(models) {
-    // associations can be defined here
+	 // associations can be defined here
+	 app.model.WshopProduct.belongsTo( app.model.WshopOrder, { foreignKey : 'order_id', targetKey : 'order_id' });
   };
   return wshop_product;
 };

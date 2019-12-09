@@ -34,6 +34,7 @@ module.exports = app => {
     }
     
   }, {
+	freezeTableName: true,
     tableName: 'wshop_payment'
   });
   wshop_region.associate = function(models) {

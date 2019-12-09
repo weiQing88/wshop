@@ -38,6 +38,7 @@ module.exports = app => {
     }
     
   }, {
+	freezeTableName: true,
     tableName: 'wshop_collect'
   });
   wshop_collect.associate = function(models) {

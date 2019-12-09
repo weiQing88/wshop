@@ -32,6 +32,7 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_comment_picture'
   });
   wshop_comment_picture.associate = function(models) {

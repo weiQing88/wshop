@@ -9,11 +9,11 @@ module.exports = app => {
       type: INTEGER
     },
     category_id: {
-	     	type: STRING(255),
+	     	type: BIGINT,
 			allowNull: false,
 		},
 	    goods_id: {
-	     	type: STRING(255),
+	     	type: BIGINT,
 			allowNull: false,
 		},
 		goods_sn: {
@@ -96,7 +96,7 @@ module.exports = app => {
 		},
 		market_price: {
 			type: DECIMAL,
-			allowNull: false,
+			allowNull: true,
 		},
 
 		promotion_desc: {
@@ -134,6 +134,7 @@ module.exports = app => {
 			allowNull: true
 		}
   }, {
+	freezeTableName: true,
     tableName: 'wshop_goods'
   });
   wshop_goods.associate = function(models) {

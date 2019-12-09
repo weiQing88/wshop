@@ -29,6 +29,7 @@ module.exports = app => {
     },
     
   }, {
+    freezeTableName: true,
     tableName: 'wshop_category_attrs',
    // timestamps: false,
   });

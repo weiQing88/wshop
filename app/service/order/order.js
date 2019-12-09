@@ -79,12 +79,95 @@ class OrderService extends Service{
         return { status_code : config.statuscode.failure, message : '编辑失败'  }  
     }
 
-    return {
-        status_code : config.statuscode.failure,
-        message : '编辑失败'  
-    }
   }
 
+  async detail(){
+    const { ctx, service, config, logger, app  } = this;
+        try{
+          let res = await ctx.model.WshopOrder.findOne({  where : ctx.query });
+          let goods = await ctx.model.WshopProduct.findAll({ where : { order_id : ctx.query.id } });
+
+        //   let goods = await ctx.model.query(`SELECT order_id, 
+        //                             shop_price, goods_number, goods_name, 
+        //                             SUM( shop_price ) as sum from wshop_product WHERE order_id = ${ ctx.query.order_id } GROUP BY 'order_id'`);
+            // （1）发货/退货， 
+            // （2）支付/退款
+
+            return { 
+                    status_code : config.statuscode.success,
+                    message : 'ok',
+                    data : {
+                        basic  :  res.dataValues || {}, 
+                        goodsInfo : goods, //  goods[0] || [],
+                        payment : [],
+                        delivery : [],
+                        note : ctx.util.isValid( res.dataValues ) ? res.dataValues.note : '',
+                    }
+                 }  
+        }catch(err){
+            console.log('err-----000--0',err);
+            return { status_code : config.statuscode.failure, message : '获取失败'  }  
+        }
+
+  }
+
+
+  async orderInfo(){
+       const { ctx, service, config, logger, app  } = this;
+       try{
+           let res = await ctx.model.WshopOrder.findOne({ where : ctx.query, include : [ { model : ctx.model.WshopProduct, attributes : [ 'id','goods_name', 'goods_id'] } ] });
+           return { 
+               status_code : config.statuscode.success, 
+               message : 'ok',
+               data : res
+              }  
+       }catch(err){
+         console.log('err-----000--0',err);
+         return { status_code : config.statuscode.failure, message : '获取失败'  }  
+       }
+  }
+
+
+  async booking(){
+    const { ctx, service, config, logger, app  } = this;
+      /**
+       *  只有已付款，才能发起预约 【 wshop_order.pay_status > 1 】
+       */
+      let BKResult = await  service.kdApi.bookingPickUp();
+        if( BKResult.Success ){
+            let { OrderCode, ShipperCode, LogisticCode = ctx.util.uidGenerator() } = BKResult.Order;
+            let transaction = await ctx.model.transaction();
+             /**
+              * 测试环境只有“顺丰”有物流单号返回
+              *  OrderCode: '19881',
+              *  ShipperCode: 'SF',
+              *  LogisticCode: '928989812312' , 物流单号; 
+              */
+          //  console.log('OrderCode, ShipperCode,  LogisticCode ', OrderCode, ShipperCode,  LogisticCode )
+            try{
+                await ctx.model.WshopOrder.update({ 
+                            shipping_status : 1, 
+                            logistic_code : LogisticCode, 
+                            shipper_code : ShipperCode }, 
+                          { 
+                              where : { order_id : OrderCode  },
+                              transaction
+                           });
+                await ctx.model.WshopProduct.update({ shipping_status : 1 },{ where : { order_uid : OrderCode }, transaction });
+                 // 提交事务
+                 await transaction.commit();
+                return { status_code : config.statuscode.success, message : 'ok' }  
+            }catch(err){
+                 console.log( 'err  oooooo', err );
+                 // 事务回滚
+                 await transaction.rollback();
+                return { status_code : config.statuscode.failure, message : '预定失败111' }  
+            }
+         //   return { status_code : config.statuscode.failure, message : '预定失败111' }  
+        }else{
+            return { status_code : config.statuscode.failure, message :  BKResult.Reason || '预定失败222'  }  
+        }
+  }
 
 
 

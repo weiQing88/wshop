@@ -74,6 +74,7 @@ module.exports = app => {
 			allowNull: false
 		}
   }, {
+	freezeTableName: true,
 	tableName: 'wshop_user'
   });
   wshop_user.associate = function() {

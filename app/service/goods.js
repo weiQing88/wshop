@@ -14,7 +14,7 @@ var GoodsRule = {
      category_name : 'string',
      goods_img : { required : false, type : 'string' },
      shop_price :'string',
-     market_price : 'string',
+     market_price : { required : false, type : 'string' },
      keywords : { required : false, type : 'string' },
      counter_price : { required : false, type : 'string', },
 };

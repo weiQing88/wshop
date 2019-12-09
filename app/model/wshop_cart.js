@@ -85,7 +85,8 @@ module.exports = app => {
 			allowNull: true
 		}
   }, {
- tableName: 'wshop_cart'
+	 freezeTableName: true,
+     tableName: 'wshop_cart'
   });
   wshop_cart.associate = function(models) {
     // associations can be defined here

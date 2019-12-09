@@ -39,6 +39,8 @@ module.exports = app => {
 
     router.get('/api/admin/order', verifyToken, controller.order.order  );  // 订单
     router.post('/api/admin/order/edit/', verifyToken, controller.order.edit );  // 编辑订单
-
+    router.get('/api/admin/order/detail', verifyToken, controller.order.detail  );  // 订单详情
+    router.post('/api/admin/order/booking', verifyToken, controller.order.booking  );  // 预定取件
+    router.get('/api/admin/order/orderInfo', verifyToken, controller.order.orderInfo  );  // 预定取件
 
 };

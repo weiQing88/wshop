@@ -1,197 +1,179 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
+    const { STRING, INTEGER, DATE, CHAR, DECIMAL, ENUM, TEXT, BIGINT } = Sequelize;
     return queryInterface.createTable('wshop_order', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-         comment : '-',
-      },
-    	order_sn: {
-        type: Sequelize.STRING(20),
+        type: INTEGER
+    },
+    order_id : {
+       type : BIGINT,
+       allowNull: false,
+       unique: true
+    },
+      order_sn: {
+        type: STRING(20),
         allowNull: false,
         defaultValue: '',
-        unique: true,
-         comment : '-',
+        unique: true
       },
       user_id: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
+        type: STRING(60),
         allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        unique: true
       },
+      zipcode : {
+        type: STRING(60),
+        allowNull: true,
+      },
+  
+      money_paid : {
+        type: DECIMAL,
+        allowNull: true,
+      },
+  
       order_status: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(1).UNSIGNED,
+        allowNull: true,
       },
       shipping_status: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(1).UNSIGNED,
+        allowNull: true,
       },
       pay_status: {
-        type: Sequelize.INTEGER(1).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(1).UNSIGNED,
+        allowNull: true,
       },
       consignee: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-        defaultValue: '',
-         comment : '-',
+        type: STRING(60),
+        allowNull: true,
       },
       country: {
-        type: Sequelize.INTEGER(5).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       province: {
-        type: Sequelize.INTEGER(5).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       city: {
-        type: Sequelize.INTEGER(5).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       district: {
-        type: Sequelize.INTEGER(5).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: STRING(255),
+         allowNull: true,
       },
       address: {
-        type: Sequelize.STRING(255),
-        allowNull: false,
-        defaultValue: '',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
+        // defaultValue: ''
       },
       mobile: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-        defaultValue: '',
-         comment : '-',
+        type: STRING(60),
+        allowNull: true,
       },
       postscript: {
-        type: Sequelize.STRING(255),
-        allowNull: false,
-        defaultValue: '',
-         comment : '-',
+        type: STRING(255),
+        allowNull: true,
       },
       shipping_fee: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true,
       },
       pay_name: {
-        type: Sequelize.STRING(120),
-        allowNull: false,
-        defaultValue: '',
-         comment : '-',
+        type: STRING(120),
+        allowNull: true,
       },
       pay_id: {
-        type: Sequelize.INTEGER(3),
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(3),
+        allowNull: true,
       },
       actual_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true,
       },
       integral: {
-        type: Sequelize.INTEGER(10).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(10).UNSIGNED,
+        allowNull: true,
       },
       integral_money: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true,
       },
       order_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true,
       },
       goods_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DECIMAL,
+        allowNull: true,
       },
       add_time: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DATE,
+        allowNull: true,
+      },
+      end_time: {
+        type: DATE,
+        allowNull: true,
       },
       confirm_time: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: DATE,
+        allowNull: true,
+  
       },
       pay_time: {
-        type: Sequelize.INTEGER(11).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+         type: DATE,
+         allowNull: true,
       },
       freight_price: {
-        type: Sequelize.INTEGER(10).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(10).UNSIGNED,
+        allowNull: true,
       },
       coupon_id: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(8).UNSIGNED,
+        allowNull: true,
       },
       parent_id: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
+        type: INTEGER(8).UNSIGNED,
+        allowNull: true,
       },
       coupon_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0',
-         comment : '-',
-      },
-      callback_status: {
-        type: Sequelize.ENUM('true','false'),
+        type: DECIMAL,
         allowNull: true,
-        defaultValue: 'true',
-         comment : '-',
+        //defaultValue: '0'
       },
+      order_channel : {
+        type: STRING(20),
+        allowNull: true,
+      },
+      order_type : {
+        type: STRING(60),
+        allowNull: true,
+      },
+  
+      note : {
+        type: STRING(255),
+        allowNull: true,
+      },
+      // callback_status: {
+      //   	 type: ENUM('true','false'),
+      // 	 allowNull: true,
+      //     defaultValue: 'true'
+      // },
       createdAt: {
-        type: Sequelize.DATE,
+        type: DATE,
         allowNull: false
       },
       updatedAt: {
-        type: Sequelize.DATE,
+        type: DATE,
         allowNull: false
       }
+
+   
     });
   },
   down: (queryInterface, Sequelize) => {

@@ -1,45 +1,41 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
+    const { STRING, INTEGER, DATE, CHAR, DECIMAL, TEXT, BIGINT } = Sequelize;
     return queryInterface.createTable('wshop_product', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: INTEGER
       },
       goods_id: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
+           type : BIGINT,
         allowNull: false,
-        defaultValue: '0'
-      },
-      goods_specification_ids: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-        defaultValue: ''
       },
       goods_sn: {
-        type: Sequelize.STRING(60),
+        type: STRING(60),
         allowNull: false,
-        defaultValue: ''
+      },
+      shop_price: {
+        type: DECIMAL(10),
+        allowNull: false,
+      },
+      order_id : {
+         type : BIGINT,
+         allowNull: false,
       },
       goods_number: {
-        type: Sequelize.INTEGER(8).UNSIGNED,
+        type: INTEGER(8).UNSIGNED,
         allowNull: false,
-        defaultValue: '0'
-      },
-      retail_price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-        defaultValue: '0'
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: DATE,
+        allowNull: true
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: DATE,
+        allowNull: true
       }
     });
   },

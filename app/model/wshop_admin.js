@@ -43,11 +43,11 @@ module.exports = app => {
 			allowNull: true,
 		},
 		add_time: {
-			type: STRING(255),
+			type: DATE,
 			allowNull: true,
 		},
 		update_time: {
-			type: INTEGER(11),
+			type: DATE,
 			allowNull: true,
 		},
 		avatar: {
@@ -55,7 +55,7 @@ module.exports = app => {
 			allowNull: true,
 		},
 		admin_role: {
-			type: TEXT,
+			type: STRING(255),
 			allowNull: false
 		},
 		email : {
@@ -63,6 +63,7 @@ module.exports = app => {
 			allowNull: false,
 		}
   }, {
+	freezeTableName: true,
 	timestamps: false,
     tableName: 'wshop_admin'
   });

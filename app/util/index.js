@@ -111,8 +111,8 @@ module.exports = {
         return components.join("")
         },
        getClientIP( req ){
-        return req.headers['x-forwarded-for'] || // 判断是否有反向代理 IP
-                req.headers['x-real-ip']
+              // 判断是否有反向代理 IP
+        return req.headers['x-forwarded-for'] || req.headers['x-real-ip']
        },
       currentDate(){
           var myDate = new Date(),

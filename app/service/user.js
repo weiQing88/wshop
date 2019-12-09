@@ -10,10 +10,10 @@ class UserService extends Service{
 
               console.log( 'ctx.session.user logout', ctx.session.user );
 
-              return {
-                     status_code : config.statuscode.failure,
-                     message : '退出失败'
-               }
+              // return {
+              //        status_code : config.statuscode.failure,
+              //        message : '退出失败'
+              //  }
 
              if( param.mobile == user.mobile && param.user_id == user.user_id ){
 

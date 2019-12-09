@@ -13,3 +13,5 @@ run/
 typings/
 .nyc_output/
 public/web
+public/images
+public/uploads
