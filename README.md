@@ -26,8 +26,6 @@ npm run dev or yarn dev
  
 
 
-# 功能列表
-
 ## 页面
 - [ ] 首页 -- 未完成
 - [x] 商品管理 
@@ -69,7 +67,7 @@ npm run dev or yarn dev
 ```
 
 
-### 关于接口数据
+# 关于接口数据
 
 ### 1、获取侧边栏目
 
@@ -83,6 +81,15 @@ GET  http://xxxx.top/api/admin/menu
 |参数|是否必选|类型|说明|
 |:-----|:-------:|:-----|:-----|
 |type      | N      |string  | name :  |
+
+#### 返回示例：
+```javascript
+{
+  status_code : 200,
+   message : 'ok',
+   data : [...]
+}
+```
 
 
 ### 2、管理员
@@ -119,11 +126,11 @@ POST /api/admin/order/cancel
 ```
 
 
-### 4、取消预约取件
+### 4、预定取件
 
 #### 请求URL:  
 ```
-POST /api/admin/order/cancel
+POST /api/admin/order/booking
 ```
 
 未完善....
