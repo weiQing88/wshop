@@ -65,16 +65,19 @@ module.exports = app => {
 			allowNull: false,
 			defaultValue: '0'
 		},
-
 		is_recommend : {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
-
 		is_new: {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
+			defaultValue: '0'
+		},
+		goods_sale : {
+			type: INTEGER(10).UNSIGNED,
+			allowNull : true,
 			defaultValue: '0'
 		},
 		goods_img : {
@@ -107,11 +110,14 @@ module.exports = app => {
 			type: DECIMAL,
 			allowNull: true
 		},
-
 		is_hot: {
 			type: INTEGER(1).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
+		},
+		category_attrs : {
+			type: TEXT,
+			allowNull: true
 		},
 		createdAt: {
 			type: DATE,

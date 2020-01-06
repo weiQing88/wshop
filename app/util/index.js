@@ -112,7 +112,8 @@ module.exports = {
         },
        getClientIP( req ){
               // 判断是否有反向代理 IP
-        return req.headers['x-forwarded-for'] || req.headers['x-real-ip']
+              let ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
+             return ip || ''
        },
       currentDate(){
           var myDate = new Date(),
@@ -224,7 +225,44 @@ deepCopyArray( arr ){
       })
    }
   return newArry
+},
+
+isUrl(path) {
+  const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/g;
+  return reg.test(path)
+},
+
+transformUrl( rows, key, multiple = false ){
+     try{  
+       let f = ( row, key ) => {
+          if( this.isValid( row[key] ) ){ 
+               if( multiple ){
+                let urls = row[key].split(',');
+                    urls.forEach( u => {
+                         if( !Array.isArray(  row[key] ) )  row[key] = [];
+                         u && row[key].push( u.replace(/\\/g,"\/")  )  
+                    })
+               }else{
+                let url = row[key].split(',')[0];
+                row[key] = url.replace(/\\/g,"\/") ;  
+               }
+          }
+      };
+      rows.forEach( row => {   
+        if( Array.isArray( key ) ){
+          key.forEach( k =>{ f( row, k ) })
+        }else{
+              f( row, key )
+        }
+  });
+     }catch(err){
+         console.log(err)
+     }
+   
+    return rows
 }
+
+
 
   
 

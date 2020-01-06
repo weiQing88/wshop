@@ -9,42 +9,40 @@ module.exports = app => {
       type:INTEGER
     },
     user_id: {
-			type:INTEGER(8).UNSIGNED,
+	     	type:STRING(255),
 			allowNull: false,
 			defaultValue: '0'
 		},
-		session_id: {
-			type:CHAR(32),
-			allowNull: false,
-			defaultValue: '\'\''
-		},
+	
 		goods_id: {
-			type:INTEGER(8).UNSIGNED,
+			//type:INTEGER(8).UNSIGNED,
+			type:STRING(255),
 			allowNull: false,
-			defaultValue: '0'
 		},
 		goods_sn: {
 			type:STRING(60),
-			allowNull: false,
-			defaultValue: '\'\''
-		},
-		product_id: {
-			type:INTEGER(8).UNSIGNED,
 			allowNull: true,
-			defaultValue: '0'
+		},
+		expired : {
+			type:STRING(160),
+			allowNull: false,
 		},
 		goods_name: {
 			type:STRING(120),
 			allowNull: false,
-			defaultValue: '\'\''
 		},
 		market_price: {
 			type:DECIMAL,
 			allowNull: false,
 			defaultValue: '0'
 		},
-		retail_price: {
+		shop_price: {
 			type:DECIMAL,
+			allowNull: false,
+			defaultValue: '0'
+		},
+		goods_number : {
+			type:INTEGER(8).UNSIGNED,
 			allowNull: false,
 			defaultValue: '0'
 		},
@@ -53,24 +51,13 @@ module.exports = app => {
 			allowNull: false,
 			defaultValue: '0'
 		},
-		goods_specifition_name_value: {
-			type:TEXT,
-			allowNull: true
-		},
-		goods_specifition_ids: {
-			type:STRING(60),
-			allowNull: true,
-			defaultValue: '\'\''
-		},
-		checked: {
-			type:INTEGER(1).UNSIGNED,
-			allowNull: false,
-			defaultValue: '1'
-		},
 		list_pic_url: {
 			type:STRING(255),
 			allowNull: false,
-			defaultValue: '\'\''
+		},
+		goods_attrs: {
+			type:STRING(255),
+			allowNull: true,
 		},
 		createdAt: {
 			type:DATE,
@@ -89,7 +76,7 @@ module.exports = app => {
      tableName: 'wshop_cart'
   });
   wshop_cart.associate = function(models) {
-    // associations can be defined here
+	// associations can be defined here
   };
   return wshop_cart;
 };

@@ -10,7 +10,7 @@ class UserController extends Controller {
                username : { type : 'string', required : true },
                mobile :{ type : 'string',required : true },
                avatar :{ type : 'string' },
-               admin_role : { type : 'array' },
+               admin_role : { type : 'string' },
                user_id :{ type : 'string',required : true },
           }, ctx.request.body );
 
@@ -67,9 +67,15 @@ class UserController extends Controller {
              // 设置验证码过期时间
               ctx.cookies.set('captchaExpire', Date.parse( new Date() ) , { maxAge : ms('2m') });
           if( type == 'login' ){
-               ctx.session.login_code = cap.text.toLowerCase();
+                app.redis.set('login_code', cap.text.toLowerCase());
+                app.redis.expire('login_code',  120); // 设定2秒过期
+
+              // ctx.session.login_code = cap.text.toLowerCase();
           }else if( type == 'register' ){
-               ctx.session.register_code  = cap.text.toLowerCase();
+               app.redis.set('login_code', cap.text.toLowerCase());
+               app.redis.expire('login_code',  120); // 设定2秒过期
+
+              // ctx.session.register_code  = cap.text.toLowerCase();
           }
            ctx.body = {
                status_code : config.statuscode.success,
@@ -88,12 +94,18 @@ class UserController extends Controller {
           // 设置验证码过期时间
           ctx.cookies.set('mcaptchaExpire', Date.parse( new Date() ) , { maxAge : ms('2m') });
           if( type == 'login' ){
-                ctx.session.login_mcode = res.RemainPoint;
+               app.redis.set('login_mcode', res.RemainPoint );
+               app.redis.expire('login_mcode',  120); // 设定2秒过期
+
+              //  ctx.session.login_mcode = res.RemainPoint;
+
           }else if( type == 'register' ){
-                ctx.session.register_mcode  = res.RemainPoint;
+               app.redis.set('register_mcode', res.RemainPoint );
+               app.redis.expire('register_mcode',  120); // 设定2秒过期
+
+               // ctx.session.register_mcode  = res.RemainPoint;
           }
 
-        //  console.log('mcaptcha controller res', res)
          ctx.body = {
                status_code : config.statuscode.success,
                test : true,

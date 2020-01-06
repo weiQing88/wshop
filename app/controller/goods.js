@@ -61,39 +61,38 @@ class GoodsController extends Controller {
        ctx.body =  await service.goods.category();
   }
 
+
  async editCategory(){
     const { ctx, service, config, logger, app  } = this;
-       let createRule = {};
        let param = ctx.request.body;
        let method = ctx.method.toLocaleLowerCase();
-        switch( method ){
-          case 'post' : createRule = { category_name : 'string', category_attrs : {  required : false, type : 'array' } };
-          break;
-          case 'patch' : createRule = { category_name : 'string', category_id : 'string', category_attrs : { required : false,  type : 'array' } };
-          break;
-          case 'delete' : createRule = { category_id : 'string' }, param = ctx.query;
-          break;
-      }
-       try{
-            ctx.validate(createRule, param )
-        }catch( err ){
-          ctx.body = {
-                status_code : config.statuscode.failure,
-                message : '参数错误',
-                }
-            return false;
-        }
+            if( method == 'delete' ){
+                  param = ctx.query;
+                  try{
+                      ctx.validate({ category_id : 'string' }, param )
+                  }catch( err ){
+                    ctx.body = { status_code : config.statuscode.failure, message : '参数错误' }
+                      return false;
+                  }
+              }
+            
+          switch( method ){
+                case 'post' : ctx.body = await service.goods.createCategory();;
+                break;
+                case 'patch' :  ctx.body = await service.goods.editCategory();
+                break;
+                case 'delete' : ctx.body = await service.goods.deleteCategory();
+                break;
+            }
 
-     switch( method ){
-          case 'post' : ctx.body = await service.goods.createCategory();;
-          break;
-          case 'patch' :  ctx.body = await service.goods.editCategory();
-          break;
-          case 'delete' :   ctx.body = await service.goods.deleteCategory();
-          break;
-       }
+     
+
+     
 
    }
+
+
+
 
 
    async attrs(){

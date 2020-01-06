@@ -19,7 +19,7 @@ module.exports = app => {
 		},
 		password: {
 			type:STRING(32),
-			allowNull: false
+			allowNull: true
 		},
 		gender: {
 			type:STRING(255),
@@ -27,11 +27,11 @@ module.exports = app => {
 		},
 		birthday: {
 			type:INTEGER(11),
-			allowNull: false
+			allowNull: true
 		},
 		register_time: {
 			type:DATE,
-			allowNull: false
+			allowNull: true
 		},
 		last_login_time: {
 			type:DATE,
@@ -43,7 +43,7 @@ module.exports = app => {
 		},
 		user_level_id: {
 			type:STRING(255),
-			allowNull: false
+			allowNull: true
 		},
 		nickname: {
 			type:STRING(60),
@@ -51,7 +51,7 @@ module.exports = app => {
 		},
 		mobile: {
 			type:STRING(20),
-			allowNull: false
+			allowNull: true
 		},
 		register_ip: {
 			type:STRING(255),
@@ -63,7 +63,7 @@ module.exports = app => {
 		},
 		weixin_openid: {
 			type:STRING(50),
-			allowNull: true
+			allowNull: false
 		},
 		createdAt: {
 			type:DATE,

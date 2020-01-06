@@ -47,7 +47,7 @@ class KdnService extends Service{
 
           try{
              let res = await ctx.curl( ReqURL, { 
-                     method: 'POST',
+                      method: 'POST',
                       dataType: 'json',
                       data : param,
                });  
@@ -57,6 +57,34 @@ class KdnService extends Service{
               return {  Success : false }  
           }   
      }
+  
+   async cancel(){  // 取消预约取件
+       let { ctx, app, config, logger, service } = this;
+       let { id, ...others } = ctx.request.body;
+         /**
+          *  在测试环境下，无法识别 1004 接口指令；
+          */
+       let param = {
+                  RequestType : 1004,
+                  EBusinessID,
+                  RequestData : encodeURIComponent( JSON.stringify( others ) ),
+                  DataSign : encrypt( JSON.stringify( others ) ),
+                  DataType : 'json' 
+                  
+            };
+       try{
+           let res = await ctx.curl( ReqURL, {
+                    method: 'POST',
+                    dataType: 'json',
+                    data : param,
+           });
+           return  res.data
+       }catch(err){
+           console.log( 'err ---- ', err );    
+           return {  Success : false }  
+       }
+  }
+
 }
 
 

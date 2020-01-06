@@ -6,31 +6,15 @@ class UserService extends Service{
        async logout(){
           let { ctx, app, config, logger, service } = this;
              let param = ctx.request.body;
-             let user = ctx.session.user || {};
-
-              console.log( 'ctx.session.user logout', ctx.session.user );
-
-              // return {
-              //        status_code : config.statuscode.failure,
-              //        message : '退出失败'
-              //  }
-
+             let user = await app.redis.get('user'); //  ctx.session.user || {};
+                 user = JSON.parse( user );
              if( param.mobile == user.mobile && param.user_id == user.user_id ){
-
-              console.log( '-------ctx.session.user--------' )
-
-                 //清除 session 
-                 ctx.session.user = null;
-
-                 return {
-                      status_code : config.statuscode.success,
-                      message : '成功退出'
-                 }
+                 /******** 清除 session *********/
+                  // ctx.session.user = null;
+                  await app.redis.del('user');
+                 return { status_code : config.statuscode.success, message : '成功退出' }
              }else{
-                 return {
-                       status_code : config.statuscode.failure,
-                       message : '退出失败'
-                 }
+                 return { status_code : config.statuscode.failure, message : '退出失败'  }
              }
        }
 
@@ -42,60 +26,85 @@ class UserService extends Service{
                *  1、验证 图片验证码是否过期/一致
                *  2、验证密码、账号/手机号 是否与数据库的一致
                *  3、jwt生成加密token  【 过期时间统一为 1 天 】
-               *  4、session保存用户信息；保存本地 session 或保存到redis 【 过期时间统一为 1 天 】
+               *  4、保存用户信息到redis 【 过期时间统一为 1 天 】
                */
           let {  mobile, password, remember, captcha } = ctx.request.body;
             if( ctx.cookies.get('captchaExpire') ){ 
-                 if( captcha == ctx.session.login_code ){
-                            let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
-                            if( ctx.util.isValid( res ) ){
-                                   let bool = ctx.util.tocheck(  ctx.util.secret( password, 'decrypt' ),  res.dataValues.password );
-                                   if( bool ){
-                                          let { username, mobile, avatar, admin_role, user_id } = res.dataValues;
+                    let login_code = await app.redis.get('login_code');
+                 if( captcha == login_code ){  // ctx.session.login_code
+                            try{
+                                   let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
+                                   if( ctx.util.isValid( res ) ){
+                                          let bool = ctx.util.tocheck( ctx.util.secret( password, 'decrypt' ),  res.dataValues.password );
+                                          if( bool ){
+                                                 let { username, mobile, avatar, admin_role, user_id } = res.dataValues;
+                                                 let maxAge = remember == '1' ? ms('30d') : ms('1d');
+                         
                                           // 生成token
-                                          let token = app.jwt.sign({ username, mobile, user_id },
-                                                       app.config.jwt.secret, { expiresIn: remember == '1' ? ms('30d') : ms('1d')  });
+                                          let token = app.jwt.sign({ username, mobile, user_id },app.config.jwt.secret, { expiresIn: maxAge  });
                                                  result.token = token;
-                                                 result.userinfo = {username, mobile, avatar, admin_role : JSON.parse( admin_role ), user_id };
+                                                 // 由于浏览器和其他客户端实现的不确定性，为了保证 Cookie 可以写入成功，通过 base64 编码或者其他形式 encode 。
+                                                 result.userinfo = { username, mobile, avatar, admin_role : encodeURIComponent( admin_role ) , user_id };
                                                  result.status_code = config.statuscode.success;
                                                  result.message = '登录成功';
-                                           //保存到客户端浏览器的cookie中
-                                           ctx.cookies.set('wshopLoginToken', token,{
-                                                 maxAge:  remember == '1' ? ms('30d') : ms('1d'),
-                                                 path: '/',
-                                                 domain: 'localhost',
-                                                 httpOnly: false,
-                                                 signed: false,
-                                             });
-                                             ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
-                                                 maxAge:  remember == '1' ? ms('30d') : ms('1d'),
-                                                 path: '/',
-                                                 domain: 'localhost',
-                                                 httpOnly: false,
-                                                 signed: false,
-                                             });
-                                          // 保存已登录用户信息到 session
-                                           ctx.session.user = { username, mobile, user_id };
-                                          // 如果用户勾选了 `记住我`，设置 30 天的过期时间
-                                           ctx.session.maxAge = remember == '1' ? ms('30d') : ms('1d');
 
+                            
+                                                // 保存到客户端浏览器的cookie中; 
+                                                 ctx.cookies.set('wshopLoginToken', token,{
+                                                        maxAge,
+                                                        path: '/',
+                                                        domain: 'localhost',
+                                                        httpOnly: false,
+                                                        signed: false,
+                                                 });
+                                   
+                                                 ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
+                                                        maxAge,
+                                                        path: '/',
+                                                        domain: 'localhost',
+                                                        httpOnly: false,
+                                                        signed: false,
+                                                    });
+
+                                                  result.expired = remember == '1' ? 30 : 1;
+
+                                                 // 保存已登录用户信息到 
+                                                  app.redis.set('user', JSON.stringify( { username, mobile, user_id } ))
+                                                    // 如果用户勾选了 `记住我`，设置 30 天的过期时间
+                                                  app.redis.expire('user', remember == '1' ?  30 * 24 * 60 * 60 : 1 * 24 * 60 * 60 );
+                                                  
+                                                 // 保存已登录用户信息到 session
+                                                 // ctx.session.user = { username, mobile, user_id };
+                                                 // 如果用户勾选了 `记住我`，设置 30 天的过期时间
+                                                 // ctx.session.maxAge = maxAge;
+
+
+
+       
+                                          }else{
+                                                 result.status_code = config.statuscode.failure;
+                                                 result.message = '密码不正确';  
+                                          }
                                    }else{
                                           result.status_code = config.statuscode.failure;
-                                          result.message = '密码不正确';  
+                                          result.message = '该账号不存在';
                                    }
-                            }else{
+       
+                            }catch(err){
+                                   console.log('err----err', err );
                                    result.status_code = config.statuscode.failure;
-                                   result.message = '该账号不存在';
+                                   result.message = '登录失败'; 
                             }
-                            
-
+                          
                   }else{
                      result.status_code = config.statuscode.failure;
                      result.message = '验证码不正确';
                   }
 
             }else{
-                     ctx.session.login_code  = null;    
+
+                     app.redis.del('login_code');
+                   //  ctx.session.login_code  = null;    
                      result.status_code = config.statuscode.failure;
                      result.message = '验证码已过期';
             }
@@ -176,11 +185,12 @@ class UserService extends Service{
 
             // 如果短信验证码没过期
             if( ctx.cookies.get('mcaptchaExpire') ){ 
-                 if( param.captcha ==  ctx.session.register_mcode ){
+                     let register_mcode = await app.redis.get('register_mcode');
+                 if( param.captcha ==  register_mcode ){ // ctx.session.register_mcode 
                             param.last_login_ip = ctx.util.getClientIP( ctx.req ) || '127.0.0.1';
                             param.add_time = ctx.util.currentDate();
                             param.user_id = ctx.util.uidGenerator();
-                            param.admin_role = JSON.stringify( ['user'] );
+                            param.admin_role = '普通管理员'; // 默认分配是普通管理员
                             param.password = ctx.util.tohash(ctx.util.secret( param.password, 'decrypt' ));  
 
                         let user =  await ctx.sql('WshopAdmin','findOne', {
@@ -189,7 +199,7 @@ class UserService extends Service{
                             
                         if( ctx.util.isValid( user ) ){ // 用户名或手机号已存在
                                    result.status_code = config.statuscode.failure;
-                                   result.message = '该用户名/手机号已被注册';
+                                   result.message = '该手机号已被注册';
                            
                         }else{  // 可以注册
                             let res = await ctx.sql('WshopAdmin','create', param );
@@ -209,7 +219,8 @@ class UserService extends Service{
 
                  } 
             }else{
-                  ctx.session.register_mcode  = null;    
+                   app.redis.del('register_mcode');
+                 //  ctx.session.register_mcode  = null;    
                   result.status_code = config.statuscode.failure;
                   result.message = '验证码已过期';
             }

@@ -42,10 +42,10 @@ module.exports = app => {
 			type: STRING(255),
 			allowNull: true,
 		},
-		category_icon: {
-			type: STRING(255),
-			allowNull: true,
-		},
+		// category_icon: {
+		// 	type: STRING(255),
+		// 	allowNull: true,
+		// },
 		img_url: {
 			type: STRING(255),
 			allowNull: true,
@@ -58,10 +58,10 @@ module.exports = app => {
 			type: STRING(255),
 			allowNull: true,
 		},
-		category_type: {
-			type: INTEGER(11),
-			allowNull: true,
-		},
+		// category_type: {
+		// 	type: INTEGER(11),
+		// 	allowNull: true,
+		// },
 		front_name: {
 			type: STRING(255),
 			allowNull: true,

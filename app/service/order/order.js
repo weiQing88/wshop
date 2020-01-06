@@ -21,7 +21,6 @@ class OrderService extends Service{
                 let complete = await ctx.model.WshopOrder.count({  where : { ...others, order_status :'1' } });
                 let all = await ctx.model.WshopOrder.count({ where : { ...others }  });
                 let query = { offset, limit, where : {} };
-
                 queryKeys.forEach( key => {
                     if( key == 'type'){
                             switch( ctx.query.type ){
@@ -161,14 +160,23 @@ class OrderService extends Service{
                  console.log( 'err  oooooo', err );
                  // 事务回滚
                  await transaction.rollback();
-                return { status_code : config.statuscode.failure, message : '预定失败111' }  
+                return { status_code : config.statuscode.failure, message : '预定失败' }  
             }
          //   return { status_code : config.statuscode.failure, message : '预定失败111' }  
         }else{
-            return { status_code : config.statuscode.failure, message :  BKResult.Reason || '预定失败222'  }  
+            return { status_code : config.statuscode.failure, message :  BKResult.Reason || '预定失败'  }  
         }
   }
 
+  async cancel(){
+    const { ctx, service, config, logger, app  } = this;
+      let res = await service.kdApi.cancel();
+      if( res.Success == 'true' ){
+          return { status_code : config.statuscode.success, message : 'ok' }  
+      }else{
+         return { status_code : config.statuscode.failure, message :  res.Reason || '取消预定失败'  }  
+      }
+  }
 
 
 }

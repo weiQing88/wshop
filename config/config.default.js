@@ -42,6 +42,16 @@ module.exports = appInfo => {
           encrypt: true,
         // renew: true,
       },
+      redis : {
+          client : {
+              host : '127.0.0.1',
+              port : '6379',
+              password : '',
+              db : 0
+          },
+        agent : true
+      },
+
       multipart : {
          fileSize: '50mb', // 最大字段值大小（字节），默认为100kb
          fields : '30', // 最大非文件字段数，默认为10

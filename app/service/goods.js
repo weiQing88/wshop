@@ -21,6 +21,28 @@ var GoodsRule = {
 
 
 
+var convertImgs = ( row, key, ctx ) => {
+     if( ctx.util.isValid( row[key]  ) ){
+          let imgs =  row[key] .split(',');
+          row[key] = [];
+          imgs.forEach(( url, index ) => {
+               if( url ){
+                         let nameArr = url.split('.')[0];
+                         nameArr = nameArr.split( `\\` );
+                         let  name = nameArr[ nameArr.length - 1 ];
+                         row[key][index] = {
+                              uid : ~index,
+                              url : `${url}`,
+                              status : 'uploaded',
+                              name
+                         } 
+               }
+          })          
+}  
+};
+
+
+
 class GoodsService extends Service{
      async fetGoods(){
            let { ctx, app, config, logger, service } = this;
@@ -58,27 +80,19 @@ class GoodsService extends Service{
 
               if(! ctx.util.isValid( query.where )) delete query.where;
               let { rows = [], count = 0 } = await ctx.model.WshopGoods.findAndCountAll(query);
-              let convertImgs = ( row, key ) => {
-                               if( ctx.util.isValid( row[key]  ) ){
-                                    let imgs =  row[key] .split(',');
-                                        row[key] = [];
-                                        imgs.forEach(( url, index ) => {
-                                             if( url ){
-                                                       let nameArr = url.split('.')[0];
-                                                       nameArr = nameArr.split( `\\` );
-                                                       let  name = nameArr[ nameArr.length - 1 ];
-                                                       row[key][index] = {
-                                                            uid : ~index,
-                                                            url : `${url}`,
-                                                            status : 'uploaded',
-                                                            name
-                                                   } 
-                                             }
-                                    })          
-                              }  
-                         };
 
-              rows.forEach( row => { convertImgs(row,'goods_img'), convertImgs(row,'promotion_img') });
+               for( let i = 0; i < rows.length; i++ ){
+                    convertImgs(rows[i],'goods_img', ctx ), 
+                    convertImgs(rows[i],'promotion_img', ctx );
+                    if( rows[i].category_attrs ){
+                         let attrsId = rows[i].category_attrs.split(',');
+                         let res = await ctx.model.WshopAttribution.findAll({ where : { attr_id : attrsId  } });
+                            rows[i].category_attrs = res;
+                    }else{
+                           rows[i].category_attrs = [];
+                    }
+               }
+
                return {
                     status_code : config.statuscode.success,
                     message : 'ok',
@@ -126,12 +140,17 @@ class GoodsService extends Service{
                },
                param = {},
                createRule = GoodsRule;
+
           if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+
                  param = ctx.request.body;
+
           }else{
+
                 // 上传图片
                let rst = await service.common.uploadMultipleFile('goods');
                //  console.log(  '上传图片 rst---', rst )
+
                if( rst.state ){
                     param = rst.fields;
                     param.goods_img = rst.urls.join(',');
@@ -163,7 +182,7 @@ class GoodsService extends Service{
                 res.message= '创建失败';
           }
           return res;
-        //  return {  status_code : config.statuscode.failure, message : '暂时为支持创建'}
+  
   }
 
   async editGoods(){
@@ -303,28 +322,53 @@ class GoodsService extends Service{
   }
 
 
-    
+
        async createCategory(){
-              let { ctx, app, config, logger, service } = this;
-              let result = {}
-              let param = Object.assign({}, ctx.request.body);
-                  param.category_id = ctx.util.uidGenerator();
-                  param.is_show = 1;
-                  if( ctx.util.isValid( param.category_attrs ) ) param.category_attrs = param.category_attrs.join(',');
-           try{
-                    await ctx.model.WshopCategory.create( param );
-                    result.status_code = config.statuscode.success;
-                    result.message = '创建成功';
-                  // throw new Error();  // 即使数据库操作成功 , 此条语句依然会回滚
-           }catch( err ){
-                  // logger
-                  console.log( err )
-                  result.status_code = config.statuscode.failure;
-                  result.message = '创建失败';
-           }
-            return result
-          
+      
+               let { ctx, app, config, logger, service } = this;
+               let  param = {},
+                    createRule = {
+                         category_name : 'string',
+                         category_attrs : {  required : false, type : 'string' },
+                         img_url : {  required : false, type : 'string' },
+                         uploaded_img : {  required : false, type : 'string' }
+                    };
+
+                    if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+                             param = ctx.request.body;
+                    }else{
+                         // 上传图片
+                         let rst = await service.common.uploadMultipleFile('goods');
+                         if( rst.state ){
+                              param = rst.fields;
+                              param.img_url = rst.urls.join(',');
+                         }else{
+                              return { status_code : config.statuscode.failure, message : '图片上传失败' }
+                         }
+                    }
+
+                    try{
+                         ctx.validate( createRule, param)
+                         }catch( err ){
+                              console.log( err );
+                              return { status_code : config.statuscode.failure, message : '参数错误' }
+                         }
+
+                         param.category_id = ctx.util.uidGenerator();
+                         param.is_show = 1;
+                    try{
+                         await ctx.model.WshopCategory.create( param );
+                         return { status_code : config.statuscode.success,  message : '创建成功' }
+                    }catch( err ){
+                         console.log( err );
+                         return { status_code : config.statuscode.failure, message : '创建失败' }
+     
+                    }
        }
+
+
+
+
    
    async category(){
        let { ctx, app, config, logger, service } = this;
@@ -335,7 +379,7 @@ class GoodsService extends Service{
              // include : [ ctx.model.WshopAttribution, ..... ] or [ { model : xx, as : zz, required: true/false } ] 多个写法；
              // include : { model : xx } 单个写法
             //  例子： ctx.model.WshopCategory.findAll({  include: [ {  model : ctx.model.WshopAttribution, as : 'attrs'}  ]});
-           let data =  await ctx.model.WshopCategory.findAll({ attributes : [ 'id', 'category_name', 'category_attrs', 'category_id' ] });
+           let data =  await ctx.model.WshopCategory.findAll({ attributes : [ 'id', 'img_url', 'category_name', 'category_attrs', 'category_id' ] });
            let plainData = [];
            for( let i = 0; i< data.length; i++ ){
                      plainData[i] = data[i].get({ plain : true });
@@ -349,6 +393,8 @@ class GoodsService extends Service{
                      }else{
                          plainData[i].category_attrs = [];
                      }
+
+                   if( plainData[i].img_url ) convertImgs(plainData[i],'img_url', ctx );
                }
                result.status_code = config.statuscode.success;
                result.message = 'ok';
@@ -364,29 +410,60 @@ class GoodsService extends Service{
 
 
 
+       async editCategory(){ 
+          let { ctx, app, config, logger, service } = this,
+               createRule = {
+                    category_name : 'string',
+                    category_attrs : {  required : false, type : 'string' },
+                    img_url : {  required : false, type : 'string' },
+                    uploaded_img : {  required : false, type : 'string' },
+                    category_id : {  required : false, type : 'string' },
+               },
+               param = {},
+               category_id = '';
 
-       async editCategory(){
-           let { ctx, app, config, logger, service } = this;
-           let { category_id, ...others } = ctx.request.body;
-           let { success, failure } = config.statuscode;
-           let bool = true;
-           if( ctx.util.isValid( others.category_attrs ) )  others.category_attrs = others.category_attrs.join(',');
-           try{
-             let res = await ctx.model.WshopCategory.update(others, { where : { category_id } });
-             // console.log('res----- update', res)
-                if( res[0] <= 0 ) bool = false;
-           }catch( err ){
-              // logger
-              console.error( err );
-                bool = false;
-           }
+               if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
+                    param = ctx.request.body;
+                    param.hasOwnProperty('img_url') ? '' : param.img_url = '';
+               }else{
+                         // 上传图片
+                         let rst = await service.common.uploadMultipleFile('goods');
+                         if( rst.state ){
+                              param = rst.fields;
+                              param.img_url = rst.urls.length ? rst.urls.join(',') : '';
+                              if( param.hasOwnProperty('uploaded_img') ){
+                                   param.img_url = param.uploaded_img +',' + param.img_url;
+                                   delete  param.uploaded_img;
+                              }
+                         }else{
+                             return {  status_code : config.statuscode.failure, message : '图片上传失败' }
+                         }
+               }
 
-           return {
-                     status_code : bool ? success : failure,
-                     message :  bool ? '编辑成功' : '编辑失败'
-                }
+                 try{
+                    ctx.validate( createRule, param)
+                    }catch( err ){
+                         console.log( err );
+                         return {  status_code : config.statuscode.failure, message : '参数错误' }
+                    }
+
+                  if( param.hasOwnProperty('category_id') ) category_id = param.category_id;
+                    try{
+                        await ctx.model.WshopCategory.update( param, { where : {  category_id } });
+                         return {  status_code : config.statuscode.success, message : '编辑成功'}
+                    }catch( err ){
+                         console.log( err );
+                         return {  status_code : config.statuscode.failure, message : '编辑失败'}
+                    }
+
+
 
        }
+
+
+
+
+
 
       async deleteCategory(){
               let { ctx, app, config, logger, service } = this;
@@ -416,9 +493,7 @@ class GoodsService extends Service{
 
        try{
         let { count, rows } = await ctx.model.WshopAttribution.findAndCountAll({ offset, limit, });
-             rows.forEach( item => { 
-                  item.attr_value = JSON.parse( item.attr_value );
-                });
+             rows.forEach( item => {  item.attr_value = item.attr_value.join(',')  });
 
             return {
                      status_code : config.statuscode.success,

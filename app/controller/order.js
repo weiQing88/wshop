@@ -82,6 +82,60 @@ class OrderController extends Controller {
         ctx.body = await service.order.order.booking();
     }
 
+    async cancel(){
+        const { ctx, service, config, logger, app  } = this;
+         try{
+                ctx.validate({
+                    id: 'number',
+                    ShipperCode: 'string',
+                    OrderCode: 'number',
+                    LogisticCode: 'string'
+                }, ctx.request.body)
+         }catch(err){
+            console.log( 'err', err );
+            ctx.body = { status_code : config.statuscode.failure, message : '参数错误' };
+            return;
+         }
+
+         ctx.body =  await service.order.order.cancel();
+    }
+
+    async shipped(){
+        const { ctx, service, config, logger, app  } = this;
+         try{
+                ctx.validate({
+                    shipping_status : 'string'
+                }, ctx.query )
+            }catch(err){
+                console.log( 'err', err );
+                ctx.body = { status_code : config.statuscode.failure, message : '参数错误' };
+                return;
+            }
+        ctx.body =  await service.order.deliver.shipped();
+    }
+
+    
+   async shippedItem(){
+      const { ctx, service, config, logger, app  } = this;
+            let query = Object.assign( ctx.query, ctx.params);
+         try{
+            ctx.validate({
+                 id : 'string'
+            }, query)
+         }catch(err){
+            console.log( 'err', err );
+            ctx.body = { status_code : config.statuscode.failure, message : '参数错误' };
+            return;
+         }
+          ctx.body = await service.order.deliver.shippedItem();
+   }
+
+
+   async cancelled(){
+       const { ctx, service, config, logger, app  } = this;
+       ctx.body = { status_code : config.statuscode.failure, message : '错误' };
+   }
+
 
 }
 

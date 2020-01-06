@@ -168,6 +168,10 @@ module.exports = app => {
 			type: STRING(255),
 			allowNull: true,
 		},
+		cancelled_code : {
+			type: STRING(255),
+			allowNull: true,  
+		},
 		// callback_status: {
 		//   	 type: ENUM('true','false'),
 		// 	 allowNull: true,
@@ -188,8 +192,12 @@ module.exports = app => {
   wshop_order.associate = function() {
 
 	   app.model.WshopOrder.belongsTo( app.model.WshopUser, { foreignKey : 'user_id', targetKey : 'user_id' });
+		/**
+		 *  指定 ‘foreignKey’ 代替默认的 ‘id’，值则取之于 ‘ sourceKey ’指定的 ‘order_id’
+		 */
+	   app.model.WshopOrder.hasMany( app.model.WshopProduct , {  foreignKey : 'order_id', sourceKey : 'order_id' });
 
-	   app.model.WshopOrder.hasMany( app.model.WshopProduct , {  foreignKey : 'order_id', targetKey : 'order_id' });
+	   app.model.WshopOrder.hasMany( app.model.WshopOrderGoods , {  foreignKey : 'order_id' , sourceKey : 'order_id' , as : 'goods' });
 
 
   };
