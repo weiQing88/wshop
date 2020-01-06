@@ -94,8 +94,6 @@ GET  http://xxxx.top/api/admin/menu
 
 
 ### 2、管理员
-
-#### 请求URL:  
 ```
 GET  /api/admin/members/admin
 ```
@@ -103,16 +101,12 @@ GET  /api/admin/members/admin
 
 
 ### 3、角色
-
-#### 请求URL:  
 ```
 get /api/admin/members/role
 ```
 
 
 ### 3、商品列表
-
-#### 请求URL:  
 ```
 get /api/admin/goods
 ```
@@ -120,16 +114,12 @@ get /api/admin/goods
 
 
 ### 4、取消预约取件
-
-#### 请求URL:  
 ```
 POST /api/admin/order/cancel
 ```
 
 
-### 4、预定取件
-
-#### 请求URL:  
+### 5、预定取件
 ```
 POST /api/admin/order/booking
 ```
