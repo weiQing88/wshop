@@ -164,6 +164,8 @@ class GoodsService extends Service{
 
            try{
                ctx.validate( createRule, param)
+                console.log('param--param--param',param);
+                console.log('parcreateRuleam--createRule--createRule',createRule)
                }catch( err ){
                     console.log( err );
                     return {
@@ -184,6 +186,10 @@ class GoodsService extends Service{
           return res;
   
   }
+
+
+
+
 
   async editGoods(){
      let { ctx, app, config, logger, service } = this,
@@ -491,9 +497,13 @@ class GoodsService extends Service{
            offset = Number(  ctx.query.page || '1' );
            offset = ( offset - 1 ) * limit;
 
+            console.log('sdfsdfsdfsdfsdfsdfsdf----attrs')
+
        try{
         let { count, rows } = await ctx.model.WshopAttribution.findAndCountAll({ offset, limit, });
-             rows.forEach( item => {  item.attr_value = item.attr_value.join(',')  });
+             rows.forEach( item => {
+                    if( item.attr_value ) item.attr_value = item.attr_value.split(','); 
+                });
 
             return {
                      status_code : config.statuscode.success,
@@ -503,13 +513,15 @@ class GoodsService extends Service{
                   }
        }catch( err ){
                //  logger
-              console.log( err ); 
+              console.log( 'err----hhtttt ', err ); 
               return {
                       status_code : config.statuscode.failure,
                       message : '获取失败'
               }
        }
    }
+
+
 
 
  
