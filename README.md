@@ -45,9 +45,9 @@ npm run dev or yarn dev
       dialect: 'mysql',
       host: '127.0.0.1',
       port: 3306,
-      database: 'wshop',
-      username: 'root',
-      password: 'root',
+      database: 'x',
+      username: 'x',
+      password: 'x',
       define: {  // model的全局配置
         timestamps: true,   // 添加create,update,delete时间戳
       //  paranoid: true,   // 添加软删除
@@ -134,7 +134,7 @@ POST /api/admin/order/cancel
 POST /api/admin/order/booking
 ```
 
-未完善....
+待完善....
 
 
 
