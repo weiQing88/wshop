@@ -21,11 +21,12 @@ npm run dev or yarn dev
 # 效果演示
 ### 部分截图
  ![登录截图](https://github.com/weiQing88/wshop/blob/master/public/screenshots/20200106111753.png)
+ 
  ![网站截图](https://github.com/weiQing88/wshop/blob/master/public/screenshots/45234234.png)
 
 
 ## 页面
-- [ ] 首页 -- 未完成
+- [ ] 首页
 - [x] 商品管理 
 - [x] 订单管理
 - [x] 微信管理
