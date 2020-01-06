@@ -25,7 +25,7 @@ module.exports = app => {
 
 
    router.get('/api/admin/members/admin', verifyToken, controller.members.admin ); // 管理员
-   router.post('/api/admin/members/admin/create', verifyToken, controller.members.createAdmin ); // 管理员
+   router.post('/api/admin/members/admin/create', verifyToken, controller.members.createAdmin ); // 新增管理员
    router.post('/api/admin/members/admin/:id/edit', verifyToken, controller.members.editAdmin ); // 编辑管理员
    router.delete('/api/admin/members/admin/:id/delete', verifyToken, controller.members.deleteAdmin ); // 删除管理员
 
