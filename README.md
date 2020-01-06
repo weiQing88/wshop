@@ -76,7 +76,7 @@ npm run dev or yarn dev
               db : 0
           },
         agent : true
-      },
+      }
 
 ```
 
