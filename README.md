@@ -17,7 +17,6 @@ npm run dev or yarn dev
 
 ```
 
-### 关于接口数据
 
 
 # 效果演示
@@ -70,7 +69,62 @@ npm run dev or yarn dev
 ```
 
 
+### 关于接口数据
+
+### 1、获取侧边栏目
+
+#### 请求URL:  
+```
+GET  http://xxxx.top/api/admin/menu
+```
+
+#### 参数类型：query
+
+|参数|是否必选|类型|说明|
+|:-----|:-------:|:-----|:-----|
+|type      | N      |string  | name :  |
 
 
+### 2、管理员
+
+#### 请求URL:  
+```
+GET  /api/admin/members/admin
+```
+
+
+
+### 3、角色
+
+#### 请求URL:  
+```
+get /api/admin/members/role
+```
+
+
+### 3、商品列表
+
+#### 请求URL:  
+```
+get /api/admin/goods
+```
+
+
+
+### 4、取消预约取件
+
+#### 请求URL:  
+```
+POST /api/admin/order/cancel
+```
+
+
+### 4、取消预约取件
+
+#### 请求URL:  
+```
+POST /api/admin/order/cancel
+```
 
 未完善....
+
