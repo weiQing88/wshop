@@ -1,8 +1,6 @@
 # wshop-server-project
 > 基于 nodejs + eggjs + redis + rabbitmq + mysql + sequelize 技术栈Web后端服务。
 
->  个人时间、精力有限，只完成部分功能，仅用于学习目的~。
-
 ### 技术栈
 
 - node.js（>7.0，已原生支持绝大部分ES6/ES7语法）
@@ -140,7 +138,8 @@ POST /api/admin/order/booking
 待完善....
 
 
-
+# 说明
+>  时间、精力有限，只完成部分功能，更多功能后续完善， 目前仅于学习目的~。
 
 
 
