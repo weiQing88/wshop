@@ -1,6 +1,5 @@
 # wshop-server-project
-> 基于 nodejs + eggjs + redis + rabbitmq + mysql + sequelize 技术栈Web项目框架。
-
+> 基于 nodejs + eggjs + redis + rabbitmq + mysql + sequelize 技术栈Web后端服务。
 
 ### 技术栈
 
@@ -17,7 +16,6 @@ npm run dev or yarn dev
 
 ```
 
-### 关于接口数据
 
 
 # 效果演示
@@ -26,8 +24,6 @@ npm run dev or yarn dev
  <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/45234234.png" width="500" height="300"/> 
  
 
-
-# 功能列表
 
 ## 页面
 - [ ] 首页 -- 未完成
@@ -40,16 +36,16 @@ npm run dev or yarn dev
 
 
 
-## 修改数据库配置文件 
+## 数据库配置文件 
 /config/config.default.js or config.prod.js
 ```
  config.sequelize = {
       dialect: 'mysql',
       host: '127.0.0.1',
       port: 3306,
-      database: 'wshop',
-      username: 'root',
-      password: 'root',
+      database: 'x',
+      username: 'x',
+      password: 'x',
       define: {  // model的全局配置
         timestamps: true,   // 添加create,update,delete时间戳
       //  paranoid: true,   // 添加软删除
@@ -69,8 +65,82 @@ npm run dev or yarn dev
   };
 ```
 
+```
+   config.redis = {
+          client : {
+              host : '127.0.0.1',
+              port : '6379',
+              password : 'xxx',
+              db : 0
+          },
+        agent : true
+      }
+
+```
+
+
+# 关于接口数据
+
+### 1、获取侧边栏目
+
+#### 请求URL:  
+```
+GET  http://xxxx.top/api/admin/menu
+```
+
+#### 参数类型：query
+
+|参数|是否必选|类型|说明|
+|:-----|:-------:|:-----|:-----|
+|type      | N      |string  | name :  |
+
+#### 返回示例：
+```javascript
+{
+  status_code : 200,
+   message : 'ok',
+   data : [...]
+}
+```
+
+
+### 2、管理员
+```
+GET  /api/admin/members/admin
+```
+
+
+
+### 3、角色
+```
+get /api/admin/members/role
+```
+
+
+### 3、商品列表
+```
+get /api/admin/goods
+```
+
+
+
+### 4、取消预约取件
+```
+POST /api/admin/order/cancel
+```
+
+
+### 5、预定取件
+```
+POST /api/admin/order/booking
+```
+
+待完善....
+
+
+# 说明
+>  时间、精力有限，只完成部分功能，更多功能后续完善， 目前仅于学习目的~。
 
 
 
 
-未完善....
