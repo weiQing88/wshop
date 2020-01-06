@@ -22,7 +22,7 @@ npm run dev or yarn dev
 ### 部分截图
  <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/20200106111753.png" width="500" height="300"/> 
  <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/45234234.png" width="900" height="500"/> 
- ![](/public/screenshots/45234234.png)
+ ![screenshots](/public/screenshots/45234234.png)
 
 
 ## 页面
