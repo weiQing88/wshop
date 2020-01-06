@@ -80,9 +80,6 @@ npm run dev or yarn dev
 
 
 
-### 前端后台管理/小程序
-项目地址：https://github.com/weiQing88/wshop_admin
-
 
 # 关于接口数据
 
@@ -141,6 +138,12 @@ POST /api/admin/order/booking
 ```
 
 待完善....
+
+
+
+### 前端后台管理/小程序
+项目地址：https://github.com/weiQing88/wshop_admin
+
 
 
 # 说明
