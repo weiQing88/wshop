@@ -38,7 +38,7 @@ npm run dev or yarn dev
 
 
 
-## 修改数据库配置文件 
+## 数据库配置文件 
 /config/config.default.js or config.prod.js
 ```
  config.sequelize = {
@@ -65,6 +65,19 @@ npm run dev or yarn dev
         }
     }
   };
+```
+
+```
+   config.redis = {
+          client : {
+              host : '127.0.0.1',
+              port : '6379',
+              password : 'xxx',
+              db : 0
+          },
+        agent : true
+      },
+
 ```
 
 
