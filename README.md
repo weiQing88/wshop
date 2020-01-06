@@ -1,6 +1,7 @@
 # wshop-server-project
 > 基于 nodejs + eggjs + redis + rabbitmq + mysql + sequelize 技术栈Web项目框架。
 
+>  个人时间、精力有限，只完成部分功能，仅用于学习~。
 
 ### 技术栈
 
@@ -137,9 +138,7 @@ POST /api/admin/order/booking
 
 
 
-# 说明
 
->  个人时间、精力有限，只完成部分功能，仅用于学习~。
 
 
 
