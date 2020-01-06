@@ -79,6 +79,11 @@ npm run dev or yarn dev
 ```
 
 
+
+### 前端
+项目地址：https://github.com/weiQing88/wshop_admin
+
+
 # 关于接口数据
 
 ### 1、获取侧边栏目
