@@ -1,4 +1,5 @@
 # wshop-server-project
+> ***个人时间、精力有限，只完成部分功能****
 > 基于 nodejs + eggjs + redis + rabbitmq + mysql + sequelize 技术栈Web项目框架。
 
 
