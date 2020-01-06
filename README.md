@@ -20,40 +20,26 @@ npm run dev or yarn dev
 ### 关于接口数据
 
 
-
-### 效果演示
+# 效果演示
+### 部分截图
+ <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/20200106111753.png" width="500" height="300"/> 
  <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/45234234.png" width="500" height="300"/> 
  
- ![](public/screenshots/45234234.png)
 
 
 # 功能列表
 
 ## 页面
 - [] 首页 -- 未完成
-- [x] 分类商品 
-- [x] 商品详情
-- [x] 购物车 -- 完成
-- [x] 下单页 -- 完成
-- [x] 支付页、支付结果页 -
-- [x] 订单详情页 
-- [ ] 意见反馈
+- [x] 商品管理 
+- [x] 订单管理
+- [x] 微信管理
+- [x] 会员管理
+- [ ] 操作日志
 - [ ] 物流查询
 
 
 
-
-### 目标功能
- 1、注册  √
- 2、登录   √
- 3、退出登录  √
- 4、上传接口  √
- 5、商品--> 新建分类接口  
- 6、商品--> 分类列表接口
- 7、jwt中间件拦截请求并验证  [ 参考：https://blog.csdn.net/qq_39081974/article/details/81085717 ]
- 
- 
- 
 ## 修改数据库配置文件 
 /config/config.default.js or config.prod.js
 ```
@@ -84,15 +70,6 @@ npm run dev or yarn dev
 ```
 
 
-
- //xx、手机短信验证码接口
- // xxx、 通过htt cach-Control 设置请求缓存； 【优化项】
-
-### 部分截图
-
-# 效果展示
-
-### 首页、商品分类页
 
 
 
