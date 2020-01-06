@@ -22,7 +22,7 @@ npm run dev or yarn dev
 
 
 ### 效果演示
- <img src="https://github.com/weiQing88/wshop/master/public/screenshots/45234234.png" width="200" height="200"/> 
+ <img src="https://github.com/weiQing88/wshop/blob/master/public/screenshots/45234234.png" width="200" height="200"/> 
 
 
 # 功能列表
