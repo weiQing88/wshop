@@ -1,10 +1,21 @@
 'use strict';
-
+const fs = require('fs');
+const path = require('path');
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index(){
-    ctx.body = 'hi, egg';
+        const { ctx, service, config, logger, app  } = this;
+        try{
+
+           console.log('返回静态页面')
+           ctx.response.type = 'html';
+           ctx.body = fs.readFileSync( path.resolve(  process.cwd(),'public/admin/index.html'), 'utf8' );
+           
+        }catch( err ){
+            console.log('err', err )
+            ctx.body = 'Page Not Found';
+        }
   }
 
   async fetMenu(){
@@ -18,7 +29,6 @@ class HomeController extends Controller {
        }
        ctx.body = await service.home.menu();
   }
-
 
 }
 

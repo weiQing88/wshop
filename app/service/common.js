@@ -6,9 +6,8 @@ const awaitWriteStream = require('await-stream-ready').write;
 const sendToWormhole = require('stream-wormhole');
 const dayjs = require('dayjs');
 
-
 class CommonService extends Service{
-        captcha(){
+     captcha(){
            let captcha = svgCaptcha.create({
                            width : 150,
                            height : 39,
@@ -21,6 +20,7 @@ class CommonService extends Service{
                 text : captcha.text
               }
        }
+
     async mcaptcha(){ // 短信验证码
         let res = {
               "ReturnStatus": "Success",
@@ -41,6 +41,95 @@ class CommonService extends Service{
           return res
   
       }
+
+
+
+   async deletePicture( images, oldImages ){
+      let { ctx, app, config, logger, service } = this;
+      let pathArry = [];
+      let getNames = ( imgs ) => {
+          let names = [];
+           if( imgs ){
+            let _imgs = imgs.split(',');
+               _imgs.forEach(( url, index ) => {
+                  if( url ){
+                            let nameArr = url.split('.')[0];
+                                nameArr = nameArr.split( `\\` );
+                           let  name = nameArr[ nameArr.length - 1 ];
+                                names.push( name )
+                  }
+              })          
+           }
+          return names;
+      }
+
+    let deleteFile = (_path) => {
+     
+        var files = [],
+            appRoot = process.cwd();
+
+       if( _path && _path.indexOf( appRoot ) == -1 )  _path = path.join( appRoot, _path );
+            
+        if (fs.existsSync(_path)) {
+           let _stat = fs.statSync(_path);
+          if ( _stat.isDirectory() ) {
+              files = fs.readdirSync(_path);
+              files.forEach(function (file, index) {
+              var curPath = _path + "/" + file;
+              if (fs.statSync(curPath).isDirectory()) {
+                   deleteFile(curPath);
+              } else { // 删除图片
+                   try{
+                        fs.unlinkSync(curPath);
+                   }catch(err){
+                        console.log('删除失败 err ', err )
+                   }
+              }
+            });
+            // fs.rmdirSync(_path);
+          }else if( _stat.isFile() ){ // 删除图片
+               console.log('删除图片')
+                  try{
+                      fs.unlinkSync(_path);
+                  }catch(err){
+                       console.log('删除失败 err ', err )
+                  }
+          } 
+          // else {
+          //   fs.unlinkSync(_path);
+          // }
+        }
+      }
+
+
+      if( Array.isArray( images ) ){
+              let names = getNames( images ),
+              oldNames = getNames( oldImages ),
+              a = new Set( names ),
+              b = new Set( oldNames ),
+              OLDIMAGES = oldImages.split(','),
+              difference = new Set([...b].filter(x => !a.has(x)));
+              difference = Array.from(difference);
+              OLDIMAGES.forEach( n => {
+                if( n ){  difference.forEach( d => { if( n.indexOf( d ) > -1 ) pathArry.push(  n  )    })
+                }
+         });
+
+      }
+      
+        if( images == undefined && oldImages )  pathArry = oldImages.split(',');
+
+         try{
+             pathArry.forEach( p => {  deleteFile( p ) });
+             return {  status_code : 200,  message : 'ok' }
+         }catch( error ){
+              console.log( 'err----error', error )
+              return {  status_code : 200,  ...error }
+         }
+  
+   }
+
+
 
     // 上传单个文件
    async uploadFile( category = '' ){

@@ -3,6 +3,7 @@ const ms = require('ms');
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
+
     async logout(){
         const { ctx, service, config, logger, app  } = this;
         try{
@@ -15,6 +16,7 @@ class UserController extends Controller {
           }, ctx.request.body );
 
         }catch( error ){
+              console.log('error--error--error logout', error )
           ctx.body = {
                status_code : config.statuscode.failure,
                 message : '参数错误'
@@ -24,6 +26,9 @@ class UserController extends Controller {
        ctx.body = await service.user.logout();
          
     }
+
+
+
 
      async login (){
         const { ctx, service, config, logger, app  } = this;
@@ -60,50 +65,40 @@ class UserController extends Controller {
            ctx.body = await service.user.login();
       }
 
+
     async captcha(){
         const { ctx, service, config, logger, app  } = this;
            let { type } = ctx.query;  // 获取 get 参数
-         let cap = service.common.captcha();
-             // 设置验证码过期时间
-              ctx.cookies.set('captchaExpire', Date.parse( new Date() ) , { maxAge : ms('2m') });
+           let cap = service.common.captcha();
           if( type == 'login' ){
                 app.redis.set('login_code', cap.text.toLowerCase());
-                app.redis.expire('login_code',  120); // 设定2秒过期
-
-              // ctx.session.login_code = cap.text.toLowerCase();
+                app.redis.expire('login_code',  600); // 设置验证码10秒过期
           }else if( type == 'register' ){
-               app.redis.set('login_code', cap.text.toLowerCase());
-               app.redis.expire('login_code',  120); // 设定2秒过期
-
-              // ctx.session.register_code  = cap.text.toLowerCase();
+               app.redis.set('register_code', cap.text.toLowerCase());
+               app.redis.expire('register_code',  600); // 设置验证码10秒过期
           }
            ctx.body = {
                status_code : config.statuscode.success,
                message : 'success',
                data :  cap.svgNode
            }
-          // ctx.type = 'text/xml';
-          
-            
+
       }
+
+
 
     async mcaptcha(){  // 手机短信验证码
          const { ctx, service, config, logger, app  } = this;
          let res = await service.common.mcaptcha( ctx.query );
          let { type } = ctx.query;  // 获取 get 参数
           // 设置验证码过期时间
-          ctx.cookies.set('mcaptchaExpire', Date.parse( new Date() ) , { maxAge : ms('2m') });
+        //  ctx.cookies.set('mcaptchaExpire', Date.parse( new Date() ) , { maxAge : ms('2m') });
           if( type == 'login' ){
                app.redis.set('login_mcode', res.RemainPoint );
-               app.redis.expire('login_mcode',  120); // 设定2秒过期
-
-              //  ctx.session.login_mcode = res.RemainPoint;
-
+               app.redis.expire('login_mcode',  600); // 设置验证码2秒过期
           }else if( type == 'register' ){
                app.redis.set('register_mcode', res.RemainPoint );
-               app.redis.expire('register_mcode',  120); // 设定2秒过期
-
-               // ctx.session.register_mcode  = res.RemainPoint;
+               app.redis.expire('register_mcode',  600); // 设置验证码2秒过期
           }
 
          ctx.body = {

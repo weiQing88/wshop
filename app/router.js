@@ -9,7 +9,8 @@ module.exports = app => {
   const verifyWxToken = middlewares.verifyToken(app, { tokenName : 'wxtoken' });
 
 
-   router.get('/', controller.home.index);
+   router.get('/', controller.home.index); // 后台管理系统静态页
+
    router.get('/api/admin/menu', verifyToken, controller.home.fetMenu ); // 获取导航栏目
 
    router.post('/api/admin/login', controller.user.login);
@@ -76,4 +77,5 @@ module.exports = app => {
     router.post('/api/wx/cart/clear', verifyWxToken, controller.wx.clearCart );  // 清空购物车
     router.get('/api/wx/order', verifyWxToken, controller.wx.order  );  // 微信- 订单
     router.get('/api/wx/user', verifyWxToken, controller.wx.user  );  // 微信- 用户中心
+    router.post('/api/wx/payment', verifyWxToken, controller.wx.payment  );  // 微信- 支付
 };

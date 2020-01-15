@@ -3,6 +3,8 @@ const ms = require('ms');
 const fs = require('fs');
 const path = require('path');
 class UserService extends Service{
+
+
        async logout(){
           let { ctx, app, config, logger, service } = this;
              let param = ctx.request.body;
@@ -28,9 +30,15 @@ class UserService extends Service{
                *  3、jwt生成加密token  【 过期时间统一为 1 天 】
                *  4、保存用户信息到redis 【 过期时间统一为 1 天 】
                */
-          let {  mobile, password, remember, captcha } = ctx.request.body;
-            if( ctx.cookies.get('captchaExpire') ){ 
-                    let login_code = await app.redis.get('login_code');
+           let {  mobile, password, remember, captcha } = ctx.request.body;
+
+           let login_code = await app.redis.get('login_code');
+
+            if( login_code ){ 
+
+               console.log('captcha from body',  captcha );
+               console.log('login_code from redis',  login_code );
+
                  if( captcha == login_code ){  // ctx.session.login_code
                             try{
                                    let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
@@ -49,22 +57,24 @@ class UserService extends Service{
                                                  result.message = '登录成功';
 
                             
+                                                 /**  ***  由客户端保持 cookie   start ****  */
                                                 // 保存到客户端浏览器的cookie中; 
-                                                 ctx.cookies.set('wshopLoginToken', token,{
-                                                        maxAge,
-                                                        path: '/',
-                                                        domain: 'localhost',
-                                                        httpOnly: false,
-                                                        signed: false,
-                                                 });
+                                                 // ctx.cookies.set('wshopLoginToken', token,{
+                                                 //        maxAge,
+                                                 //        path: '/',
+                                                 //        domain: 'localhost',
+                                                 //        httpOnly: false,
+                                                 //        signed: false,
+                                                 // });
                                    
-                                                 ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
-                                                        maxAge,
-                                                        path: '/',
-                                                        domain: 'localhost',
-                                                        httpOnly: false,
-                                                        signed: false,
-                                                    });
+                                                 // ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
+                                                 //        maxAge,
+                                                 //        path: '/',
+                                                 //        domain: 'localhost',
+                                                 //        httpOnly: false,
+                                                 //        signed: false,
+                                                 //    });
+                                                /**  ***  由客户端保持 cookie   end ****  */
 
                                                   result.expired = remember == '1' ? 30 : 1;
 
@@ -102,9 +112,7 @@ class UserService extends Service{
                   }
 
             }else{
-
-                     app.redis.del('login_code');
-                   //  ctx.session.login_code  = null;    
+                     app.redis.del('login_code'); 
                      result.status_code = config.statuscode.failure;
                      result.message = '验证码已过期';
             }
@@ -131,10 +139,6 @@ class UserService extends Service{
                  * 6、上传头像
                  * 
               */
-
-              console.log('---------------------start------------------------' );
-              console.log('--------------------end-------------------------' );
-
              if( ctx.util.isValid( ctx.request.body ) ){ // 无头像上传
                     param = ctx.request.body;
              }else{
@@ -184,8 +188,8 @@ class UserService extends Service{
 
 
             // 如果短信验证码没过期
-            if( ctx.cookies.get('mcaptchaExpire') ){ 
-                     let register_mcode = await app.redis.get('register_mcode');
+            let register_mcode = await app.redis.get('register_mcode');
+            if( register_mcode ){ 
                  if( param.captcha ==  register_mcode ){ // ctx.session.register_mcode 
                             param.last_login_ip = ctx.util.getClientIP( ctx.req ) || '127.0.0.1';
                             param.add_time = ctx.util.currentDate();
@@ -219,8 +223,7 @@ class UserService extends Service{
 
                  } 
             }else{
-                   app.redis.del('register_mcode');
-                 //  ctx.session.register_mcode  = null;    
+                  app.redis.del('register_mcode');  
                   result.status_code = config.statuscode.failure;
                   result.message = '验证码已过期';
             }

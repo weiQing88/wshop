@@ -35,9 +35,11 @@ class WxIndexController extends Controller {
         try{
             ctx.validate({
                  category_id : 'string',
-                 goods_name : { required : false, type : 'string' }
+                 goods_name : { required : false, type : 'string' },
+                 page : { required : false, type : 'string' },
             }, ctx.query )
         }catch(err){
+             console.log('err--',  err )
              ctx.body = { status_code : config.statuscode.failure,message : '参数错误' }
               return false;
         }
@@ -153,6 +155,23 @@ class WxIndexController extends Controller {
       }
        ctx.body = await service.wx.index.user();
   }
+
+
+ async payment(){
+   const { ctx, service, config, logger, app  } = this;
+      try{
+      ctx.validate({  
+         user_id : 'string',
+         address : { required : false, type : 'object' }
+       }, ctx.request.body )
+      }catch( err ){
+          console.log('err', err )
+        ctx.body = { status_code : config.statuscode.failure,message : '参数错误' }
+      return false;      
+   }
+   ctx.body = await service.wx.index.payment();
+ }
+
 
 }
 

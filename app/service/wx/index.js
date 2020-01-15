@@ -66,7 +66,6 @@ class HomeService extends Service{
                     // 保存已登录用户信息到 session
                    await app.redis.set('wxuserid',  openid);
                          app.redis.expire('wxuserid', 86400); // 设置 1 天的过期时间
-
                   return { status_code : config.statuscode.success, data : res[0], token,  message : 'ok' }
              }catch(err){
                    console.log('err-----000---', err );
@@ -99,13 +98,122 @@ class HomeService extends Service{
         try{
             let param = { expired : { [ Op.gt ] :  Date.parse( new Date() )  }, ...ctx.query };
             let cart = await ctx.model.WshopCart.count({ where : param });
-                
             return { status_code : config.statuscode.success, data : {  cart  },   message : 'ok' }
         }catch(err){
             return { status_code : config.statuscode.failure,  message : '获取失败' }
         }
 
    }
+
+
+ async payment(){
+    const { ctx, service, config, logger, app  } = this;
+     /**
+      *  1. 验证商品库存量
+      *  2. 购物车数据是否过期  【 30分钟 】 或 【 3小时 】
+      *  3. 发起微信支付请求
+      */
+       try{
+         // let Op =  app.Sequelize.Op;
+          let  cartItems = await ctx.model.WshopCart.findAll({ where : {  user_id : ctx.request.body.user_id } }),
+               cart = [],
+               short = []; // 商品库存不足。
+               for( let i = 0; i < cartItems.length; i++ ){  // *****购物车数据是否过期*****  【 默认30分钟或3小时 】
+                   let item = cartItems[i];
+                    if( item.dataValues.expired > Date.parse( new Date() ) ){
+                        let goods = await ctx.model.WshopGoods.findOne({ where : {  goods_id : item.dataValues.goods_id } });
+                        if( item.dataValues.number <= goods.goods_number ){  // ****检查商品库存量****
+                            cart.push( item.dataValues );
+                        }else{
+                            short.push( item.dataValues.goods_name );
+                        }
+                    }
+               }
+            if( short.length ){ // 库存不足
+                return { 
+                     status_code : config.statuscode.failure, 
+                     message : `部分商品库存不足：${ short.join('、') }`
+                  }
+            }else{
+                // *** 发起微信支付请求 *** 后期完成支付功能
+                // 生成订单，状态为待支付
+                let sumFun = function( cart ){
+                       let sum = 0;
+                       cart.forEach( itm => {sum += Number( itm.shop_price ) * Number( itm.number ) });
+                       return sum
+                };
+                let { address = undefined, user_id } =  ctx.request.body,
+                    value = {
+                        order_id : ctx.util.uidGenerator(),
+                        user_id,
+                        order_status : 0,
+                        shipping_status : 0,
+                        pay_status : 0,
+                        pay_name : '微信支付',
+                        pay_id : 0,
+                        order_price : sumFun( cart ),
+                        delivery_type : 1,
+                        order_type : 0,
+                        add_time : ctx.util.currentDate()
+                };
+
+                 if( address ){ // 如果 address 为 undefined 则是 “上门自提”
+                    let {  provinceName, telNumber, nationalCode,userName, detailInfo, cityName, countyName } = address;
+                            value.zipcode = nationalCode;
+                            value.consignee = userName;
+                            value.country = '中国';
+                            value.province = provinceName;
+                            value.city = cityName;
+                            value.district = countyName;
+                            value.address = detailInfo;
+                            value.mobile = telNumber;
+                            value.delivery_type = 0;
+                  }
+
+
+                // 添加到连接表
+                 for( let i = 0; i < cart.length; i++ ){
+                       let item = cart[i],
+                           {   goods_id,
+                               goods_attrs, 
+                               number ,
+                               goods_name,
+                               shop_price, 
+                               list_pic_url, 
+                               goods_number } = item;
+                        
+                      await  ctx.model.WshopOrderGoods.create({
+                                            order_id : value.order_id,
+                                            goods_id,
+                                            goods_attrs, 
+                                            number ,
+                                            goods_name,
+                                            shop_price, 
+                                            list_pic_url, 
+                                            goods_number
+                                        })
+                 }
+                
+                await ctx.model.WshopOrder.create( value );
+                for( let i = 0; i < cart.length; i++ ){
+                     // 成功后清空购物车
+                     await ctx.model.WshopCart.destroy({ where : {  id : cart[i].id  } })
+                }
+
+
+                return { status_code : config.statuscode.success,  message : '非商户号不能支付'  }
+
+            }
+       }catch( err ){
+             console.log( 'payment err', err );
+             return { status_code : config.statuscode.failure,  message : '支付失败'  }
+       }
+
+
+ 
+     
+ }
+
 
 }
 

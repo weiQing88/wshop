@@ -67,11 +67,33 @@ module.exports = appInfo => {
       },
       myAppName: 'wshop',
       security : {
-      domainWhiteList : ['127.0.0.1:8000'],
-      csrf : {
-        enable: false,
-      }
+          domainWhiteList : [
+            'http://127.0.0.1:8000',
+            'http://127.0.0.1:7001/',
+            'http://localhost:8000',
+            'http://localhost:7001'],
+          methodnoallow: {
+            enable: false,
+          },
+          xframe: {
+            enable: false,
+          },
+          csrf: {
+            enable: false,
+            headerName: 'x-csrf-token',
+            ignoreJSON: false,
+          },
     },
+
+
+  //  view : {
+  //   root: [ path.join( appInfo.baseDir, 'app/view') ].join(','),
+  //   defaultViewEngine: 'nunjucks',
+  //   mapping: {
+  //     '.html': 'nunjucks' //左边写成.html后缀，会自动渲染.html文件
+  //   },
+  // }
+
   };
 
 

@@ -15,14 +15,14 @@ module.exports = app => {
 	},
     order_sn: {
 			type: STRING(20),
-			allowNull: false,
+			allowNull: true,
 			defaultValue: '',
-			unique: true
+			//unique: true
 		},
 		user_id: {
 			type: STRING(60),
 			allowNull: false,
-			unique: true
+			//unique: true
 		},
 		zipcode : {
 			type: STRING(60),
@@ -64,7 +64,7 @@ module.exports = app => {
 		},
 		district: {
 			type: STRING(255),
-			 allowNull: true,
+			allowNull: true,
 		},
 		address: {
 			type: STRING(255),
@@ -105,11 +105,7 @@ module.exports = app => {
 		},
 		order_price: {
 			type: DECIMAL,
-			allowNull: true,
-		},
-		goods_price: {
-			type: DECIMAL,
-			allowNull: true,
+			allowNull: false,
 		},
 		add_time: {
 			type: DATE,
@@ -150,8 +146,13 @@ module.exports = app => {
 			allowNull: true,
 		},
 		order_type : {
-			type: STRING(60),
+			type: INTEGER(3),
 			allowNull: true,
+		},
+
+		delivery_type : {
+			type: INTEGER(3),
+			allowNull: false,
 		},
 
 		logistic_code : {
@@ -168,10 +169,10 @@ module.exports = app => {
 			type: STRING(255),
 			allowNull: true,
 		},
-		cancelled_code : {
-			type: STRING(255),
-			allowNull: true,  
-		},
+		// cancelled_code : {
+		// 	type: STRING(255),
+		// 	allowNull: true,  
+		// },
 		// callback_status: {
 		//   	 type: ENUM('true','false'),
 		// 	 allowNull: true,

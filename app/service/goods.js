@@ -23,12 +23,12 @@ var GoodsRule = {
 
 var convertImgs = ( row, key, ctx ) => {
      if( ctx.util.isValid( row[key]  ) ){
-          let imgs =  row[key] .split(',');
+          let imgs =  row[key].split(',');
           row[key] = [];
           imgs.forEach(( url, index ) => {
                if( url ){
                          let nameArr = url.split('.')[0];
-                         nameArr = nameArr.split( `\\` );
+                             nameArr = nameArr.split( `\\` );
                          let  name = nameArr[ nameArr.length - 1 ];
                          row[key][index] = {
                               uid : ~index,
@@ -121,6 +121,10 @@ class GoodsService extends Service{
                      if( type == 'update' ){
                          await ctx.model.WshopGoods.update( g ,{ where : { id : g.id } });
                      }else if( type == 'delete' ){
+                         let imgs = await ctx.model.WshopGoods.findOne({ where : { id : g }, attributes : ['goods_img'] });
+                         // 删除图片
+                         await service.common.deletePicture( undefined, imgs.goods_img );
+                         
                          await ctx.model.WshopGoods.destroy({ where : { id : g } });
                      }
                 });
@@ -139,12 +143,9 @@ class GoodsService extends Service{
                      message : '创建成功'
                },
                param = {},
-               createRule = GoodsRule;
-
+               createRule = ctx.util.deepCopy( GoodsRule );
           if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
-
                  param = ctx.request.body;
-
           }else{
 
                 // 上传图片
@@ -164,8 +165,6 @@ class GoodsService extends Service{
 
            try{
                ctx.validate( createRule, param)
-                console.log('param--param--param',param);
-                console.log('parcreateRuleam--createRule--createRule',createRule)
                }catch( err ){
                     console.log( err );
                     return {
@@ -193,7 +192,7 @@ class GoodsService extends Service{
 
   async editGoods(){
      let { ctx, app, config, logger, service } = this,
-          createRule = GoodsRule,
+          createRule = ctx.util.deepCopy( GoodsRule ),
           param = {},
           goods_id = '';
      if( ctx.util.isValid( ctx.request.body ) ){ // 无图片上传
@@ -203,20 +202,24 @@ class GoodsService extends Service{
                // 上传图片
                let rst = await service.common.uploadMultipleFile('goods');
                if( rst.state ){
-                    createRule.goods_id =  'string';
+                    createRule.goods_id = 'string';
                     param = rst.fields;
                     param.goods_img = rst.urls.length ? rst.urls.join(',') : '';
                     if( param.hasOwnProperty('uploaded_img') ){
                          param.goods_img = param.uploaded_img +',' + param.goods_img;
                          delete  param.uploaded_img;
                     }
+                      let imgs = await ctx.model.WshopGoods.findOne({  where : { goods_id : param.goods_id }, attributes : ['goods_img'] });
+                       // 删除图片
+                      await service.common.deletePicture( param.goods_img, imgs.goods_img );
                }else{
                   return {
                           status_code : config.statuscode.failure,
                           message : '图片上传失败'
                     }
                }
-       }
+       };
+
        try{
           ctx.validate( createRule, param)
           }catch( err ){
@@ -228,7 +231,6 @@ class GoodsService extends Service{
           }
 
        if( param.hasOwnProperty('goods_id') ) goods_id = param.goods_id;
-
           try{
               await ctx.model.WshopGoods.update( param, { where : {  goods_id } });
                 return {  status_code : config.statuscode.success, message : '编辑成功'}
@@ -318,10 +320,15 @@ class GoodsService extends Service{
   async deleteGoods(){
       let { ctx, app, config, logger, service } = this;
       try{
+          let imgs = await ctx.model.WshopGoods.findOne({  where : { goods_id : ctx.query.goods_id }, attributes : ['goods_img'] });
+              // 删除图片
+              await service.common.deletePicture( undefined, imgs.goods_img );
+
           let res = await ctx.model.WshopGoods.destroy({ where : { goods_id : ctx.query.goods_id } });
            return {  status_code : config.statuscode.success, message : '删除成功'}
       }catch(err){
           // logger
+          console.log('delete err', err );
           return {  status_code : config.statuscode.failure, message : '删除失败'}
       }
 
@@ -345,9 +352,11 @@ class GoodsService extends Service{
                     }else{
                          // 上传图片
                          let rst = await service.common.uploadMultipleFile('goods');
+
                          if( rst.state ){
                               param = rst.fields;
                               param.img_url = rst.urls.join(',');
+
                          }else{
                               return { status_code : config.statuscode.failure, message : '图片上传失败' }
                          }
@@ -441,6 +450,12 @@ class GoodsService extends Service{
                                    param.img_url = param.uploaded_img +',' + param.img_url;
                                    delete  param.uploaded_img;
                               }
+
+                           let imgs = await ctx.model.WshopCategory.findOne({  where : { category_id : param.category_id }, attributes : ['img_url'] });
+                              // 删除图片
+                             await service.common.deletePicture( param.img_url, imgs.img_url );
+
+
                          }else{
                              return {  status_code : config.statuscode.failure, message : '图片上传失败' }
                          }
@@ -476,6 +491,10 @@ class GoodsService extends Service{
               let { success, failure } = config.statuscode;
               let bool = true;
               try{
+                let imgs = await ctx.model.WshopCategory.findOne({  where : { category_id : ctx.query.category_id }, attributes : ['img_url'] });
+                    // 删除图片
+                  await service.common.deletePicture( undefined, imgs.img_url );
+
                  let res = await ctx.model.WshopCategory.destroy({ where : { category_id : ctx.query.category_id } });
                    // console.log( 'res......', res )
                     if( res[0] <= 0 ) bool = false;
@@ -497,8 +516,6 @@ class GoodsService extends Service{
            offset = Number(  ctx.query.page || '1' );
            offset = ( offset - 1 ) * limit;
 
-            console.log('sdfsdfsdfsdfsdfsdfsdf----attrs')
-
        try{
         let { count, rows } = await ctx.model.WshopAttribution.findAndCountAll({ offset, limit, });
              rows.forEach( item => {
@@ -513,7 +530,7 @@ class GoodsService extends Service{
                   }
        }catch( err ){
                //  logger
-              console.log( 'err----hhtttt ', err ); 
+              console.log(  err ); 
               return {
                       status_code : config.statuscode.failure,
                       message : '获取失败'
@@ -532,7 +549,7 @@ class GoodsService extends Service{
        try{
           let param = ctx.request.body;
               param.attr_id = ctx.util.uidGenerator();
-              param.attr_value = JSON.stringify( param.attr_value );
+              param.attr_value = param.attr_value.join(',');
           let res = await ctx.model.WshopAttribution.create( param ); 
               if( !res.hasOwnProperty('dataValues') ) bool = false;
        }catch( err ){
@@ -554,7 +571,7 @@ class GoodsService extends Service{
      let { attr_id, ...others } = ctx.request.body;
      let { success, failure } = config.statuscode;
      let bool = true;
-       others.attr_value = JSON.stringify( others.attr_value );
+         others.attr_value = others.attr_value.join(',');
      try{
       let res = await ctx.model.WshopAttribution.update(others, { where : { attr_id } });
           if( res[0] <= 0 ) bool = false;

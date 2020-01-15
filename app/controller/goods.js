@@ -12,6 +12,9 @@ class GoodsController extends Controller {
   async editGoods(){
       const { ctx, service, config, logger, app  } = this;
          let method = ctx.method.toLocaleLowerCase();
+
+          console.log('method', method );
+
          switch( method ){
              case 'post' :  ctx.body =  await service.goods.createGoods();
              break;
@@ -85,9 +88,6 @@ class GoodsController extends Controller {
                 break;
             }
 
-     
-
-     
 
    }
 
