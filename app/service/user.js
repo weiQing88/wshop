@@ -8,12 +8,8 @@ class UserService extends Service{
        async logout(){
           let { ctx, app, config, logger, service } = this;
              let param = ctx.request.body;
-             let user = await app.redis.get(`user_${ param.user_id }`); //  ctx.session.user || {};
-                 // user = JSON.parse( user );
-                 //  if( param.mobile == user.mobile && param.user_id == user.user_id ){
+             let user = await app.redis.get(`user_${ param.user_id }`); 
              if( user ){
-                 /******** 清除 session *********/
-                  // ctx.session.user = null;
                   await app.redis.del(`user_${ param.user_id }`);
                  return { status_code : config.statuscode.success, message : '成功退出' }
              }else{
@@ -37,8 +33,8 @@ class UserService extends Service{
                                    let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
                                 
                                    if( ctx.util.isValid( res ) ){
-                                          let logined = await app.redis.get(`user_${ res.user_id || '' }`);
-                                          if( logined ) return {
+                                          let usr = await app.redis.get(`user_${ res.user_id || '' }`);
+                                          if( usr ) return {
                                                  status_code : config.statuscode.failure,
                                                  message : '您已在别处登录！'
                                           };
@@ -57,25 +53,6 @@ class UserService extends Service{
                                                  result.message = '登录成功';
 
                             
-                                                 /**  ***  由客户端保持 cookie   start ****  */
-                                                // 保存到客户端浏览器的cookie中; 
-                                                 // ctx.cookies.set('wshopLoginToken', token,{
-                                                 //        maxAge,
-                                                 //        path: '/',
-                                                 //        domain: 'localhost',
-                                                 //        httpOnly: false,
-                                                 //        signed: false,
-                                                 // });
-                                   
-                                                 // ctx.cookies.set('userInfo',JSON.stringify( result.userinfo ),{
-                                                 //        maxAge,
-                                                 //        path: '/',
-                                                 //        domain: 'localhost',
-                                                 //        httpOnly: false,
-                                                 //        signed: false,
-                                                 //    });
-                                                /**  ***  由客户端保持 cookie   end ****  */
-
                                                   result.expired = remember == '1' ? 30 : 1;
 
                                                  // 保存已登录用户信息到 
@@ -83,11 +60,7 @@ class UserService extends Service{
                                                     // 如果用户勾选了 `记住我`，设置 30 天的过期时间
                                                   app.redis.expire(`user_${ user_id }`, remember == '1' ?  30 * 24 * 60 * 60 : 1 * 24 * 60 * 60 );
                                                   
-                                                 // 保存已登录用户信息到 session
-                                                 // ctx.session.user = { username, mobile, user_id };
-                                                 // 如果用户勾选了 `记住我`，设置 30 天的过期时间
-                                                 // ctx.session.maxAge = maxAge;
-       
+                                             
                                           }else{
                                                  result.status_code = config.statuscode.failure;
                                                  result.message = '密码不正确';  
@@ -127,15 +100,6 @@ class UserService extends Service{
               result = {},
               param = {};
 
-                /**
-                 *  1、验证是否有重复手机号  ==> ok
-                 * 2、验证短信验证码是否正确或过期 ==> ok
-                 * 3、创建 user_id  ==> ok
-                 * 4、获取用户 IP  ==> ok
-                 * 5、用户创建时间  ==> ok
-                 * 6、上传头像
-                 * 
-              */
              if( ctx.util.isValid( ctx.request.body ) ){ // 无头像上传
                     param = ctx.request.body;
              }else{
