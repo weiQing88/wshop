@@ -7,8 +7,7 @@ class HomeController extends Controller {
   async index(){
         const { ctx, service, config, logger, app  } = this;
         try{
-
-           console.log('返回静态页面')
+          
            ctx.response.type = 'html';
            ctx.body = fs.readFileSync( path.resolve(  process.cwd(),'public/admin/index.html'), 'utf8' );
            
