@@ -68,11 +68,7 @@ module.exports = appInfo => {
       },
       myAppName: 'wshop',
       security : {
-          domainWhiteList : [
-            'http://127.0.0.1:8000',
-            'http://127.0.0.1:7001/',
-            'http://localhost:8000',
-            'http://localhost:7001'],
+          domainWhiteList : ['*'],
           methodnoallow: {
             enable: false,
           },
@@ -86,14 +82,6 @@ module.exports = appInfo => {
           },
     },
 
-
-  //  view : {
-  //   root: [ path.join( appInfo.baseDir, 'app/view') ].join(','),
-  //   defaultViewEngine: 'nunjucks',
-  //   mapping: {
-  //     '.html': 'nunjucks' //左边写成.html后缀，会自动渲染.html文件
-  //   },
-  // }
 
   };
 
