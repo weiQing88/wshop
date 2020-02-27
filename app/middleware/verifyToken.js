@@ -2,8 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const jwt = require('jsonwebtoken');
 
-// 参考 ：https://blog.csdn.net/qq_39081974/article/details/81085717
-
 function verify(token, app) {
     let res = null;
        try{
@@ -21,6 +19,7 @@ module.exports = ( app,options = {} ) => {
     return async function verifyToken( ctx, next ){
      // **** !!!!!获取前端或以其他方式设置的cookie需要设置signed: false属性，避免对它做验签导致获取不到 cookie 的值。!!!!*****
      //  ctx.cookies.get( tokenName ,{ httpOnly: false, signed: false }) 
+    // ctx.cookies.get('userInfo' ,{ httpOnly: false, signed: false });
         let { tokenName = 'wshopLoginToken' } = options;
         let token = tokenName == 'wshopLoginToken' 
                             ? ctx.header.authorization.replace('Bearer ', '') 
@@ -32,8 +31,8 @@ module.exports = ( app,options = {} ) => {
                      // 存在 redis , 可做新旧对比。【 有可能用户在多处登录 】
                      let flag = true;
                      let wxuserid = await app.redis.get('wxuserid');
-                     let user = await app.redis.get('user');
-                         user = JSON.parse( user );
+                     let user = await app.redis.get(`user_${ rst.user_id }`);
+                         user = user ? JSON.parse( user ) : {};
 
                     if( tokenName == 'wshopLoginToken' ){
                         rst.user_id == user.user_id ? '' : flag = false;
