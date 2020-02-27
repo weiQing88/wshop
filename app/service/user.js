@@ -25,12 +25,7 @@ class UserService extends Service{
        async login(){
               let { ctx, app, config, logger, service } = this;
               let result = {};
-              /**
-               *  1、验证 图片验证码是否过期/一致
-               *  2、验证密码、账号/手机号 是否与数据库的一致
-               *  3、jwt生成加密token  【 过期时间统一为 1 天 】
-               *  4、保存用户信息到redis 【 过期时间统一为 1 天 】
-               */
+
            let {  mobile, password, remember, captcha } = ctx.request.body;
            let login_code = await app.redis.get('login_code');
          
