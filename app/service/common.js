@@ -86,7 +86,6 @@ class CommonService extends Service{
                    }
               }
             });
-            // fs.rmdirSync(_path);
           }else if( _stat.isFile() ){ // 删除图片
                console.log('删除图片')
                   try{
@@ -95,9 +94,7 @@ class CommonService extends Service{
                        console.log('删除失败 err ', err )
                   }
           } 
-          // else {
-          //   fs.unlinkSync(_path);
-          // }
+       
         }
       }
 
@@ -174,7 +171,6 @@ class CommonService extends Service{
 
 
    // 上传多张图片
-  // 上传多个文件参考地址 https://github.com/eggjs/examples/blob/master/multipart-file-mode/app/controller/multiple.js
   async uploadMultipleFile( category ){
          let { ctx, app, config, logger, service } = this,
              rest = {
@@ -191,10 +187,6 @@ class CommonService extends Service{
                  }else{ // 文件流
                      if (!part.filename) return { state : false,  message : '上传文件为空' };
                         // part 是上传的文件流
-                        //  console.log('field: ' + part.fieldname);
-                        //  console.log('filename: ' + part.filename);
-                        //  console.log('encoding: ' + part.encoding);
-                        //  console.log('mime: ' + part.mime);
                         // 上传目录
                        const basePath = 'public/uploads';
                           // *******!!!名字不可换行!!!****
