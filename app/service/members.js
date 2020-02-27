@@ -42,7 +42,7 @@ class MembersService extends Service{
    async delete(){
         const { ctx, service, config, logger, app  } = this;
 
-            console.log( 'ctx.params', ctx.params )
+          //  console.log( 'ctx.params', ctx.params )
 
         try{
             await ctx.model.WshopAdmin.destroy({ where : ctx.params });

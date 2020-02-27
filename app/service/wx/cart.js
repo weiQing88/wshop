@@ -5,6 +5,7 @@ class CartService extends Service{
     async fetCart(){
         const { ctx, service, config, logger, app  } = this;
         try{
+             // 操作对象
             let Op =  app.Sequelize.Op;
             let res = await ctx.model.WshopCart.findAll({ where : {   expired : { [ Op.gt ] :  Date.parse( new Date() )  } } });
                 res.forEach( item => {

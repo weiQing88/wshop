@@ -8,12 +8,13 @@ class UserService extends Service{
        async logout(){
           let { ctx, app, config, logger, service } = this;
              let param = ctx.request.body;
-             let user = await app.redis.get('user'); //  ctx.session.user || {};
-                 user = JSON.parse( user );
-             if( param.mobile == user.mobile && param.user_id == user.user_id ){
+             let user = await app.redis.get(`user_${ param.user_id }`); //  ctx.session.user || {};
+                 // user = JSON.parse( user );
+                 //  if( param.mobile == user.mobile && param.user_id == user.user_id ){
+             if( user ){
                  /******** 清除 session *********/
                   // ctx.session.user = null;
-                  await app.redis.del('user');
+                  await app.redis.del(`user_${ param.user_id }`);
                  return { status_code : config.statuscode.success, message : '成功退出' }
              }else{
                  return { status_code : config.statuscode.failure, message : '退出失败'  }
@@ -31,18 +32,22 @@ class UserService extends Service{
                *  4、保存用户信息到redis 【 过期时间统一为 1 天 】
                */
            let {  mobile, password, remember, captcha } = ctx.request.body;
-
            let login_code = await app.redis.get('login_code');
+         
 
             if( login_code ){ 
-
-               console.log('captcha from body',  captcha );
-               console.log('login_code from redis',  login_code );
 
                  if( captcha == login_code ){  // ctx.session.login_code
                             try{
                                    let res = await ctx.sql('WshopAdmin', 'findOne',{ where : { mobile } });
+                                
                                    if( ctx.util.isValid( res ) ){
+                                          let logined = await app.redis.get(`user_${ res.user_id || '' }`);
+                                          if( logined ) return {
+                                                 status_code : config.statuscode.failure,
+                                                 message : '您已在别处登录！'
+                                          };
+
                                           let bool = ctx.util.tocheck( ctx.util.secret( password, 'decrypt' ),  res.dataValues.password );
                                           if( bool ){
                                                  let { username, mobile, avatar, admin_role, user_id } = res.dataValues;
@@ -79,17 +84,14 @@ class UserService extends Service{
                                                   result.expired = remember == '1' ? 30 : 1;
 
                                                  // 保存已登录用户信息到 
-                                                  app.redis.set('user', JSON.stringify( { username, mobile, user_id } ))
+                                                  app.redis.set(`user_${ user_id }`,  JSON.stringify( { username, mobile, user_id } ))
                                                     // 如果用户勾选了 `记住我`，设置 30 天的过期时间
-                                                  app.redis.expire('user', remember == '1' ?  30 * 24 * 60 * 60 : 1 * 24 * 60 * 60 );
+                                                  app.redis.expire(`user_${ user_id }`, remember == '1' ?  30 * 24 * 60 * 60 : 1 * 24 * 60 * 60 );
                                                   
                                                  // 保存已登录用户信息到 session
                                                  // ctx.session.user = { username, mobile, user_id };
                                                  // 如果用户勾选了 `记住我`，设置 30 天的过期时间
                                                  // ctx.session.maxAge = maxAge;
-
-
-
        
                                           }else{
                                                  result.status_code = config.statuscode.failure;
