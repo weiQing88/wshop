@@ -44,8 +44,8 @@ module.exports = appInfo => {
       },
       redis : {
           client : {
-             // host : '127.0.0.1',
-              host : 'redis',
+              host : '127.0.0.1',
+             // host : 'redis',
               port : '6379',
               password : '',
               db : 0
@@ -88,8 +88,8 @@ module.exports = appInfo => {
 
   config.sequelize = {
       dialect: 'mysql',
-      // host: '127.0.0.1',
-      host: 'mysql',
+       host: '127.0.0.1',
+     // host: 'mysql',
       port: 3306,
       database: 'wshop',
       username: 'root',
